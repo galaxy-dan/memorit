@@ -5,6 +5,9 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(FriendKey.class)
 public class FriendEntity {
 	@Id
 	@Column(name = "user_id", columnDefinition = "BINARY(16)")
@@ -28,11 +32,15 @@ public class FriendEntity {
 	@Column(name = "category", length = 256, nullable = false)
 	private String category;
 	@Column(name = "received_count")
+	@ColumnDefault("0")
 	private int receivedCount;
 	@Column(name = "sent_count")
+	@ColumnDefault("0")
 	private int sentCount;
 	@Column(name = "received_money")
+	@ColumnDefault("0")
 	private int receivedMoney;
 	@Column(name = "sent_money")
+	@ColumnDefault("0")
 	private int sentMoney;
 }
