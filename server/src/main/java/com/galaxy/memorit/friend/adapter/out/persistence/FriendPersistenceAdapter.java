@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.memorit.friend.adapter.out.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.adapter.out.persistence.entity.FriendRepository;
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FriendPersistenceAdapter implements FriendRegisterPort {
 	private final FriendRepository friendRepository;
-
+	@Transactional
 	@Override
 	public void register(Friend friend) {
 		//String 형태인 userId를 UUID로 변환하여 저장
