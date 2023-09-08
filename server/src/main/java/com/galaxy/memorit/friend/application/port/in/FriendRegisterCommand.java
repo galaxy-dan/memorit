@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class FriendRegisterDTO {
-	private String userId;
+public class FriendRegisterCommand {
 	private String name;
 	private String category;
 }
