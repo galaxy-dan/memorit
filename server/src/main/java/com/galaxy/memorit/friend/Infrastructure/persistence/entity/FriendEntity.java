@@ -43,4 +43,9 @@ public class FriendEntity {
 	@Column(name = "sent_money")
 	@ColumnDefault("0")
 	private int sentMoney;
+
+	public void updateInfo(String newName, String newCategory){
+		this.name = newName;
+		this.category = newCategory;
+	}
 }

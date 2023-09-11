@@ -13,6 +13,7 @@ import com.galaxy.memorit.friend.Infrastructure.persistence.mapper.FriendMapper;
 import com.galaxy.memorit.friend.application.service.FriendService;
 import com.galaxy.memorit.friend.domain.entity.Friend;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
+import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
@@ -37,6 +38,7 @@ public class FriendServiceImpl implements FriendService {
 		friendRepository.save(friendMapper.createEntity(friend));
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public FriendsListResDTO getFriendsList(String userId) {
 		//byte[]를 UUID로 변경해서 db 조회
@@ -50,11 +52,20 @@ public class FriendServiceImpl implements FriendService {
 		return new FriendsListResDTO(infoList);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public FriendInfoDTO getFriendInfo(String userId, String friendId) {
 		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
 			.orElseThrow();
 		return friendMapper.toInfoDTO(entity);
+	}
+
+	@Transactional
+	@Override
+	public void updateFriendInfo(String userId, String friendId, FriendUpdateReqDTO dto) {
+		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
+			.orElseThrow();
+		entity.updateInfo(dto.getName(), dto.getCategory());
 	}
 
 }
