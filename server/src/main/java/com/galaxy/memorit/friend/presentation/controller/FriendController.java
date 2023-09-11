@@ -1,4 +1,4 @@
-package com.galaxy.memorit.friend.adapter.in.web;
+package com.galaxy.memorit.friend.presentation.controller;
 
 import java.net.URI;
 
@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.galaxy.memorit.friend.adapter.in.web.dto.FriendRegisterReqDTO;
-import com.galaxy.memorit.friend.application.port.in.FriendRegisterCommand;
-import com.galaxy.memorit.friend.application.port.in.FriendRegisterUseCase;
+import com.galaxy.memorit.friend.application.service.FriendService;
+import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,20 +18,18 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/friend")
 @RequiredArgsConstructor
 public class FriendController {
-	private final FriendRegisterUseCase friendRegisterUseCase;
+	private final FriendService friendService;
 
 	//수동으로 친구 등록
 	@PostMapping
 	public ResponseEntity<Void> registerFriendManually(@RequestBody FriendRegisterReqDTO dto, Authentication authentication){
 		//이게 찐
-		//FriendRegisterCommand command = new FriendRegisterCommand(authentication.getName(), dto.getName(), dto.getCategory());
+		//friendService.registerFriend(authentication.getName(), dto);
 
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
-		FriendRegisterCommand command = new FriendRegisterCommand(
-			hexStringToByteArray(uuid), dto.getName(), dto.getCategory());
+		friendService.registerFriend(hexStringToByteArray(uuid), dto);
 
-		friendRegisterUseCase.registerFriend(command);
 		return ResponseEntity.created(URI.create("")).build();
 	}
 
