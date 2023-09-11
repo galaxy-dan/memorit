@@ -24,7 +24,7 @@ public class FriendServiceImpl implements FriendService {
 	private final FriendMapper friendMapper;
 	@Transactional
 	@Override
-	public void registerFriend(byte[] userId, FriendRegisterReqDTO dto) {
+	public void registerFriend(String userId, FriendRegisterReqDTO dto) {
 		Friend friend = Friend.builder()
 			.userId(userId)
 			.name(dto.getName())
@@ -37,9 +37,9 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public FriendsListResDTO getFriendsList(byte[] userId) {
+	public FriendsListResDTO getFriendsList(String userId) {
 		//byte[]를 UUID로 변경해서 db 조회
-		List<FriendEntity> entityList = friendRepository.findAllByUserId(friendMapper.byteArrayToUUID(userId));
+		List<FriendEntity> entityList = friendRepository.findAllByUserId(friendMapper.stringToUUID(userId));
 
 		//db에서 얻은 리스트를 DTO에 맞게 변환
 		List<FriendInfoDTO> infoList = entityList.stream()

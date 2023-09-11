@@ -3,6 +3,6 @@ import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
 public interface FriendService {
-	void registerFriend(byte[] userId, FriendRegisterReqDTO dto);
-	FriendsListResDTO getFriendsList(byte[] userId);
+	void registerFriend(String userId, FriendRegisterReqDTO dto);
+	FriendsListResDTO getFriendsList(String userId);
 }
