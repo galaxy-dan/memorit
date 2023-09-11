@@ -1,13 +1,15 @@
-package com.galaxy.memorit.friend.domain.entity;
+package com.galaxy.memorit.friend.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class Friend {
+public class FriendInfoDTO {
 	private String userId;
 	private String friendId;
 	private String name;
