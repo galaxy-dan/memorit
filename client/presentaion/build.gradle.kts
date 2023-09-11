@@ -1,12 +1,20 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
+    id ("com.google.dagger.hilt.android")
 }
 
+
+val properties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
 android {
     namespace = "com.galaxy.memorit"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.galaxy.memorit"
@@ -19,6 +27,18 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+
+        buildConfigField("String", "NATIVE_APP_KEY",
+            com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir).getProperty("kakao_native_key")
+        )
+
+        buildConfigField("String", "BASE_URL",
+            com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir).getProperty("base_url")
+        )
+
+
+        manifestPlaceholders["NATIVE_APP_KEY"] = properties["kakao_native_key"] as String
     }
 
     buildTypes {
@@ -31,14 +51,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -51,13 +72,13 @@ android {
 }
 
 dependencies {
-    implementation(":data")
-    implementation(":domain")
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.09.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -65,10 +86,12 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.09.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
 
 
@@ -82,14 +105,14 @@ dependencies {
     implementation ("com.chargemap.compose:numberpicker:1.0.3")
 
     //sandwich
-    implementation ("com.github.skydoves:sandwich:1.3.7")
+    implementation ("com.github.skydoves:sandwich:1.3.9")
 
     //kotlinx.serialization
-    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation ("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
     //hilt
-    implementation ("com.google.dagger:hilt-android:2.47")
-    kapt ("com.google.dagger:hilt-compiler:2.47")
+    implementation ("com.google.dagger:hilt-android:2.48")
+    kapt ("com.google.dagger:hilt-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 }
