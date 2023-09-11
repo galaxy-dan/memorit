@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
+import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendKey;
 import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRepository;
 import com.galaxy.memorit.friend.Infrastructure.persistence.mapper.FriendMapper;
 import com.galaxy.memorit.friend.application.service.FriendService;
@@ -47,6 +48,13 @@ public class FriendServiceImpl implements FriendService {
 			.collect(Collectors.toList());
 
 		return new FriendsListResDTO(infoList);
+	}
+
+	@Override
+	public FriendInfoDTO getFriendInfo(String userId, String friendId) {
+		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
+			.orElseThrow();
+		return friendMapper.toInfoDTO(entity);
 	}
 
 }
