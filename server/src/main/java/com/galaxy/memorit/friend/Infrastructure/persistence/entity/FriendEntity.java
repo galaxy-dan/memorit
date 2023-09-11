@@ -1,4 +1,4 @@
-package com.galaxy.memorit.friend.adapter.out.persistence.entity;
+package com.galaxy.memorit.friend.Infrastructure.persistence.entity;
 
 import java.util.UUID;
 

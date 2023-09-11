@@ -1,4 +1,4 @@
-package com.galaxy.memorit.friend.domain;
+package com.galaxy.memorit.friend.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,9 +17,16 @@ public class Friend {
 	private int receivedMoney;
 	private int sentMoney;
 
-	public String convertUUIDToString(byte[] byteArray){
+	public String convertUserUUIDToString(){
 		StringBuilder uuidString = new StringBuilder();
-		for (byte b : byteArray) {
+		for (byte b : this.userId) {
+			uuidString.append(String.format("%02X", b));
+		}
+		return uuidString.toString();
+	}
+	public String convertFriendUUIDToString(){
+		StringBuilder uuidString = new StringBuilder();
+		for (byte b : this.friendId) {
 			uuidString.append(String.format("%02X", b));
 		}
 		return uuidString.toString();
