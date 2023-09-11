@@ -5,7 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -45,13 +45,10 @@ fun Login(
     AutoLogin {viewModel.autoLogin(navToMain)}
 
 
-    Image(
-        painter = painterResource(id = R.drawable.bg_login_compose),
-        contentDescription = "bg_login",
-        modifier = modifier.fillMaxSize(),
-        contentScale = ContentScale.Fit
-    )
     Column() {
+        Row {
+
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
@@ -126,6 +123,11 @@ fun AutoLogin(autoLogin: () -> Unit)  {
     LaunchedEffect(key1 = true) {
         autoLogin()
     }
+}
+
+fun randNum(): Int {
+    val range = (0..100)
+    return range.random()
 }
 
 @Composable
