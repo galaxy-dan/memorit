@@ -1,4 +1,4 @@
-package com.galaxy.memorit.friend.adapter.in.web.dto;
+package com.galaxy.memorit.friend.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
