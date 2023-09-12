@@ -1,5 +1,7 @@
 package com.galaxy.memorit.ui.getbirth
 
+import android.content.Context
+import android.provider.ContactsContract
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,9 +15,11 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -25,16 +29,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chargemap.compose.numberpicker.NumberPicker
-import com.orhanobut.logger.Logger
 import com.galaxy.memorit.R
 import com.galaxy.memorit.ui.getbirth.stateholder.PickerStateHolder
 import com.galaxy.memorit.ui.theme.maplestory
 import com.galaxy.memorit.ui.theme.themecolor
+import com.orhanobut.logger.Logger
+
 
 @Composable
 fun Getbirth(modifier: Modifier = Modifier, viewModel: GetbirthViewmodel = hiltViewModel(),
              navToMain: () -> Unit = {}) {
     val stateHolder = PickerStateHolder()
+    val context = LocalContext.current
+    LaunchedEffect(key1 = true) {
+        Logger.d(getContactsString(context).toString())
+    }
     Column(
         modifier
             .background(Color.White)
@@ -127,6 +136,35 @@ fun Button(modifier: Modifier = Modifier, navToMain: () -> Unit, viewModel: Getb
             )
         }
     }
+}
+
+
+fun getContactsString(context: Context): ArrayList<String>? {
+    val datas = ArrayList<String>()
+    val resolver = context.contentResolver
+    val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+    val projection =
+        arrayOf( //        ContactsContract.CommonDataKinds.Phone.CONTACT_ID // 인덱스 값, 중복될 수 있음 -- 한 사람 번호가 여러개인 경우
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+        )
+    val sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC"
+    val cursor = resolver.query(phoneUri, projection, null, null, sortOrder)
+    if (cursor != null) {
+        while (cursor.moveToNext()) {
+//        int idIndex = cursor.getColumnIndex(projection[0]); // 이름을 넣어주면 그 칼럼을 가져와준다.
+            val nameIndex = cursor.getColumnIndex(projection[0])
+            val numberIndex = cursor.getColumnIndex(projection[1])
+            //        String id = cursor.getString(idIndex);
+            val name = cursor.getString(nameIndex)
+            val number = cursor.getString(numberIndex)
+            Logger.d("$name + $number")
+        }
+    }
+
+    // 데이터 계열은 반드시 닫아줘야 한다.
+    cursor!!.close()
+    return datas
 }
 
 @Composable
