@@ -19,10 +19,10 @@ export default function AddMemoryPage() {
   return (
     <>
       {/* 상단 탭 부분 */}
-      <div className="flex justify-between items-center w-full py-5 px-5">
-        <IoMdClose className="text-2xl" />
+      <div className="flex justify-between items-center w-full py-5 px-3">
+        <button className="p-2"><IoMdClose className="text-2xl" /></button>
         <p className="text-2xl">기억 더하기</p>
-        <button className="text-red-400">저장</button>
+        <button className="text-red-400 p-2">저장</button>
       </div>
 
       {/* 송수신 선택 부분 */}
