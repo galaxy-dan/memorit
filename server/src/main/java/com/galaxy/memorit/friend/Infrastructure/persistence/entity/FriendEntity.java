@@ -6,8 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
+
+import com.galaxy.memorit.common.entity.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,12 +18,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "friend")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(FriendKey.class)
-public class FriendEntity {
+public class FriendEntity extends BaseEntity {
 	@Id
 	@Column(name = "user_id", columnDefinition = "BINARY(16)")
 	private UUID userId;
