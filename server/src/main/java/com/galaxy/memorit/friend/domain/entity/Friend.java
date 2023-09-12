@@ -1,5 +1,7 @@
 package com.galaxy.memorit.friend.domain.entity;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,4 +18,5 @@ public class Friend {
 	private int sentCount;
 	private int receivedMoney;
 	private int sentMoney;
+	private LocalDate recentDate;
 }

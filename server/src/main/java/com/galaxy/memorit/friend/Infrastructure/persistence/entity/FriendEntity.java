@@ -1,5 +1,6 @@
 package com.galaxy.memorit.friend.Infrastructure.persistence.entity;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -47,9 +48,15 @@ public class FriendEntity extends BaseEntity {
 	@Column(name = "sent_money")
 	@ColumnDefault("0")
 	private int sentMoney;
+	@Column(name = "recent_date")
+	private LocalDate recentDate;
 
 	public void updateInfo(String newName, String newCategory){
 		this.name = newName;
 		this.category = newCategory;
+	}
+
+	public void updateRecentDate(){
+		this.recentDate = LocalDate.now();
 	}
 }
