@@ -1,5 +1,11 @@
 package com.galaxy.memorit.ui.login
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -29,11 +36,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.galaxy.memorit.R
 import com.galaxy.memorit.ui.login.stateholder.LoginViewModel
 import com.galaxy.memorit.ui.theme.PartylogTheme
 import com.galaxy.memorit.ui.theme.maplestory
+import com.orhanobut.logger.Logger
 
 @Composable
 fun Login(
@@ -43,6 +52,31 @@ fun Login(
 ) {
 
     val loginCode = viewModel.loginCode
+
+    val context = LocalContext.current
+
+    val permissions = arrayOf(
+        Manifest.permission.READ_CONTACTS
+    )
+
+    val launcherMultiplePermissions = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissionsMap ->
+        val areGranted = permissionsMap.values.reduce { acc, next -> acc && next }
+        /** 권한 요청시 동의 했을 경우 **/
+        if (areGranted) {
+            Logger.d("권한이 동의되었습니다.")
+        }
+        /** 권한 요청시 거부 했을 경우 **/
+        else {
+            Logger.d("권한이 거부되었습니다.")
+        }
+    }
+    LaunchedEffect(key1 = true) {
+        checkAndRequestPermissions(
+            context = context, permissions = permissions, launcher = launcherMultiplePermissions
+        )
+    }
 
     AutoLogin {viewModel.autoLogin(navToMain)}
 
@@ -128,10 +162,11 @@ fun Login(
             SubTitle2()
         }
 
-        IconButton(onClick = navToGetbirth ,
+        IconButton(onClick = navToGetbirth,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 150.dp).fillMaxWidth()) {
+                .padding(bottom = 150.dp)
+                .fillMaxWidth()) {
             Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
                 contentDescription = null,
                 tint = Color.Unspecified)
@@ -230,6 +265,28 @@ fun getScreenWidth(): Int {
     return LocalConfiguration.current.screenWidthDp
 }
 
+fun checkAndRequestPermissions(
+    context: Context,
+    permissions: Array<String>,
+    launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
+) {
+
+    /** 권한이 이미 있는 경우 **/
+    if (permissions.all {
+            ContextCompat.checkSelfPermission(
+                context,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
+        }) {
+        Logger.d("권한이 이미 존재합니다.")
+    }
+
+    /** 권한이 없는 경우 **/
+    else {
+        launcher.launch(permissions)
+        Logger.d("권한을 요청하였습니다.")
+    }
+}
 @Composable
 @Preview(showBackground = true)
 fun Preview() {

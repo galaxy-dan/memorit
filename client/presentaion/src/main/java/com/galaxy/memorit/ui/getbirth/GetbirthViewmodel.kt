@@ -30,4 +30,7 @@ class GetbirthViewmodel @Inject constructor(private val joinWithBirthUsecase: Jo
         }
     }
 
+
+
+
 }
