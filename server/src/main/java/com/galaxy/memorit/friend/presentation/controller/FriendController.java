@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.galaxy.memorit.friend.application.service.FriendService;
+import com.galaxy.memorit.friend.dto.request.FriendMultiDeleteReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
@@ -61,6 +63,24 @@ public class FriendController {
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		friendService.updateFriendInfo(uuid, friendId, dto);
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/{friendId}")
+	public ResponseEntity<Void> deleteFriendById(@PathVariable String friendId, Authentication authentication){
+		//return ResponseEntity.ok(friendService.deleteFriendById(authentication.getName(), friendId));
+		//테스트용
+		String uuid = "99d7f4dd55244c54a523032169193f40";
+		friendService.deleteFriendById(uuid, friendId);
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/multiple")
+	public ResponseEntity<Void> deleteFriendsByList(@RequestBody FriendMultiDeleteReqDTO dto, Authentication authentication){
+		//return ResponseEntity.ok(friendService.deleteFriendsByList(authentication.getName(), friendId));
+		//테스트용
+		String uuid = "99d7f4dd55244c54a523032169193f40";
+		friendService.deleteFriendsByList(uuid, dto);
 		return ResponseEntity.ok().build();
 	}
 }
