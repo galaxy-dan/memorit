@@ -68,4 +68,12 @@ public class FriendServiceImpl implements FriendService {
 		entity.updateInfo(dto.getName(), dto.getCategory());
 	}
 
+	@Transactional
+	@Override
+	public void deleteFriendById(String userId, String friendId) {
+		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
+			.orElseThrow();
+		friendRepository.delete(entity);
+	}
+
 }

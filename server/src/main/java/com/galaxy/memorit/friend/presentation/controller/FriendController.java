@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,6 +62,15 @@ public class FriendController {
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		friendService.updateFriendInfo(uuid, friendId, dto);
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/{friendId}")
+	public ResponseEntity<Void> deleteFriendById(@PathVariable String friendId, Authentication authentication){
+		//return ResponseEntity.ok(friendService.updateFriendInfo(authentication.getName(), friendId));
+		//테스트용
+		String uuid = "99d7f4dd55244c54a523032169193f40";
+		friendService.deleteFriendById(uuid, friendId);
 		return ResponseEntity.ok().build();
 	}
 }
