@@ -1,4 +1,4 @@
-package com.galaxy.memorit.friend.domain.entity;
+package com.galaxy.memorit.friend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
