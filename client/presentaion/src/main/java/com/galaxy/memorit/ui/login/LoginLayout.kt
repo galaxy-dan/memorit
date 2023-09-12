@@ -4,10 +4,12 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,11 +22,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.galaxy.memorit.R
@@ -55,7 +61,7 @@ fun Login(
                     top = randHighNum().dp,
                     bottom = randLowNum().dp
                 )
-                .size(randCustomNum(getScreenWidth()/4).dp),
+                .size(randCustomNum(getScreenWidth() / 4).dp),
             contentScale = ContentScale.Fit)
         Image(painter = painterResource(id = R.drawable.yellow_heart), contentDescription = null,
             modifier = Modifier
@@ -66,37 +72,37 @@ fun Login(
                     top = randLowNum().dp,
                     bottom = randHighNum().dp
                 )
-                .size(randCustomNum(getScreenWidth()/4).dp))
+                .size(randCustomNum(getScreenWidth() / 4).dp))
         Image(painter = painterResource(id = R.drawable.red_heart), contentDescription = null,
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(
-                    start = randHighNum().dp,
+                    start = randLowNum().dp,
                     end = randLowNum().dp,
                     top = randLowNum().dp,
                     bottom = randHighNum().dp
                 )
-                .size(randCustomNum(getScreenWidth()/4).dp))
+                .size(randCustomNum(getScreenWidth() / 4).dp))
         Image(painter = painterResource(id = R.drawable.green_heart), contentDescription = null,
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .padding(
-                    start = randHighNum().dp,
+                    start = randLowNum().dp,
                     end = randLowNum().dp,
                     top = randHighNum().dp,
                     bottom = randLowNum().dp
                 )
-                .size(randCustomNum(getScreenWidth()/4).dp))
+                .size(randCustomNum(getScreenWidth() / 4).dp))
         Image(painter = painterResource(id = R.drawable.blue_heart), contentDescription = null,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(
                     start = randLowNum().dp,
-                    end = randHighNum().dp,
+                    end = randLowNum().dp,
                     top = randHighNum().dp,
                     bottom = randLowNum().dp
                 )
-                .size(randCustomNum(getScreenWidth()/4).dp))
+                .size(randCustomNum(getScreenWidth() / 4).dp))
         Image(painter = painterResource(id = R.drawable.navy_heart), contentDescription = null,
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -104,9 +110,9 @@ fun Login(
                     start = randHighNum().dp,
                     end = randLowNum().dp,
                     top = randLowNum().dp,
-                    bottom = randHighNum().dp
+                    bottom = randHighNum().dp + randLowNum().dp
                 )
-                .size(randCustomNum(getScreenWidth()/4).dp))
+                .size(randCustomNum(getScreenWidth() / 4).dp))
         Image(painter = painterResource(id = R.drawable.purple_heart), contentDescription = null,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -114,9 +120,28 @@ fun Login(
                     start = randLowNum().dp,
                     end = randHighNum().dp,
                     top = randLowNum().dp,
-                    bottom = randHighNum().dp
+                    bottom = randLowNum().dp + randLowNum().dp
                 )
-                .size(randCustomNum(getScreenWidth()/4).dp))
+                .size(randCustomNum(getScreenWidth() / 4).dp))
+
+
+        Column(modifier = Modifier.align(Alignment.CenterStart).padding(bottom = 50.dp)) {
+            Text(text = stringResource(id = R.string.app_name) )
+            Text(text = "소중한 사람들과/n주고받은 기억을 기록해보세요.",
+                style = LocalTextStyle.current.merge(
+                    TextStyle(
+                        lineHeight = 2.5.em,
+                        platformStyle = PlatformTextStyle(
+                            includeFontPadding = false
+                        ),
+                        lineHeightStyle = LineHeightStyle(
+                            alignment = LineHeightStyle.Alignment.Center,
+                            trim = LineHeightStyle.Trim.None
+                        )
+                    )
+                )
+            )
+        }
     }
 
 //    Column() {
@@ -200,11 +225,11 @@ fun AutoLogin(autoLogin: () -> Unit)  {
 }
 
 fun randHighNum(): Int {
-    val range = (50..100)
+    val range = (70..100)
     return range.random()
 }
 fun randLowNum(): Int{
-    val range = (0..50)
+    val range = (0..30)
     return range.random()
 }
 fun randCustomNum(num: Int): Int {
