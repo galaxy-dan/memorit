@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">partylog</string>
+    <string name="app_name">Memorit</string>
     <string name="app_getBirth">getBirth</string>
     <string name="app_main">main</string>
     <string name="app_search">search</string>
