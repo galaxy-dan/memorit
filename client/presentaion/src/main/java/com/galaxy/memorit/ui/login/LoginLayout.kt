@@ -26,7 +26,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +33,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.galaxy.memorit.R
 import com.galaxy.memorit.ui.login.stateholder.LoginViewModel
 import com.galaxy.memorit.ui.theme.PartylogTheme
-import com.galaxy.memorit.ui.theme.loginTextColor
 import com.galaxy.memorit.ui.theme.maplestory
 
 @Composable
@@ -139,32 +137,6 @@ fun Login(
                 tint = Color.Unspecified)
         }
     }
-
-//    Column() {
-//        Row {
-//
-//        }
-//        Column(
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            modifier = modifier
-//                .weight(1f)
-//                .fillMaxWidth(),
-//            verticalArrangement = Arrangement.Bottom
-//        ) {
-//            TitleFrame(modifier, font)
-//        }
-//
-//        Column(
-//            modifier = modifier
-//                .weight(1f)
-//                .fillMaxWidth(), verticalArrangement = Arrangement.Bottom,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            LoginFrame(modifier, viewModel, loginCode, navToGetbirth, navToMain)
-//        }
-//
-//    }
-
 }
 
 @Composable
@@ -232,52 +204,6 @@ fun SubTitle2() {
                 .align(Alignment.BottomCenter)
         )
     }
-}
-
-//@Composable
-//fun LoginFrame(modifier: Modifier, viewModel: LoginViewModel, loginCode: Int,
-//               navToGetbirth: () -> Unit, navToMain: () -> Unit) {
-//    val context = LocalContext.current
-//    when(loginCode) {
-//        200 -> navToMain()
-//        201 -> navToGetbirth()
-//        0 -> {}
-//        else -> {
-//            Toast.makeText(LocalContext.current, "에러", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-//    viewModel.resetCode()
-//    Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
-//        contentDescription = "kakao",
-//        modifier = modifier
-//            .padding(bottom = 124.dp)
-//            .clickable {
-//                Util(viewModel = viewModel).kakaoLogin(context)
-//            })
-//    }
-
-
-@Composable
-fun TitleFrame(modifier: Modifier = Modifier, font: FontFamily) {
-    Image(
-        painter = painterResource(id = R.drawable.ic_login_logo), contentDescription = "login",
-        modifier = modifier
-            .padding(bottom = 20.dp)
-            .padding(horizontal = 47.dp)
-            .fillMaxWidth(),
-        contentScale = ContentScale.FillWidth
-    )
-    Text(
-        text = stringResource(id = R.string.first_greeting_line1),
-        textAlign = TextAlign.Center,
-        fontSize = 16.sp,
-        fontFamily = font, fontWeight = FontWeight.Light,
-        color = loginTextColor,
-        modifier = modifier
-            .padding(bottom = 20.dp)
-            .fillMaxWidth()
-    )
-
 }
 
 @Composable
