@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,35 +46,77 @@ fun Login(
     AutoLogin {viewModel.autoLogin(navToMain)}
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Image(painter = painterResource(id = R.drawable.red_heart), contentDescription = null,
-            modifier = Modifier.align(Alignment.Center)
-                .padding(start = randHighNum().dp, end = randLowNum().dp, top = randLowNum().dp, bottom = randHighNum().dp)
-                .size(randHighNum().dp))
         Image(painter = painterResource(id = R.drawable.orange_heart), contentDescription = null,
-            modifier = Modifier.align(Alignment.TopEnd)
-                .padding(start = randLowNum().dp, end = randHighNum().dp, top = randHighNum().dp, bottom = randLowNum().dp)
-                .size(200.dp),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(
+                    start = randLowNum().dp,
+                    end = randHighNum().dp,
+                    top = randHighNum().dp,
+                    bottom = randLowNum().dp
+                )
+                .size(randCustomNum(getScreenWidth()/4).dp),
             contentScale = ContentScale.Fit)
         Image(painter = painterResource(id = R.drawable.yellow_heart), contentDescription = null,
-            modifier = Modifier.align(Alignment.TopStart)
-                .padding(start = randHighNum().dp, end = randLowNum().dp, top = randLowNum().dp, bottom = randHighNum().dp)
-                .size(randHighNum().dp))
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(
+                    start = randHighNum().dp,
+                    end = randLowNum().dp,
+                    top = randLowNum().dp,
+                    bottom = randHighNum().dp
+                )
+                .size(randCustomNum(getScreenWidth()/4).dp))
+        Image(painter = painterResource(id = R.drawable.red_heart), contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(
+                    start = randHighNum().dp,
+                    end = randLowNum().dp,
+                    top = randLowNum().dp,
+                    bottom = randHighNum().dp
+                )
+                .size(randCustomNum(getScreenWidth()/4).dp))
         Image(painter = painterResource(id = R.drawable.green_heart), contentDescription = null,
-            modifier = Modifier.align(Alignment.CenterStart)
-                .padding(start = randHighNum().dp, end = randLowNum().dp, top = randLowNum().dp, bottom = randHighNum().dp)
-                .size(randHighNum().dp))
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(
+                    start = randHighNum().dp,
+                    end = randLowNum().dp,
+                    top = randHighNum().dp,
+                    bottom = randLowNum().dp
+                )
+                .size(randCustomNum(getScreenWidth()/4).dp))
         Image(painter = painterResource(id = R.drawable.blue_heart), contentDescription = null,
-            modifier = Modifier.align(Alignment.CenterEnd)
-                .padding(start = randHighNum().dp, end = randLowNum().dp, top = randLowNum().dp, bottom = randHighNum().dp)
-                .size(randHighNum().dp))
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(
+                    start = randLowNum().dp,
+                    end = randHighNum().dp,
+                    top = randHighNum().dp,
+                    bottom = randLowNum().dp
+                )
+                .size(randCustomNum(getScreenWidth()/4).dp))
         Image(painter = painterResource(id = R.drawable.navy_heart), contentDescription = null,
-            modifier = Modifier.align(Alignment.BottomStart)
-                .padding(start = randHighNum().dp, end = randLowNum().dp, top = randLowNum().dp, bottom = randHighNum().dp)
-                .size(randHighNum().dp))
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    start = randHighNum().dp,
+                    end = randLowNum().dp,
+                    top = randLowNum().dp,
+                    bottom = randHighNum().dp
+                )
+                .size(randCustomNum(getScreenWidth()/4).dp))
         Image(painter = painterResource(id = R.drawable.purple_heart), contentDescription = null,
-            modifier = Modifier.align(Alignment.BottomEnd)
-                .padding(start = randHighNum().dp, end = randLowNum().dp, top = randLowNum().dp, bottom = randHighNum().dp)
-                .size(randHighNum().dp))
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(
+                    start = randLowNum().dp,
+                    end = randHighNum().dp,
+                    top = randLowNum().dp,
+                    bottom = randHighNum().dp
+                )
+                .size(randCustomNum(getScreenWidth()/4).dp))
     }
 
 //    Column() {
@@ -163,6 +206,14 @@ fun randHighNum(): Int {
 fun randLowNum(): Int{
     val range = (0..50)
     return range.random()
+}
+fun randCustomNum(num: Int): Int {
+    val range = (50..num)
+    return range.random()
+}
+@Composable
+fun getScreenWidth(): Int {
+    return LocalConfiguration.current.screenWidthDp
 }
 
 @Composable
