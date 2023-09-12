@@ -130,12 +130,13 @@ fun Login(
             SubTitle2()
         }
 
-        IconButton(onClick = { } ,
+        IconButton(onClick = navToGetbirth ,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 150.dp)) {
+                .padding(bottom = 150.dp).fillMaxWidth()) {
             Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
-                contentDescription = null)
+                contentDescription = null,
+                tint = Color.Unspecified)
         }
     }
 
