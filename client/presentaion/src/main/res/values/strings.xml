@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">partylog</string>
+    <string name="app_name">Memorit</string>
+    <string name="app_name_kor">메모릿</string>
     <string name="app_getBirth">getBirth</string>
     <string name="app_main">main</string>
     <string name="app_search">search</string>
@@ -8,7 +9,8 @@
     <string name="app_live">live</string>
 
 
-    <string name="first_greeting">친구들과 같이 생일을 축하해요</string>
+    <string name="first_greeting_line1">소중한 사람들과</string>
+    <string name="first_greeting_line2">주고받은 마음을 기록해보세요</string>
 
 
     <string name="getbirth_title">생일을 알려주세요</string>
