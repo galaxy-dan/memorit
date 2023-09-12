@@ -1,5 +1,7 @@
 package com.galaxy.memorit.friend.dto.response;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,4 +20,5 @@ public class FriendInfoDTO {
 	private int sentCount;
 	private int receivedMoney;
 	private int sentMoney;
+	private LocalDate recentDate;
 }
