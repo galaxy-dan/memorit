@@ -15,12 +15,16 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +36,7 @@ import com.galaxy.domain.model.getPhone.req.PhoneData
 import com.galaxy.memorit.R
 import com.galaxy.memorit.ui.getbirth.stateholder.PickerStateHolder
 import com.galaxy.memorit.ui.theme.checkedColor
+import com.galaxy.memorit.ui.theme.fabColor
 import com.galaxy.memorit.ui.theme.maplestory
 import com.galaxy.memorit.ui.theme.uncheckedColor
 import com.orhanobut.logger.Logger
@@ -53,6 +58,15 @@ fun Getbirth(modifier: Modifier = Modifier.fillMaxSize(), viewModel: GetbirthVie
 
     Box(modifier = Modifier.fillMaxWidth()) {
         PhoneList(viewModel.phoneData, viewModel)
+        ExtendedFloatingActionButton(onClick = {},
+            shape = FloatingActionButtonDefaults.extendedFabShape,
+            elevation = FloatingActionButtonDefaults.elevation(),
+            modifier = Modifier.align(Alignment.BottomEnd)
+                .padding(bottom = 35.dp, end = 7.dp),
+            containerColor = fabColor) {
+            Icon(painter = painterResource(id = R.drawable.ic_getcontact_next), contentDescription = null)
+            Text(text = "선택완료")
+        }
     }
 }
 
@@ -81,7 +95,7 @@ fun PhoneList(data: List<PhoneData>, viewModel: GetbirthViewmodel) {
         modifier = Modifier
             .fillMaxWidth()
 //            .horizontalScroll(rememberScrollState())
-            .padding(start = 30.dp, end = 30.dp, top = 10.dp, bottom = 30.dp)
+            .padding(start = 30.dp, end = 30.dp, top = 10.dp)
     ) {
         itemsIndexed(data) { idx, item ->
             RowItemCard(item, idx, viewModel)
