@@ -1,5 +1,6 @@
 package com.galaxy.memorit.ui.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,17 +8,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,34 +29,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.orhanobut.logger.Logger
 import com.galaxy.memorit.R
 import com.galaxy.memorit.ui.main.stateholder.ChipState
 import com.galaxy.memorit.ui.theme.maplestory
 import com.galaxy.memorit.ui.theme.themecolor
+import com.google.accompanist.web.WebView
+import com.google.accompanist.web.rememberWebViewNavigator
+import com.google.accompanist.web.rememberWebViewState
 
 @Composable
 fun MainLayout(modifier: Modifier = Modifier, viewmodel: MainViewmodel = hiltViewModel()) {
-    Column(modifier = modifier
-        .fillMaxSize()
-        .padding(horizontal = 16.dp)
-        .padding(top = 10.dp)) {
-        Column(modifier = modifier.weight(3f)) {
-            Row(modifier = Modifier.weight(1f)) {
-                Header()
-            }
-            Row(modifier = Modifier.weight(3f)) {
-                Info()
-            }
-            Row(modifier = Modifier.weight(1f)) {
-                InfoButtons()
-            }
 
-            Divider(modifier = Modifier.height(2.dp))
+
+//    val url = "www.naver.com"
+    val url = "http://moku--moku.vercel.app/"
+    val webViewNavigator = rememberWebViewNavigator()
+    val webViewState = rememberWebViewState(url = url)
+    WebView(state = webViewState,
+        navigator = webViewNavigator)
+    BackHandler {
+        if (webViewNavigator.canGoBack) {
+            webViewNavigator.navigateBack()
         }
-        Column(modifier = modifier.weight(5f)) {
+        else {
+
         }
     }
+
+
+
+
+//    Column(modifier = modifier
+//        .fillMaxSize()
+//        .padding(horizontal = 16.dp)
+//        .padding(top = 10.dp)) {
+//        Column(modifier = modifier.weight(3f)) {
+//            Row(modifier = Modifier.weight(1f)) {
+//                Header()
+//            }
+//            Row(modifier = Modifier.weight(3f)) {
+//                Info()
+//            }
+//            Row(modifier = Modifier.weight(1f)) {
+//                InfoButtons()
+//            }
+//
+//            Divider(modifier = Modifier.height(2.dp))
+//        }
+//        Column(modifier = modifier.weight(5f)) {
+//        }
+//    }
 }
 
 @Composable
