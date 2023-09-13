@@ -18,6 +18,7 @@ import com.galaxy.memorit.friend.dto.request.FriendMultiDeleteReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
+import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -82,5 +83,13 @@ public class FriendController {
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		friendService.deleteFriendsByList(uuid, dto);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/rank")
+	public ResponseEntity<FriendRankResDTO> getFriendsRank(Authentication authentication){
+		//return ResponseEntity.ok(friendService.getFriendsRank(authentication.getName(), friendId));
+		//테스트용
+		String uuid = "99d7f4dd55244c54a523032169193f40";
+		return ResponseEntity.ok(friendService.getFriendsRank(uuid));
 	}
 }
