@@ -44,32 +44,37 @@ fun Getbirth(modifier: Modifier = Modifier, viewModel: GetbirthViewmodel = hiltV
     LaunchedEffect(key1 = true) {
         Logger.d(getContactsString(context).toString())
     }
-    Column(
-        modifier
-            .background(Color.White)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(
-            modifier
-                .weight(2f)
-                .padding(bottom = 90.dp), verticalAlignment = Alignment.Bottom) {
-            Title()
-        }
-        Row(
-            modifier
-                .weight(1f)
-                .padding(horizontal = 80.dp)
-                .fillMaxWidth()) {
-            Picker(stateHolder = stateHolder)
-        }
-        Row(
-            modifier
-                .weight(2f)
-                .padding(bottom = 70.dp)
-                .padding(horizontal = 55.dp), verticalAlignment = Alignment.Bottom) {
-            Button(navToMain = navToMain, viewModel = viewModel, stateHolder = stateHolder)
-        }
+
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        PhoneList(viewModel.phoneData, viewModel)
     }
+//    Column(
+//        modifier
+//            .background(Color.White)
+//            .fillMaxSize(),
+//        horizontalAlignment = Alignment.CenterHorizontally) {
+//        Row(
+//            modifier
+//                .weight(2f)
+//                .padding(bottom = 90.dp), verticalAlignment = Alignment.Bottom) {
+//            Title()
+//        }
+//        Row(
+//            modifier
+//                .weight(1f)
+//                .padding(horizontal = 80.dp)
+//                .fillMaxWidth()) {
+//            Picker(stateHolder = stateHolder)
+//        }
+//        Row(
+//            modifier
+//                .weight(2f)
+//                .padding(bottom = 70.dp)
+//                .padding(horizontal = 55.dp), verticalAlignment = Alignment.Bottom) {
+//            Button(navToMain = navToMain, viewModel = viewModel, stateHolder = stateHolder)
+//        }
+//    }
 }
 
 @Composable
