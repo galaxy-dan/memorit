@@ -16,6 +16,7 @@ import com.galaxy.memorit.friend.Infrastructure.persistence.mapper.FriendMapper;
 import com.galaxy.memorit.friend.application.service.FriendService;
 import com.galaxy.memorit.friend.domain.entity.Friend;
 import com.galaxy.memorit.friend.dto.request.FriendMultiDeleteReqDTO;
+import com.galaxy.memorit.friend.dto.request.FriendRegisterFromAddressReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
@@ -41,6 +42,20 @@ public class FriendServiceImpl implements FriendService {
 		//String 형태인 userId를 UUID로 변환하여 저장
 		//friendId에 새로운 UUID 생성하여 저장
 		friendRepository.save(friendMapper.createEntity(friend));
+	}
+
+	@Override
+	public void registerFriendsFromAddress(String userId, FriendRegisterFromAddressReqDTO dto) {
+		List<FriendEntity> list = dto.getNameList().stream()
+				.map(name -> {
+					Friend friend = Friend.builder()
+						.userId(userId)
+						.name(name)
+						.build();
+					return friendMapper.createEntity(friend);
+				})
+				.collect(Collectors.toList());
+		friendRepository.saveAll(list);
 	}
 
 	@Transactional(readOnly = true)
