@@ -1,6 +1,7 @@
 package com.galaxy.memorit.friend.application.service.implement;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRep
 import com.galaxy.memorit.friend.Infrastructure.persistence.mapper.FriendMapper;
 import com.galaxy.memorit.friend.application.service.FriendService;
 import com.galaxy.memorit.friend.domain.entity.Friend;
+import com.galaxy.memorit.friend.dto.request.FriendMultiDeleteReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
@@ -66,6 +68,24 @@ public class FriendServiceImpl implements FriendService {
 		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
 			.orElseThrow();
 		entity.updateInfo(dto.getName(), dto.getCategory());
+	}
+
+	@Transactional
+	@Override
+	public void deleteFriendById(String userId, String friendId) {
+		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
+			.orElseThrow();
+		friendRepository.delete(entity);
+	}
+
+	@Transactional
+	@Override
+	public void deleteFriendsByList(String userId, FriendMultiDeleteReqDTO dto) {
+		//요청 받은 string list를 uuid list로 변환
+		List<UUID> uuidList = dto.getIdList().stream()
+				.map(friendMapper::stringToUUID)
+				.collect(Collectors.toList());
+		friendRepository.deleteAllByFriendsList(friendMapper.stringToUUID(userId), uuidList);
 	}
 
 }
