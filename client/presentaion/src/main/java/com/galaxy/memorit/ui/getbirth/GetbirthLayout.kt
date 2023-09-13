@@ -58,7 +58,7 @@ fun Getbirth(modifier: Modifier = Modifier.fillMaxSize(), viewModel: GetbirthVie
 
     Box(modifier = Modifier.fillMaxWidth()) {
         PhoneList(viewModel.phoneData, viewModel)
-        ExtendedFloatingActionButton(onClick = {},
+        ExtendedFloatingActionButton(onClick = navToMain,
             shape = FloatingActionButtonDefaults.extendedFabShape,
             elevation = FloatingActionButtonDefaults.elevation(),
             modifier = Modifier.align(Alignment.BottomEnd)
