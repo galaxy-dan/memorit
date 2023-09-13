@@ -2,6 +2,7 @@ package com.galaxy.memorit.ui.getbirth
 
 import android.content.Context
 import android.provider.ContactsContract
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -87,9 +88,15 @@ fun PhoneList(data: List<PhoneData>, viewModel: GetbirthViewmodel) {
 @Composable
 fun RowItemCard(data: PhoneData, idx: Int, viewModel: GetbirthViewmodel) {
 
+
+
+
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clickable {
+                    viewModel.setPhoneDataChecked(idx, data.checked.not())
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -98,7 +105,8 @@ fun RowItemCard(data: PhoneData, idx: Int, viewModel: GetbirthViewmodel) {
                 Logger.d(it)
                 Logger.d(data)
                 viewModel.setPhoneDataChecked(idx, it)
-            })
+            }
+            )
         }
 }
 
