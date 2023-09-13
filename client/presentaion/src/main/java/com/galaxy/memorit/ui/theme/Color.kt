@@ -14,3 +14,7 @@ val loginTextColor = Color(0xFF9A4059)
 
 val themecolor = Color(0xFFFBB3C2)
 val bottomNavColor = Color(0xFFF7EBEC)
+
+
+val checkedColor = Color(0xFFB81D27)
+val uncheckedColor = Color(0xFF534342)
