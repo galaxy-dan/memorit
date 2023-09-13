@@ -18,3 +18,4 @@ val bottomNavColor = Color(0xFFF7EBEC)
 
 val checkedColor = Color(0xFFB81D27)
 val uncheckedColor = Color(0xFF534342)
+val fabColor = Color(0xFFFFDAD7)
