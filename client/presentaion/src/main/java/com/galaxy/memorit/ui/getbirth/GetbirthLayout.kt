@@ -37,12 +37,16 @@ import com.orhanobut.logger.Logger
 
 
 @Composable
-fun Getbirth(modifier: Modifier = Modifier, viewModel: GetbirthViewmodel = hiltViewModel(),
+fun Getbirth(modifier: Modifier = Modifier.fillMaxSize(), viewModel: GetbirthViewmodel = hiltViewModel(),
              navToMain: () -> Unit = {}) {
     val stateHolder = PickerStateHolder()
     val context = LocalContext.current
+
+
     LaunchedEffect(key1 = true) {
-        Logger.d(getContactsString(context).toString())
+        val data = getContactsString(context)
+        Logger.d(data)
+        viewModel.setPhoneData(data)
     }
 
 
@@ -121,7 +125,6 @@ fun Picker(modifier: Modifier = Modifier, stateHolder: PickerStateHolder) {
             modifier = modifier)
     }
 }
-
 @Composable
 fun Button(modifier: Modifier = Modifier, navToMain: () -> Unit, viewModel: GetbirthViewmodel, stateHolder: PickerStateHolder) {
     Card( modifier = modifier
@@ -142,6 +145,31 @@ fun Button(modifier: Modifier = Modifier, navToMain: () -> Unit, viewModel: Getb
         }
     }
 }
+@Composable
+fun PhoneList(data: List<PhoneData>, viewModel: GetbirthViewmodel) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .horizontalScroll(rememberScrollState())
+            .padding(start = 30.dp, end = 30.dp, top = 10.dp, bottom = 30.dp)
+    ) {
+        itemsIndexed(data) { idx, item ->
+            RowItemCard(item, idx, viewModel)
+        }
+    }
+}
+
+@Composable
+fun RowItemCard(data: PhoneData, idx: Int, viewModel: GetbirthViewmodel) {
+            Row(
+                modifier = Modifier.fillMaxSize()) {
+                Text(text = data.name)
+                Checkbox(checked = viewModel.getPhoneData(idx).checked, onCheckedChange = {
+                    Logger.d(it)
+                    Logger.d(data)
+                    viewModel.setPhoneDataChecked(idx, it)})
+            }
+    }
 
 
 
