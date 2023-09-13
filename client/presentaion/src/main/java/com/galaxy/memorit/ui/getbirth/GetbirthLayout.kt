@@ -139,8 +139,9 @@ fun Button(modifier: Modifier = Modifier, navToMain: () -> Unit, viewModel: Getb
 }
 
 
-fun getContactsString(context: Context): ArrayList<String>? {
-    val datas = ArrayList<String>()
+
+fun getContactsString(context: Context): ArrayList<PhoneData>? {
+    val datas = ArrayList<PhoneData>()
     val resolver = context.contentResolver
     val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
     val projection =
@@ -158,7 +159,8 @@ fun getContactsString(context: Context): ArrayList<String>? {
             //        String id = cursor.getString(idIndex);
             val name = cursor.getString(nameIndex)
             val number = cursor.getString(numberIndex)
-            Logger.d("$name + $number")
+
+            datas.add(PhoneData(name, false))
         }
     }
 
