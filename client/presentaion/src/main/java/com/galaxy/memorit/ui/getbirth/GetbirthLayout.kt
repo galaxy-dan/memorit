@@ -2,43 +2,33 @@ package com.galaxy.memorit.ui.getbirth
 
 import android.content.Context
 import android.provider.ContactsContract
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.chargemap.compose.numberpicker.NumberPicker
 import com.galaxy.domain.model.getPhone.req.PhoneData
 import com.galaxy.memorit.R
 import com.galaxy.memorit.ui.getbirth.stateholder.PickerStateHolder
 import com.galaxy.memorit.ui.theme.maplestory
-import com.galaxy.memorit.ui.theme.themecolor
 import com.orhanobut.logger.Logger
 
 
@@ -56,35 +46,9 @@ fun Getbirth(modifier: Modifier = Modifier.fillMaxSize(), viewModel: GetbirthVie
     }
 
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxWidth()) {
         PhoneList(viewModel.phoneData, viewModel)
     }
-//    Column(
-//        modifier
-//            .background(Color.White)
-//            .fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally) {
-//        Row(
-//            modifier
-//                .weight(2f)
-//                .padding(bottom = 90.dp), verticalAlignment = Alignment.Bottom) {
-//            Title()
-//        }
-//        Row(
-//            modifier
-//                .weight(1f)
-//                .padding(horizontal = 80.dp)
-//                .fillMaxWidth()) {
-//            Picker(stateHolder = stateHolder)
-//        }
-//        Row(
-//            modifier
-//                .weight(2f)
-//                .padding(bottom = 70.dp)
-//                .padding(horizontal = 55.dp), verticalAlignment = Alignment.Bottom) {
-//            Button(navToMain = navToMain, viewModel = viewModel, stateHolder = stateHolder)
-//        }
-//    }
 }
 
 @Composable
@@ -107,55 +71,11 @@ fun Title(modifier: Modifier = Modifier) {
     }
 }
 @Composable
-fun Picker(modifier: Modifier = Modifier, stateHolder: PickerStateHolder) {
-    Logger.d("pickercomp")
-    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        NumberPicker(value = stateHolder.year,
-            onValueChange = { stateHolder.year = it },
-            range = stateHolder.getMinYear()..stateHolder.getMaxYear(),
-            dividersColor = Color.Black,
-            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory),
-            modifier = modifier)
-        NumberPicker(value = stateHolder.month,
-            onValueChange = {stateHolder.month = it},
-            range = 1..12,
-            dividersColor = Color.Black,
-            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory),
-            modifier = modifier)
-        NumberPicker(value = stateHolder.day,
-            onValueChange = {stateHolder.day = it},
-            range = 1..stateHolder.getMaxday(),
-            dividersColor = Color.Black,
-            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory),
-            modifier = modifier)
-    }
-}
-@Composable
-fun Button(modifier: Modifier = Modifier, navToMain: () -> Unit, viewModel: GetbirthViewmodel, stateHolder: PickerStateHolder) {
-    Card( modifier = modifier
-        .fillMaxWidth()
-        .height(45.dp),
-        shape = RoundedCornerShape(10.dp)
-    ) {
-        TextButton(onClick = { viewModel.goNext(stateHolder.year, stateHolder.month, stateHolder.day) { navToMain() } },
-            modifier
-                .fillMaxSize()
-                .background(themecolor)) {
-            Text(text = stringResource(id = R.string.getbirth_continue),
-                color = Color.White,
-                fontFamily = maplestory,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Light
-            )
-        }
-    }
-}
-@Composable
 fun PhoneList(data: List<PhoneData>, viewModel: GetbirthViewmodel) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .horizontalScroll(rememberScrollState())
+            .fillMaxWidth()
+//            .horizontalScroll(rememberScrollState())
             .padding(start = 30.dp, end = 30.dp, top = 10.dp, bottom = 30.dp)
     ) {
         itemsIndexed(data) { idx, item ->
@@ -166,15 +86,21 @@ fun PhoneList(data: List<PhoneData>, viewModel: GetbirthViewmodel) {
 
 @Composable
 fun RowItemCard(data: PhoneData, idx: Int, viewModel: GetbirthViewmodel) {
-            Row(
-                modifier = Modifier.fillMaxSize()) {
-                Text(text = data.name)
-                Checkbox(checked = viewModel.getPhoneData(idx).checked, onCheckedChange = {
-                    Logger.d(it)
-                    Logger.d(data)
-                    viewModel.setPhoneDataChecked(idx, it)})
-            }
-    }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = data.name)
+            Checkbox(checked = viewModel.getPhoneData(idx).checked, onCheckedChange = {
+                Logger.d(it)
+                Logger.d(data)
+                viewModel.setPhoneDataChecked(idx, it)
+            })
+        }
+}
 
 
 
