@@ -3,6 +3,7 @@ import com.galaxy.memorit.friend.dto.request.FriendMultiDeleteReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
+import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
 public interface FriendService {
@@ -12,4 +13,5 @@ public interface FriendService {
 	void updateFriendInfo(String userId, String friendId, FriendUpdateReqDTO dto);
 	void deleteFriendById(String userId, String friendId);
 	void deleteFriendsByList(String userId, FriendMultiDeleteReqDTO dto);
+	FriendRankResDTO getFriendsRank(String userId);
 }
