@@ -34,7 +34,7 @@ public class FriendEntity extends BaseEntity {
 	private UUID friendId;
 	@Column(name = "name", length = 40, nullable = false)
 	private String name;
-	@Column(name = "category", length = 256, nullable = false)
+	@Column(name = "category", length = 256)
 	private String category;
 	@Column(name = "received_count")
 	@ColumnDefault("0")
