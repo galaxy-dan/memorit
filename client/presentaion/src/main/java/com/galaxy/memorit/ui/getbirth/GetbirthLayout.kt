@@ -14,10 +14,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,7 +31,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.galaxy.domain.model.getPhone.req.PhoneData
 import com.galaxy.memorit.R
 import com.galaxy.memorit.ui.getbirth.stateholder.PickerStateHolder
+import com.galaxy.memorit.ui.theme.checkedColor
 import com.galaxy.memorit.ui.theme.maplestory
+import com.galaxy.memorit.ui.theme.uncheckedColor
 import com.orhanobut.logger.Logger
 
 
@@ -105,7 +109,12 @@ fun RowItemCard(data: PhoneData, idx: Int, viewModel: GetbirthViewmodel) {
                 Logger.d(it)
                 Logger.d(data)
                 viewModel.setPhoneDataChecked(idx, it)
-            }
+            },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = checkedColor,
+                    uncheckedColor = uncheckedColor,
+                    checkmarkColor = Color.White
+                )
             )
         }
 }
