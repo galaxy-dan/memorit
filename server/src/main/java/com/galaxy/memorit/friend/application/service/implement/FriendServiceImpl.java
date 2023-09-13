@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +16,11 @@ import com.galaxy.memorit.friend.Infrastructure.persistence.mapper.FriendMapper;
 import com.galaxy.memorit.friend.application.service.FriendService;
 import com.galaxy.memorit.friend.domain.entity.Friend;
 import com.galaxy.memorit.friend.dto.request.FriendMultiDeleteReqDTO;
+import com.galaxy.memorit.friend.dto.request.FriendRegisterFromAddressReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
+import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +42,20 @@ public class FriendServiceImpl implements FriendService {
 		//String 형태인 userId를 UUID로 변환하여 저장
 		//friendId에 새로운 UUID 생성하여 저장
 		friendRepository.save(friendMapper.createEntity(friend));
+	}
+
+	@Override
+	public void registerFriendsFromAddress(String userId, FriendRegisterFromAddressReqDTO dto) {
+		List<FriendEntity> list = dto.getNameList().stream()
+				.map(name -> {
+					Friend friend = Friend.builder()
+						.userId(userId)
+						.name(name)
+						.build();
+					return friendMapper.createEntity(friend);
+				})
+				.collect(Collectors.toList());
+		friendRepository.saveAll(list);
 	}
 
 	@Transactional(readOnly = true)
@@ -86,6 +104,42 @@ public class FriendServiceImpl implements FriendService {
 				.map(friendMapper::stringToUUID)
 				.collect(Collectors.toList());
 		friendRepository.deleteAllByFriendsList(friendMapper.stringToUUID(userId), uuidList);
+	}
+
+	@Override
+	public FriendRankResDTO getFriendsRank(String userId) {
+		Pageable pageable = PageRequest.of(0,1);
+		List<FriendEntity> mostReceivedCountList = friendRepository.findFirstByReceivedCount(friendMapper.stringToUUID(userId), pageable);
+		List<FriendEntity> mostSentCountList = friendRepository.findFirstBySentCount(friendMapper.stringToUUID(userId), pageable);
+		List<FriendEntity> mostReceivedMoneyList = friendRepository.findFirstByReceivedMoney(friendMapper.stringToUUID(userId), pageable);
+		List<FriendEntity> mostSentMoneyList = friendRepository.findFirstBySentMoney(friendMapper.stringToUUID(userId), pageable);
+		FriendEntity mostReceivedCount, mostSentCount, mostReceivedMoney, mostSentMoney;
+		if(mostReceivedCountList.isEmpty()){
+			mostReceivedCount = null;
+		}else{
+			mostReceivedCount = mostReceivedCountList.get(0);
+		}
+		if(mostSentCountList.isEmpty()){
+			mostSentCount = null;
+		}else{
+			mostSentCount = mostSentCountList.get(0);
+		}
+		if(mostReceivedMoneyList.isEmpty()){
+			mostReceivedMoney = null;
+		}else{
+			mostReceivedMoney = mostReceivedMoneyList.get(0);
+		}
+		if(mostSentMoneyList.isEmpty()){
+			mostSentMoney = null;
+		}else{
+			mostSentMoney = mostSentMoneyList.get(0);
+		}
+		return new FriendRankResDTO(
+			friendMapper.toInfoDTO(mostReceivedCount),
+			friendMapper.toInfoDTO(mostSentCount),
+			friendMapper.toInfoDTO(mostReceivedMoney),
+			friendMapper.toInfoDTO(mostSentMoney)
+		);
 	}
 
 }
