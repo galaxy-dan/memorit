@@ -44,6 +44,7 @@ public class FriendServiceImpl implements FriendService {
 		friendRepository.save(friendMapper.createEntity(friend));
 	}
 
+	@Transactional
 	@Override
 	public void registerFriendsFromAddress(String userId, FriendRegisterFromAddressReqDTO dto) {
 		List<FriendEntity> list = dto.getNameList().stream()
@@ -109,31 +110,19 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public FriendRankResDTO getFriendsRank(String userId) {
 		Pageable pageable = PageRequest.of(0,1);
-		List<FriendEntity> mostReceivedCountList = friendRepository.findFirstByReceivedCount(friendMapper.stringToUUID(userId), pageable);
-		List<FriendEntity> mostSentCountList = friendRepository.findFirstBySentCount(friendMapper.stringToUUID(userId), pageable);
-		List<FriendEntity> mostReceivedMoneyList = friendRepository.findFirstByReceivedMoney(friendMapper.stringToUUID(userId), pageable);
-		List<FriendEntity> mostSentMoneyList = friendRepository.findFirstBySentMoney(friendMapper.stringToUUID(userId), pageable);
+		UUID userUUID = friendMapper.stringToUUID(userId);
+
+		List<FriendEntity> mostReceivedCountList = friendRepository.findFirstByReceivedCount(userUUID, pageable);
+		List<FriendEntity> mostSentCountList = friendRepository.findFirstBySentCount(userUUID, pageable);
+		List<FriendEntity> mostReceivedMoneyList = friendRepository.findFirstByReceivedMoney(userUUID, pageable);
+		List<FriendEntity> mostSentMoneyList = friendRepository.findFirstBySentMoney(userUUID, pageable);
+
 		FriendEntity mostReceivedCount, mostSentCount, mostReceivedMoney, mostSentMoney;
-		if(mostReceivedCountList.isEmpty()){
-			mostReceivedCount = null;
-		}else{
-			mostReceivedCount = mostReceivedCountList.get(0);
-		}
-		if(mostSentCountList.isEmpty()){
-			mostSentCount = null;
-		}else{
-			mostSentCount = mostSentCountList.get(0);
-		}
-		if(mostReceivedMoneyList.isEmpty()){
-			mostReceivedMoney = null;
-		}else{
-			mostReceivedMoney = mostReceivedMoneyList.get(0);
-		}
-		if(mostSentMoneyList.isEmpty()){
-			mostSentMoney = null;
-		}else{
-			mostSentMoney = mostSentMoneyList.get(0);
-		}
+		mostReceivedCount = mostReceivedCountList.isEmpty() ? null : mostReceivedCountList.get(0);
+		mostSentCount = mostSentCountList.isEmpty() ? null : mostSentCountList.get(0);
+		mostReceivedMoney = mostReceivedMoneyList.isEmpty() ? null : mostReceivedMoneyList.get(0);
+		mostSentMoney = mostSentMoneyList.isEmpty() ? null : mostSentMoneyList.get(0);
+
 		return new FriendRankResDTO(
 			friendMapper.toInfoDTO(mostReceivedCount),
 			friendMapper.toInfoDTO(mostSentCount),
