@@ -8,11 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendKey;
 
-public interface FriendRepository extends JpaRepository<FriendEntity, FriendKey> {
+@Repository
+public interface FriendRepository extends JpaRepository<FriendEntity, FriendKey>, FriendDynamicQueryRepository{
 	List<FriendEntity> findAllByUserId(UUID userId);
 
 	@Modifying
