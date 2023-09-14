@@ -18,6 +18,7 @@ import com.galaxy.memorit.friend.domain.entity.Friend;
 import com.galaxy.memorit.friend.dto.request.FriendMultiDeleteReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterFromAddressReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendRegisterReqDTO;
+import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
@@ -129,6 +130,16 @@ public class FriendServiceImpl implements FriendService {
 			friendMapper.toInfoDTO(mostReceivedMoney),
 			friendMapper.toInfoDTO(mostSentMoney)
 		);
+	}
+
+	@Override
+	public FriendsListResDTO searchFriends(String userId, FriendSearchReqDTO dto) {
+		List<FriendEntity> entityList = friendRepository.findFriendsByDTO(friendMapper.stringToUUID(userId), dto);
+
+		List<FriendInfoDTO> infoList = entityList.stream()
+			.map(friendMapper::toInfoDTO)
+			.collect(Collectors.toList());
+		return new FriendsListResDTO(infoList);
 	}
 
 }
