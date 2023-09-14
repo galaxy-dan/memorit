@@ -46,11 +46,14 @@ public class AuthTokenProvider {
                 .collect(Collectors.toList());
 
 //            User principal = new User(claims.getSubject())
+            log.debug("claims subject := [{}]", claims.getSubject());
+            User principal = new User(claims.getSubject(), "", authorities);
 
-            return new UsernamePasswordAuthenticationToken(authToken, authorities);
+            return new UsernamePasswordAuthenticationToken(principal, authToken, authorities);
 
         } else {
-            return null;
+            log.info("Invalid Token");
+//            return null;
         }
 
 

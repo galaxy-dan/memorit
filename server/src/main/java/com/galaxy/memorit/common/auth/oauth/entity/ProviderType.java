@@ -1,5 +1,8 @@
 package com.galaxy.memorit.common.auth.oauth.entity;
 
-public class ProviderType {
+import lombok.Getter;
 
+@Getter
+public enum ProviderType {
+    KAKAO;
 }
