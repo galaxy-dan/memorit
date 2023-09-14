@@ -44,8 +44,9 @@ spring:
       maximum-pool-size: 148
       max-lifetime: 60000
 
+
   jpa:
-    #    show-sql: true
+    show-sql: true
     hibernate:
       ddl-auto: update
       naming:
@@ -53,8 +54,12 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        #        format_sql: true
+        format_sql: true
         dialect: org.hibernate.dialect.MariaDBDialect
+        order_updates: true
+        order_inserts: true
+        jdbc:
+          batch_size: 100
 
   jwt:
     header: Authorization
