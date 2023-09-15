@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -29,7 +30,7 @@ public class FriendDynamicQueryRepositoryImpl implements FriendDynamicQueryRepos
 				eqCategory(dto.getCategory())
 			)
 			.offset(offset)
-			.orderBy(friendEntity.name.asc())
+			.orderBy(orderSpecifier(dto.getSortBy()))
 			.limit(dataSize)
 			.fetch();
 	}
@@ -44,5 +45,27 @@ public class FriendDynamicQueryRepositoryImpl implements FriendDynamicQueryRepos
 
 	public BooleanExpression eqCategory(String category){
 		return category == null ? null : friendEntity.category.eq(category);
+	}
+
+	public OrderSpecifier<?> orderSpecifier(String sortBy){
+		if(sortBy == null){
+			sortBy = "name";
+		}
+		switch (sortBy){
+			case "recentRegister":
+				return friendEntity.createdAt.desc();
+			case "lastRegister":
+				return friendEntity.createdAt.asc();
+			case "receivedCount":
+				return friendEntity.receivedCount.desc();
+			case "sentCount":
+				return friendEntity.sentCount.desc();
+			case "receivedMoney":
+				return friendEntity.receivedMoney.desc();
+			case "sentMoney":
+				return friendEntity.sentMoney.desc();
+			default:
+				return friendEntity.name.asc();
+		}
 	}
 }
