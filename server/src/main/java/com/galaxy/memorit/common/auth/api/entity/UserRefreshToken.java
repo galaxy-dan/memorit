@@ -11,12 +11,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "user_credential")
 public class UserRefreshToken {
 
+    @Id
     @Column(name = "user_id")
     private long userId;
 
@@ -26,9 +27,9 @@ public class UserRefreshToken {
     @Column(name = "refresh_token")
     private String refreshToken;
 
-    public UserRefreshToken(long userId, String email, String refreshToken) {
-        this.userId = userId;
-        this.email = email;
-        this.refreshToken = refreshToken;
-    }
+//    public UserRefreshToken(long userId, String email, String refreshToken) {
+//        this.userId = userId;
+//        this.email = email;
+//        this.refreshToken = refreshToken;
+//    }
 }
