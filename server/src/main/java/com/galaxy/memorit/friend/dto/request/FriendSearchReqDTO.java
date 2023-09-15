@@ -15,4 +15,5 @@ public class FriendSearchReqDTO {
 	private String category;
 	private Integer dataSize;
 	private Integer pageNumber;
+	private String sortBy;
 }
