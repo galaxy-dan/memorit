@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import RecoilProvider from '@/context/RecoilProvider';
+import Footer from '@/components/Footer';
 
 const spokaFont = localFont({
   src: [
@@ -41,6 +42,7 @@ export default function RootLayout({
           <RecoilProvider>
             <div className="max-w-md min-h-screen mx-auto">
               <main>{children}</main>
+              <Footer />
             </div>
           </RecoilProvider>
         </QueryProvider>
