@@ -2,6 +2,7 @@ package com.galaxy.memorit.friend.presentation.controller;
 
 import java.net.URI;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
+import com.galaxy.memorit.friend.dto.response.FriendRegisterResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -46,7 +48,7 @@ public class FriendController {
 	}
 
 	@PostMapping("/select")
-	public ResponseEntity<Void> registerFriendsFromAddress(@RequestBody FriendRegisterFromAddressReqDTO dto, Authentication authentication){
+	public ResponseEntity<FriendRegisterResDTO> registerFriendsFromAddress(@RequestBody FriendRegisterFromAddressReqDTO dto, Authentication authentication){
 		//이게 찐
 		//friendService.registerFriendsFromAddress(authentication.getName(), dto);
 
@@ -54,7 +56,7 @@ public class FriendController {
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		friendService.registerFriendsFromAddress(uuid, dto);
 
-		return ResponseEntity.created(URI.create("")).build();
+		return new ResponseEntity<>(new FriendRegisterResDTO(201), HttpStatus.CREATED);
 	}
 
 	@GetMapping
