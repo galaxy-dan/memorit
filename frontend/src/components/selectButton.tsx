@@ -1,23 +1,26 @@
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
+import { innerShadow } from '../styles/inputCSS';
 
 type Props = {
   isSelected: boolean;
   position: string;
   text: string;
-  selectedBgColor?: string | undefined;
   onClickFunction?: Function;
 };
 
-const cssCommon = 'flex justify-center items-center border-stone-400 py-2 ';
+const cssCommon = 'flex justify-center items-center border-stone-400 py-2';
 
 const cssLeft = 'border-r rounded-l-3xl ';
 const cssMiddle = 'border-r ';
 const cssRight = 'rounded-r-3xl ';
 
-const cssSelected = 'px-2 ';
+const cssSelected = 'px-2 bg-red-200';
 const cssNotSelected = 'px-4 bg-white ';
+const cssTouched = 'px-4 bg-red-100 ' + innerShadow();
 
-const cssTransition = 'transition ease-in-out delay-75 ';
+const cssTransition = 'transition ease-in-out duration-[250ms] ';
 
 function getPositionCss(position: string) {
   position = position.toLowerCase();
@@ -37,18 +40,20 @@ export default function SelectButton({
   isSelected,
   position,
   text,
-  selectedBgColor = 'bg-red-200',
   onClickFunction,
 }: Props) {
+  const [isTouched, setIsTouched] = useState<boolean>(false);
   return (
     <>
-      <div
+      <motion.div
+        initial={false}
+        transition={{ duration: 0.1 }}
         className={
           cssCommon +
           cssTransition +
           `
           ${cssCommon} 
-          ${isSelected ? cssSelected + ' ' + selectedBgColor : cssNotSelected} 
+          ${isSelected ? cssSelected : isTouched ? cssTouched : cssNotSelected}
           ${getPositionCss(position)} 
           `
         }
@@ -57,10 +62,16 @@ export default function SelectButton({
             onClickFunction();
           }
         }}
+        onTouchStart={() => {
+          setIsTouched(true);
+        }}
+        onTouchEnd={() => {
+          setIsTouched(false);
+        }}
       >
         {isSelected && <AiOutlineCheck className="mr-1" />}
         <p>{text}</p>
-      </div>
+      </motion.div>
     </>
   );
 }
