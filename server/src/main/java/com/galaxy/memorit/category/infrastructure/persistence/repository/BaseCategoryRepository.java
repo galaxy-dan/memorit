@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.memorit.category.infrastructure.persistence.entity.BaseCategoryEntity;
 @Repository
-public interface BaseCategoryRepository extends JpaRepository<BaseCategoryEntity, Integer> {
+public interface BaseCategoryRepository extends JpaRepository<BaseCategoryEntity, Long> {
 }
