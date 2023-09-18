@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import SearchList from './searchList';
-import { containerCss, iconCss } from '../styles/inputCSS';
+import { containerCss, iconCss } from './inputCSS';
 
 type Props = {
   type: string;

@@ -11,7 +11,7 @@ import {
   innerShadow,
   transitionCss,
   transitionCssSlower,
-} from '../styles/inputCSS';
+} from './inputCSS';
 
 type Props = {};
 

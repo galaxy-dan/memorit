@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { containerCss, iconCss } from '../styles/inputCSS';
+import { containerCss, iconCss } from './inputCSS';
 
 type Props = {
   placeholder?: string;

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
-import { innerShadow } from '../styles/inputCSS';
+import { innerShadow } from './inputCSS';
 
 type Props = {
   isSelected: boolean;
