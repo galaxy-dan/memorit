@@ -4,13 +4,16 @@ import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.galaxy.memorit.category.dto.response.CategoryResDTO;
 import com.galaxy.memorit.historytype.application.service.HistoryTypeService;
 import com.galaxy.memorit.historytype.dto.request.HistoryTypeRegisterReqDTO;
+import com.galaxy.memorit.historytype.dto.response.HistoryTypeResDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,5 +31,15 @@ public class HistoryTypeController {
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		historyTypeService.registerHistoryType(uuid, dto);
 		return ResponseEntity.created(URI.create("")).build();
+	}
+
+	@GetMapping
+	public ResponseEntity<HistoryTypeResDTO> getHistoryType(Authentication authentication){
+		//이게 찐
+		//return ResponseEntity.ok(historyTypeService.getHistoryType(authentication.getName()));
+
+		//테스트용
+		String uuid = "99d7f4dd55244c54a523032169193f40";
+		return ResponseEntity.ok(historyTypeService.getHistoryType(uuid));
 	}
 }
