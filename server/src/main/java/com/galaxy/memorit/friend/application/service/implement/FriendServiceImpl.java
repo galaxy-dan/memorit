@@ -62,20 +62,6 @@ public class FriendServiceImpl implements FriendService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public FriendsListResDTO getFriendsList(String userId) {
-		//byte[]를 UUID로 변경해서 db 조회
-		List<FriendEntity> entityList = friendRepository.findAllByUserId(friendMapper.stringToUUID(userId));
-
-		//db에서 얻은 리스트를 DTO에 맞게 변환
-		List<FriendInfoDTO> infoList = entityList.stream()
-			.map(friendMapper::toInfoDTO)
-			.collect(Collectors.toList());
-
-		return new FriendsListResDTO(infoList);
-	}
-
-	@Transactional(readOnly = true)
-	@Override
 	public FriendInfoDTO getFriendInfo(String userId, String friendId) {
 		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
 			.orElseThrow();
@@ -108,6 +94,7 @@ public class FriendServiceImpl implements FriendService {
 		friendRepository.deleteAllByFriendsList(friendMapper.stringToUUID(userId), uuidList);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public FriendRankResDTO getFriendsRank(String userId) {
 		Pageable pageable = PageRequest.of(0,1);
@@ -132,10 +119,14 @@ public class FriendServiceImpl implements FriendService {
 		);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public FriendsListResDTO searchFriends(String userId, FriendSearchReqDTO dto) {
+
+		//byte[]를 UUID로 변경해서 db 조회
 		List<FriendEntity> entityList = friendRepository.findFriendsByDTO(friendMapper.stringToUUID(userId), dto);
 
+		//db에서 얻은 리스트를 DTO에 맞게 변환
 		List<FriendInfoDTO> infoList = entityList.stream()
 			.map(friendMapper::toInfoDTO)
 			.collect(Collectors.toList());

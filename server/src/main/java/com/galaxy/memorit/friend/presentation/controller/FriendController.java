@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.galaxy.memorit.friend.application.service.FriendService;
@@ -57,14 +56,6 @@ public class FriendController {
 		friendService.registerFriendsFromAddress(uuid, dto);
 
 		return new ResponseEntity<>(new FriendRegisterResDTO(201), HttpStatus.CREATED);
-	}
-
-	@GetMapping
-	public ResponseEntity<FriendsListResDTO> getFriendsList(Authentication authentication){
-		//return ResponseEntity.ok(friendService.getFriendsList(authentication.getName()));
-		//테스트용
-		String uuid = "99d7f4dd55244c54a523032169193f40";
-		return ResponseEntity.ok(friendService.getFriendsList(uuid));
 	}
 
 	@GetMapping("/{friendId}")
