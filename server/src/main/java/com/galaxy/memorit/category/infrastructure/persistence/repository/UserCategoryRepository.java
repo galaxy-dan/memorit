@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.memorit.category.infrastructure.persistence.entity.UserCategoryEntity;
 @Repository
-public interface UserCategoryRepository extends JpaRepository<UserCategoryEntity,Integer> {
+public interface UserCategoryRepository extends JpaRepository<UserCategoryEntity, Long> {
 	List<UserCategoryEntity> findAllByUserId(UUID userId);
 }

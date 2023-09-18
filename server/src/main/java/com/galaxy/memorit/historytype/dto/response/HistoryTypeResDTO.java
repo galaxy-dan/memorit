@@ -1,4 +1,4 @@
-package com.galaxy.memorit.category.dto.response;
+package com.galaxy.memorit.historytype.dto.response;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryResDTO {
-	private List<String> categoryList;
+public class HistoryTypeResDTO {
+	private List<String> typeList;
 }
