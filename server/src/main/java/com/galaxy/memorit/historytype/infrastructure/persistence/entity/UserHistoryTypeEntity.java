@@ -24,7 +24,7 @@ public class UserHistoryTypeEntity {
 	@Id
 	@Column(name = "type_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
 	private UUID userId;
 	@Column(name = "type_name", length = 128, nullable = false)

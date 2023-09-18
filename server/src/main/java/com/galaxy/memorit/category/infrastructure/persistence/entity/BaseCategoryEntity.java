@@ -24,7 +24,7 @@ public class BaseCategoryEntity {
 	@Id
 	@Column(name = "category_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "category_name", length = 128, nullable = false)
 	private String categoryName;
 }
