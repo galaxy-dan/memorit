@@ -12,7 +12,7 @@ export default function TextInput({ placeholder, icon }: Props) {
   const [isTouched, setIsTouched] = useState<boolean>(false);
   return (
     <>
-      <div className={containerCss() + ' flex items-center border relative'}>
+      <div className={containerCss + ' flex items-center border relative'}>
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <input
           type="text"

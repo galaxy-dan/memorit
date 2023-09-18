@@ -93,7 +93,7 @@ export default function PictureInput({}: Props) {
           </div>
         </div>
         <div
-          className={`px-3 py-2 border border-white rounded-xl bg-white mt-[0.65rem] mb-10 ${transitionCssSlower()} ${
+          className={`px-3 py-2 border border-white rounded-xl bg-white mt-[0.65rem] mb-10 ${transitionCssSlower} ${
             !isOpen ? ' grid-rows-[0fr] ' : ' grid-rows-[1fr] '
           } grid transition-[grid-template-rows] relative w-full z-0 mx-0`}
         >
@@ -110,9 +110,9 @@ export default function PictureInput({}: Props) {
                 <button
                   className={`w-full h-36 px-4 my-4 ${
                     isButtonTouched
-                      ? 'bg-gray-300 shadow-inner ' + innerShadow()
+                      ? 'bg-gray-300 shadow-inner ' + innerShadow
                       : 'bg-gray-200 '
-                  } rounded-xl text-center ${transitionCss()} `}
+                  } rounded-xl text-center ${transitionCss} `}
                   onClick={handleClick}
                   onTouchStart={() => {
                     setIsButtonTouched(true);

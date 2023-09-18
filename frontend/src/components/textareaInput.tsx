@@ -20,7 +20,7 @@ export default function TextareaInput({ placeholder, icon }: Props) {
   };
   return (
     <>
-      <div className={containerCss() + ' flex items-start border relative'}>
+      <div className={containerCss + ' flex items-start border relative'}>
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <textarea
           className="w-full text-lg"

@@ -17,7 +17,7 @@ export default function SearchInput({ type, placeholder, icon }: Props) {
 
   return (
     <>
-      <div className={containerCss() + ' flex items-center border relative'}>
+      <div className={containerCss + ' flex items-center border relative'}>
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <input
           type="text"
