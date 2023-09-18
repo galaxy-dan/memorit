@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef, useState } from 'react';
-import { containerCss, iconCss } from '../styles/inputCSS';
+import { containerCss, iconCss } from './inputCSS';
 
 type Props = {
   placeholder?: string;
@@ -20,7 +20,7 @@ export default function TextareaInput({ placeholder, icon }: Props) {
   };
   return (
     <>
-      <div className={containerCss() + ' flex items-start border relative'}>
+      <div className={containerCss + ' flex items-start border relative'}>
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <textarea
           className="w-full text-lg"

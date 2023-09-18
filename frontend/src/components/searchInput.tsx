@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import SearchList from './searchList';
-import { containerCss, iconCss } from '../styles/inputCSS';
+import { containerCss, iconCss } from './inputCSS';
 
 type Props = {
   type: string;
@@ -17,7 +17,7 @@ export default function SearchInput({ type, placeholder, icon }: Props) {
 
   return (
     <>
-      <div className={containerCss() + ' flex items-center border relative'}>
+      <div className={containerCss + ' flex items-center border relative'}>
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <input
           type="text"
