@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryResDTO {
-	List<String> categoryList;
+	private List<String> categoryList;
 }
