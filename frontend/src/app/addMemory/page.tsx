@@ -29,14 +29,14 @@ export default function AddMemoryPage() {
   }
 
   return (
-    <div className="bg-neutral-200 w-full min-h-screen">
+    <div className="bg-neutral-200 w-full min-h-screen pb-16">
       {/* 상단 탭 부분 */}
       <div className="flex justify-between items-center w-full py-5 px-5">
-        <motion.button 
+        <motion.button
           className="rounded-full p-1"
-          initial = {false}
+          initial={false}
           whileTap={{
-            backgroundColor: "#D0D0D0",
+            backgroundColor: '#D0D0D0',
           }}
           transition={{
             duration: 0.7,
@@ -47,25 +47,28 @@ export default function AddMemoryPage() {
               restDelta: 0.001,
             },
           }}
-          >
+        >
           <IoMdClose className="text-2xl" />
         </motion.button>
         <p className="text-2xl">기억 더하기</p>
-        <motion.button className="text-red-400 p-1"
-        initial = {false}
-        whileTap={{
-          backgroundColor: "#D0D0D0",
-        }}
-        transition={{
-          duration: 0.7,
-          scale: {
-            type: 'spring',
-            damping: 5,
-            stiffness: 100,
-            restDelta: 0.001,
-          },
-        }}
-        >저장</motion.button>
+        <motion.button
+          className="text-red-400 p-1"
+          initial={false}
+          whileTap={{
+            backgroundColor: '#D0D0D0',
+          }}
+          transition={{
+            duration: 0.7,
+            scale: {
+              type: 'spring',
+              damping: 5,
+              stiffness: 100,
+              restDelta: 0.001,
+            },
+          }}
+        >
+          저장
+        </motion.button>
       </div>
 
       {/* 송수신 선택 부분 */}
@@ -85,15 +88,19 @@ export default function AddMemoryPage() {
         />
       </SelectButtonGroup>
 
-      <SearchInput type={'category'} icon={<BiCategory />} placeholder="카테고리" />
-      <hr className="border border-neutral-300 my-2"/>
+      <SearchInput
+        type={'category'}
+        icon={<BiCategory />}
+        placeholder="카테고리"
+      />
+      <hr className="border border-neutral-300 my-2" />
       <TextInput icon={<MdOutlineAttachMoney />} placeholder="금액" />
       <TextInput icon={<AiOutlineGift />} placeholder="선물" />
-      <hr className="border border-neutral-300  my-2"/>
+      <hr className="border border-neutral-300  my-2" />
       <SearchInput type={'name'} icon={<BsPerson />} placeholder="이름" />
       <TextInput icon={<BsPeople />} placeholder="관계" />
-      <hr className="border border-neutral-300  my-2"/>
-      <TextareaInput icon={<CgNotes/>} placeholder="메모" />
+      <hr className="border border-neutral-300  my-2" />
+      <TextareaInput icon={<CgNotes />} placeholder="메모" />
       <PictureInput />
     </div>
   );
