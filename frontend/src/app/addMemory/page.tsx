@@ -19,6 +19,7 @@ import { CgNotes } from 'react-icons/cg';
 import { motion } from 'framer-motion';
 export default function AddMemoryPage() {
   const [isSend, setIsSend] = useState<boolean>(true);
+  const [isMoney, setIsMoney] = useState<boolean>(true);
 
   function setSendTrue() {
     setIsSend(true);
@@ -94,8 +95,38 @@ export default function AddMemoryPage() {
         placeholder="카테고리"
       />
       <hr className="border border-neutral-300 my-2" />
-      <TextInput icon={<MdOutlineAttachMoney />} placeholder="금액" />
-      <TextInput icon={<AiOutlineGift />} placeholder="선물" />
+      <div className="flex w-full pl-2 items-center relative">
+        <input
+          id="isMoney"
+          type="radio"
+          className="accent-pink-500 w-5 h-5"
+          checked={isMoney}
+          onClick={() => {
+            setIsMoney(true);
+          }}
+        ></input>
+        <TextInput
+          icon={<MdOutlineAttachMoney />}
+          placeholder="금액"
+          className="w-full"
+        />
+      </div>
+      <label className="flex w-full pl-2 items-center relative">
+        <input
+          id="isPresent"
+          type="radio"
+          className="accent-pink-500 w-5 h-5"
+          checked={!isMoney}
+          onClick={() => {
+            setIsMoney(false);
+          }}
+        ></input>
+        <TextInput
+          icon={<AiOutlineGift />}
+          placeholder="선물"
+          className="w-full"
+        />
+      </label>
       <hr className="border border-neutral-300  my-2" />
       <SearchInput type={'name'} icon={<BsPerson />} placeholder="이름" />
       <TextInput icon={<BsPeople />} placeholder="관계" />
