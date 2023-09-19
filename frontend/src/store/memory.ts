@@ -17,6 +17,7 @@ export const addMemoryState = atom<addMemory>({
     present: '',
     relation: '',
     memo: '',
-    image: '',
+    imageSrc: '',
+    imageName: '',
   },
 });

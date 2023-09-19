@@ -11,5 +11,6 @@ export type addMemory = {
   present: string;
   relation: string;
   memo: string;
-  image: string;
+  imageSrc: string;
+  imageName: string;
 };
