@@ -17,9 +17,30 @@ public class User {
     private int receivedMoney;
     private int sentMoney;
 
+
+    // 유저 계정 생성
+    public static User create(String userId, String nickname, int receivedCount, int sentCount, int receivedMoney, int sentMoney) {
+        return User.builder()
+            .userId(userId)
+            .nickname(nickname)
+            .receivedCount(receivedCount)
+            .sentCount(sentCount)
+            .receivedMoney(receivedMoney)
+            .sentMoney(sentMoney)
+            .build();
+    }
+
+      // 닉네임 수정
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    // 회원 정보 조회
+
+
+    // 회원 탈퇴
+
+
 
     // 히스토리(마음) 받았을 때 receivedCount, receivedMoney 업데이트
     // 히스토리(마음) 보낼 때 sentCount, sentMoney 업데이트
