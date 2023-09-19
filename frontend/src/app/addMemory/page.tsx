@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 
-import PictureInput from '@/components/pictureInput';
-import SearchInput from '@/components/searchInput';
-import TextInput from '@/components/textInput';
-import SelectButton from '@/components/selectButton';
-import SelectButtonGroup from '@/components/selectButtonGroup';
-import TextareaInput from '@/components/textareaInput';
+import PictureInput from '@/components/input/pictureInput';
+import SearchInput from '@/components/input/searchInput';
+
+import SelectButton from '@/components/input/selectButton';
+import SelectButtonGroup from '@/components/input/selectButtonGroup';
+import TextareaInput from '@/components/input/textareaInput';
 
 import { IoMdClose } from 'react-icons/io';
 import { BsPeople, BsPerson } from 'react-icons/bs';
@@ -17,6 +17,7 @@ import { AiOutlineGift } from 'react-icons/ai';
 import { CgNotes } from 'react-icons/cg';
 
 import { motion } from 'framer-motion';
+import TextInput from '@/components/input/textInput';
 export default function AddMemoryPage() {
   const [isSend, setIsSend] = useState<boolean>(true);
   const [isMoney, setIsMoney] = useState<boolean>(true);

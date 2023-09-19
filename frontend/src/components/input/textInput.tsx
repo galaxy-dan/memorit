@@ -4,7 +4,7 @@ import { containerCss, iconCss } from './inputCSS';
 type Props = {
   placeholder?: string;
   icon?: ReactNode;
-  className ?: string;
+  className?: string;
 };
 
 export default function TextInput({ placeholder, icon, className }: Props) {
@@ -13,7 +13,11 @@ export default function TextInput({ placeholder, icon, className }: Props) {
   const [isTouched, setIsTouched] = useState<boolean>(false);
   return (
     <>
-      <div className={containerCss + ' flex items-center border relative ' + className}>
+      <div
+        className={
+          containerCss + ' flex items-center border relative ' + className
+        }
+      >
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <input
           type="text"
