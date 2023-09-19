@@ -40,8 +40,8 @@ export default function RootLayout({
       <body className="w-full">
         <QueryProvider>
           <RecoilProvider>
-            <div className="max-w-md min-h-screen mx-auto">
-              <main>{children}</main>
+            <div className="flex flex-col max-w-md min-h-screen mx-auto">
+              <main className="grow">{children}</main>
               <Footer />
             </div>
           </RecoilProvider>
