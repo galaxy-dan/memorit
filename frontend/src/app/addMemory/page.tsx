@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 
-import PictureInput from '@/components/input/pictureInput';
-import SearchInput from '@/components/input/searchInput';
+import PictureInput from '@/components/input/PictureInput';
 
 import SelectButton from '@/components/input/selectButton';
 import SelectButtonGroup from '@/components/input/selectButtonGroup';
-import TextareaInput from '@/components/input/textareaInput';
+import TextareaInput from '@/components/input/MemoInput';
 
 import { IoMdClose } from 'react-icons/io';
 import { BsPeople, BsPerson } from 'react-icons/bs';
@@ -17,17 +16,37 @@ import { AiOutlineGift } from 'react-icons/ai';
 import { CgNotes } from 'react-icons/cg';
 
 import { motion } from 'framer-motion';
-import TextInput from '@/components/input/textInput';
+import { addMemory } from '@/model/memory';
+import { useRecoilState } from 'recoil';
+import { addMemoryState } from '@/store/memory';
+import PreviousMap from 'postcss/lib/previous-map';
+import CategoryInput from '@/components/input/CategoryInput';
+import MoneyInput from '@/components/input/MoneyInput';
+import PresentInput from '@/components/input/PresentInput';
+import NameInput from '@/components/input/NameInput';
+import RelationInput from '@/components/input/RelationInput';
+import MemoInput from '@/components/input/MemoInput';
 export default function AddMemoryPage() {
-  const [isSend, setIsSend] = useState<boolean>(true);
-  const [isMoney, setIsMoney] = useState<boolean>(true);
+  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
 
   function setSendTrue() {
-    setIsSend(true);
+    setMemory((prev) => ({ ...prev, isSend: true }));
   }
 
   function setSendFalse() {
-    setIsSend(false);
+    setMemory((prev) => ({ ...prev, isSend: false }));
+  }
+
+  function Line() {
+    return <hr className="border border-neutral-300 my-2" />;
+  }
+
+  function onSubmit() { 
+    console.log(memory);
+  }
+
+  function onCancle() { 
+
   }
 
   return (
@@ -49,6 +68,7 @@ export default function AddMemoryPage() {
               restDelta: 0.001,
             },
           }}
+          onClick={onCancle}
         >
           <IoMdClose className="text-2xl" />
         </motion.button>
@@ -68,6 +88,7 @@ export default function AddMemoryPage() {
               restDelta: 0.001,
             },
           }}
+          onClick={onSubmit}
         >
           저장
         </motion.button>
@@ -77,62 +98,42 @@ export default function AddMemoryPage() {
 
       <SelectButtonGroup>
         <SelectButton
-          isSelected={isSend}
+          isSelected={memory.isSend}
           position={'l'}
           text={'보낸 기억'}
           onClickFunction={setSendTrue}
         />
         <SelectButton
-          isSelected={!isSend}
+          isSelected={!memory.isSend}
           position={'r'}
           text={'받은 기억'}
           onClickFunction={setSendFalse}
         />
       </SelectButtonGroup>
 
-      <SearchInput
+      <CategoryInput
         type={'category'}
         icon={<BiCategory />}
         placeholder="카테고리"
       />
-      <hr className="border border-neutral-300 my-2" />
-      <div className="flex w-full pl-2 items-center relative">
-        <input
-          id="isMoney"
-          type="radio"
-          className="accent-pink-500 w-5 h-5"
-          checked={isMoney}
-          onClick={() => {
-            setIsMoney(true);
-          }}
-        ></input>
-        <TextInput
-          icon={<MdOutlineAttachMoney />}
-          placeholder="금액"
-          className="w-full"
-        />
-      </div>
-      <label className="flex w-full pl-2 items-center relative">
-        <input
-          id="isPresent"
-          type="radio"
-          className="accent-pink-500 w-5 h-5"
-          checked={!isMoney}
-          onClick={() => {
-            setIsMoney(false);
-          }}
-        ></input>
-        <TextInput
-          icon={<AiOutlineGift />}
-          placeholder="선물"
-          className="w-full"
-        />
-      </label>
-      <hr className="border border-neutral-300  my-2" />
-      <SearchInput type={'name'} icon={<BsPerson />} placeholder="이름" />
-      <TextInput icon={<BsPeople />} placeholder="관계" />
-      <hr className="border border-neutral-300  my-2" />
-      <TextareaInput icon={<CgNotes />} placeholder="메모" />
+
+      <Line />
+
+      <MoneyInput
+        icon={<MdOutlineAttachMoney />}
+        placeholder="금액"
+        className="w-full"
+      />
+      <PresentInput
+        icon={<AiOutlineGift />}
+        placeholder="선물"
+        className="w-full"
+      />
+      <Line />
+      <NameInput type={'name'} icon={<BsPerson />} placeholder="이름" />
+      <RelationInput icon={<BsPeople />} placeholder="관계" />
+      <Line />
+      <MemoInput icon={<CgNotes />} placeholder="메모" />
       <PictureInput />
     </div>
   );
