@@ -7,9 +7,17 @@ import Image from 'next/image';
 import RedHeart from 'public/icons/red-heart.svg';
 import { useState } from 'react';
 import ExampleImage from 'public/example.jpg';
+import { useQuery } from '@tanstack/react-query';
+import { get } from '@/service/api/http';
 
 export default function FriendDetailPage() {
   const [isModal, setIsModal] = useState(false);
+
+  const { data } = useQuery({
+    queryKey: ['friend'],
+    queryFn: () => get('/friend/search'),
+    refetchInterval: 5000,
+  });
 
   return (
     <>
@@ -83,7 +91,7 @@ export default function FriendDetailPage() {
         </div>
       </div>
       {!isModal && (
-        <div className="fixed bottom-[105px] bg-orange-400 w-full z-30 rounded-t-xl px-7">
+        <div className="fixed bottom-[105px] bg-orange-400 w-screen max-w-md z-30 rounded-t-xl px-7">
           <div className="flex items-center justify-between my-6">
             <div
               className="flex items-center"
