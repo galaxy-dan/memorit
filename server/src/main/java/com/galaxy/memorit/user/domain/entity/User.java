@@ -30,7 +30,7 @@ public class User {
             .build();
     }
 
-    // 닉네임 수정
+      // 닉네임 수정
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }

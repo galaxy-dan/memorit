@@ -2,6 +2,7 @@ package com.galaxy.memorit.user.application.service;
 
 import com.galaxy.memorit.user.domain.entity.User;
 import com.galaxy.memorit.user.domain.repository.UserRepository;
+import com.galaxy.memorit.user.dto.request.UserDtoReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,66 +12,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final User user;    // 인텔리제이 버그??
 
-    public User getAuthenticatedUser() {
-        String username = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return getUserByProviderId(username);
-    }
+//    public User getAuthenticatedUser() {
+//        String username = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+//        return getUserByProviderId(username);
+//    }
 
-    public User getUserByProviderId(String providerId) {
-        return userRepository.findByProviderId(providerId);
-    }
-
-    @Transactional
-    public User registerUserInformation(UserInfoRequestDto requestDto) {
-        User user = getUserByProviderId(requestDto.getProviderId());
-        user.registerUserInformation(requestDto.getNickname(),
-            MBTI.valueOf(requestDto.getMbti()),
-            Gender.valueOf(requestDto.getGender()),
-            requestDto.getBirth());
-        return user;
-    }
+//    public User getUserByProviderId(String providerId) {
+//        return userRepository.findByProviderId(providerId);
+//    }
 
     @Transactional
     public void updateNickname(String nickname) {
-        User user = getAuthenticatedUser();
+//        User user = getAuthenticatedUser();
         user.updateNickname(nickname);
     }
 
-    @Transactional
-    public void updateMbti(String mbti) {
-        User user = getAuthenticatedUser();
-        user.updateMbti(MBTI.valueOf(mbti));
-    }
-
-    @Transactional
-    public void updateBirth(String birth) {
-        User user = getAuthenticatedUser();
-        user.updateBirth(birth);
-    }
-
-    @Transactional
-    public void updateGender(String gender) {
-        User user = getAuthenticatedUser();
-        user.updateGender(Gender.valueOf(gender));
-    }
-
-    @Transactional
-    public void withdrawUser() {
-        User user = getAuthenticatedUser();
-        user.updateWithdraw();
-    }
-
-    public UserUpdateResponseDto checkUpdateAvailability() {
-        User user = getAuthenticatedUser();
-        return UserUpdateResponseDto.create(
-            user.isMbtiChangeable(),
-            !user.isGenderChanged(),
-            !user.isBirthChanged());
-    }
-
-    public boolean isRegisteredNickname(String nickname) {
-        User user = userRepository.findByNickname(nickname);
-        return user != null;
-    }
+    // 닉네임 중복 체크
+    // 동기화 기능과 유저간의 상호작용을 추가하면 필요할 듯?
+//    public boolean isRegisteredNickname(String nickname) {
+//        User user = userRepository.findByNickname(nickname);
+//        return user != null;
+//    }
 }
