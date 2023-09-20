@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "friend")
+@Table(name = "history")
 @Getter
 @Builder
 @NoArgsConstructor
@@ -45,5 +45,5 @@ public class HistoryEntity extends BaseEntity {
 	@Column(name = "image")
 	private String image;
 	@Column(name = "is_given", nullable = false)
-	private Boolean isGiven;
+	private boolean given;
 }
