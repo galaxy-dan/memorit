@@ -1,7 +1,6 @@
 package com.galaxy.memorit.history.infrastructure.persistence.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
