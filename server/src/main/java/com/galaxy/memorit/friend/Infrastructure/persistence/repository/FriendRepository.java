@@ -11,11 +11,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
-import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendKey;
 
 @Repository
-public interface FriendRepository extends JpaRepository<FriendEntity, FriendKey>, FriendDynamicQueryRepository{
+public interface FriendRepository extends JpaRepository<FriendEntity, UUID>, FriendDynamicQueryRepository{
 	List<FriendEntity> findAllByUserId(UUID userId);
+	FriendEntity findByFriendIdAndUserId(UUID friendId, UUID userId);
 
 	@Modifying
 	@Query("DELETE FROM FriendEntity f WHERE f.userId = :userId AND f.friendId IN :friendIds")

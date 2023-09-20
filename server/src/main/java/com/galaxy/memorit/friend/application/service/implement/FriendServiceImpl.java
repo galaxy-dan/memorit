@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
-import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendKey;
 import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRepository;
 import com.galaxy.memorit.friend.Infrastructure.persistence.mapper.FriendMapper;
 import com.galaxy.memorit.friend.application.service.FriendService;
@@ -77,24 +76,24 @@ public class FriendServiceImpl implements FriendService {
 	@Transactional(readOnly = true)
 	@Override
 	public FriendInfoDTO getFriendInfo(String userId, String friendId) {
-		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
-			.orElseThrow();
+		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendMapper.stringToUUID(friendId), friendMapper.stringToUUID(userId));
+		/*
+		entity 존재하는지 확인 필요. 없으면 not found
+		 */
 		return friendMapper.toInfoDTO(entity);
 	}
 
 	@Transactional
 	@Override
 	public void updateFriendInfo(String userId, String friendId, FriendUpdateReqDTO dto) {
-		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
-			.orElseThrow();
+		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendMapper.stringToUUID(friendId), friendMapper.stringToUUID(userId));
 		entity.updateInfo(dto.getName(), dto.getCategory());
 	}
 
 	@Transactional
 	@Override
 	public void deleteFriendById(String userId, String friendId) {
-		FriendEntity entity = friendRepository.findById(new FriendKey(friendMapper.stringToUUID(userId), friendMapper.stringToUUID(friendId)))
-			.orElseThrow();
+		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendMapper.stringToUUID(friendId), friendMapper.stringToUUID(userId));
 		friendRepository.delete(entity);
 	}
 
