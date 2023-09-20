@@ -6,12 +6,14 @@ import { RiImageAddFill } from 'react-icons/ri';
 import { MdCancel } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import {
-  containerCss,
   iconCss,
   innerShadow,
   transitionCss,
   transitionCssSlower,
 } from './inputCSS';
+import { addMemory } from '@/model/memory';
+import { useRecoilState } from 'recoil';
+import { addMemoryState } from '@/store/memory';
 
 type Props = {};
 
@@ -19,8 +21,9 @@ export default function PictureInput({}: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [isButtonTouched, setIsButtonTouched] = useState<boolean>(false);
-  const [imageName, setImageName] = useState<string>('');
-  const [imageSrc, setImageSrc] = useState<string>('');
+  const [isCancelButtonTouched, setIsCancelButtonTouched] = useState<boolean>(false);
+  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
+
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -29,13 +32,15 @@ export default function PictureInput({}: Props) {
 
   const handleChange = (e: React.ChangeEvent) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    setImageName(targetFiles[0].name);
-    setImageSrc(URL.createObjectURL(targetFiles[0]));
+    setMemory((prev) => ({
+      ...prev,
+      imageName: targetFiles[0].name,
+      imageSrc: URL.createObjectURL(targetFiles[0]),
+    }));
   };
 
   const handleCancle = () => {
-    setImageName('');
-    setImageSrc('');
+    setMemory((prev) => ({ ...prev, imageName: '', imageSrc: '' }));
     if (fileRef && fileRef.current) {
       fileRef.current.value = '';
     }
@@ -65,10 +70,10 @@ export default function PictureInput({}: Props) {
               </div>
               <p
                 className={`w-full text-lg truncate ${
-                  imageName === '' ? 'text-gray-400' : 'text-black'
+                  memory.imageName === '' ? 'text-gray-400' : 'text-black'
                 }`}
               >
-                {imageName === '' ? '사진' : imageName}
+                {memory.imageName === '' ? '사진' : memory.imageName}
               </p>
             </div>
             <motion.button
@@ -106,7 +111,7 @@ export default function PictureInput({}: Props) {
                 className="hidden"
                 onChange={handleChange}
               />
-              {imageName === '' ? (
+              {memory.imageName === '' ? (
                 <button
                   className={`w-full h-36 px-4 my-4 ${
                     isButtonTouched
@@ -129,14 +134,16 @@ export default function PictureInput({}: Props) {
                   <Image
                     className="mx-auto max-h-72 rounded-2xl"
                     alt="이미지 선택"
-                    src={imageSrc}
+                    src={memory.imageSrc}
                     width={400}
                     height={200}
                     onClick={handleClick}
                   ></Image>
                   <MdCancel
-                    className="absolute top-0 right-0 text-2xl bg-white rounded-full p-0"
+                    className={`absolute top-3 right-5 text-4xl ${isCancelButtonTouched&&" text-red-200"} bg-white rounded-full p-0`}
                     onClick={handleCancle}
+                    onTouchStart={()=>{setIsCancelButtonTouched(true);}}
+                    onTouchEnd={()=>{setIsCancelButtonTouched(false);}}
                   />
                 </div>
               )}
