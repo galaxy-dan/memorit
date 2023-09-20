@@ -19,5 +19,5 @@ public class History {
 	private String item;
 	private String detail;
 	private String image;
-	private boolean is_given;
+	private boolean given;
 }
