@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 
-import PictureInput from '@/components/input/PictureInput';
-
-import SelectButton from '@/components/input/selectButton';
-import SelectButtonGroup from '@/components/input/selectButtonGroup';
+import SelectButton from '@/components/input/SelectButton';
+import SelectButtonGroup from '@/components/input/SelectButtonGroup';
 import TextareaInput from '@/components/input/MemoInput';
 
 import { IoMdClose } from 'react-icons/io';
@@ -16,19 +14,20 @@ import { AiOutlineGift } from 'react-icons/ai';
 import { CgNotes } from 'react-icons/cg';
 
 import { motion } from 'framer-motion';
-import { addMemory } from '@/model/memory';
-import { useRecoilState } from 'recoil';
-import { addMemoryState } from '@/store/memory';
-import PreviousMap from 'postcss/lib/previous-map';
+import { addMemory, showDropDownMenu } from '@/model/memory';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { addMemoryState, showDropDownMenuState } from '@/store/memory';
 import CategoryInput from '@/components/input/CategoryInput';
 import MoneyInput from '@/components/input/MoneyInput';
 import PresentInput from '@/components/input/PresentInput';
 import NameInput from '@/components/input/NameInput';
 import RelationInput from '@/components/input/RelationInput';
 import MemoInput from '@/components/input/MemoInput';
+import PictureInput from '@/components/input/PictureInput';
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
-
+  const resetShowMenu = useResetRecoilState(showDropDownMenuState);
+  
   function setSendTrue() {
     setMemory((prev) => ({ ...prev, isSend: true }));
   }
@@ -41,16 +40,17 @@ export default function AddMemoryPage() {
     return <hr className="border border-neutral-300 my-2" />;
   }
 
-  function onSubmit() { 
+  function onSubmit() {
     console.log(memory);
   }
 
-  function onCancle() { 
-
-  }
+  function onCancle() {}
 
   return (
-    <div className="bg-neutral-200 w-full min-h-screen pb-16">
+    <div
+      className="bg-neutral-200 w-full min-h-screen pb-16"
+      onClick={resetShowMenu}
+    >
       {/* 상단 탭 부분 */}
       <div className="flex justify-between items-center w-full py-5 px-5">
         <motion.button

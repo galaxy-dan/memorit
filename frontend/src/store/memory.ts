@@ -1,4 +1,4 @@
-import { addMemory } from '@/model/memory';
+import { addMemory, showDropDownMenu } from '@/model/memory';
 import { atom } from 'recoil';
 
 
@@ -21,3 +21,11 @@ export const addMemoryState = atom<addMemory>({
     imageName: '',
   },
 });
+
+export const showDropDownMenuState = atom<showDropDownMenu>({
+  key: 'showDropDownMenu',
+  default:{
+    showCategoryMenu: false,
+    showNameMenu: false
+  }
+})

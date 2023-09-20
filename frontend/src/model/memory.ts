@@ -14,3 +14,8 @@ export type addMemory = {
   imageSrc: string;
   imageName: string;
 };
+
+export type showDropDownMenu = {
+  showCategoryMenu : boolean;
+  showNameMenu : boolean;
+}

@@ -1,9 +1,9 @@
 import React, { ReactNode, useState } from 'react';
-import SearchList from './searchList';
 import { containerCss, iconCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
-import { addMemory } from '@/model/memory';
-import { addMemoryState } from '@/store/memory';
+import { addMemory, showDropDownMenu } from '@/model/memory';
+import { addMemoryState, showDropDownMenuState } from '@/store/memory';
+import { motion } from 'framer-motion';
 
 type Props = {
   type: string;
@@ -16,7 +16,16 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
   const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
+  const [showDropDownMenu, setShowDropDownMenu] = useRecoilState<showDropDownMenu>(showDropDownMenuState);
+  
+  function hideMenu(){
+    setShowDropDownMenu((prev)=>({...prev,showCategoryMenu: false}))
+  }
 
+  function showMenu(){
+    setShowDropDownMenu((prev)=>({...prev,showCategoryMenu: true}))
+  }
+  
   return (
     <>
       <div className={containerCss + ' flex items-center border relative'}>
@@ -35,6 +44,7 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
               categorySelected: false,
             }));
             setMemory((prev) => ({ ...prev, categoryList: ['1', '2', '3'] }));
+            e.target.value === '' ? hideMenu() : showMenu();
           }}
           onFocus={() => {
             setIsFocused(true);
@@ -49,11 +59,11 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
             setIsTouched(false);
           }}
         />
-        {!memory.categorySelected && memory.category !== '' && (
-          <div className="w-8/12 rounded-xl bg-white absolute top-12 right-1 z-30 shadow-[0_0_2px_2px_rgba(0,0,0,0.1)] ">
+        {showDropDownMenu.showCategoryMenu && (
+          <div className="w-8/12 rounded-xl bg-white absolute top-12 right-1 z-30 shadow-[0_0_2px_2px_rgba(0,0,0,0.1)]">
             {memory.categoryList.map((item, index) => (
-              <p
-                className="text-lg px-5 py-3 truncate"
+              <motion.p
+                className={`text-lg px-5 ${index===0&&"pt-5 rounded-t-xl"} py-3 truncate`}
                 key={index}
                 onClick={() =>
                   setMemory((prev) => ({
@@ -62,21 +72,27 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
                     categorySelected: true,
                   }))
                 }
+                whileTap={{
+                  backgroundColor: '#D0D0D0',
+                }}
               >
                 {item}
-              </p>
+              </motion.p>
             ))}
-            <p
-              className="text-lg px-5 py-3 truncate"
+            <motion.p
+              className="text-lg px-5 pt-3 pb-5 truncate rounded-b-xl"
               onClick={() =>
                 setMemory((prev) => ({
                   ...prev,
                   categorySelected: true,
                 }))
               }
+              whileTap={{
+                backgroundColor: '#D0D0D0',
+              }}
             >
-              {memory.category} 더하기 (없을 때)
-            </p>
+              추가 : &nbsp;&quot;{memory.category}&quot;
+            </motion.p>
           </div>
         )}
       </div>

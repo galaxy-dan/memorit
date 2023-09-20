@@ -21,8 +21,7 @@ export default function PictureInput({}: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [isButtonTouched, setIsButtonTouched] = useState<boolean>(false);
-  const [imageName, setImageName] = useState<string>('');
-  const [imageSrc, setImageSrc] = useState<string>('');
+  const [isCancelButtonTouched, setIsCancelButtonTouched] = useState<boolean>(false);
   const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -33,11 +32,15 @@ export default function PictureInput({}: Props) {
 
   const handleChange = (e: React.ChangeEvent) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    setMemory((prev) => ({...prev, imageName: targetFiles[0].name, imageSrc: URL.createObjectURL(targetFiles[0])}));
+    setMemory((prev) => ({
+      ...prev,
+      imageName: targetFiles[0].name,
+      imageSrc: URL.createObjectURL(targetFiles[0]),
+    }));
   };
 
   const handleCancle = () => {
-    setMemory((prev) => ({...prev, imageName: '', imageSrc: ''}));
+    setMemory((prev) => ({ ...prev, imageName: '', imageSrc: '' }));
     if (fileRef && fileRef.current) {
       fileRef.current.value = '';
     }
@@ -137,8 +140,10 @@ export default function PictureInput({}: Props) {
                     onClick={handleClick}
                   ></Image>
                   <MdCancel
-                    className="absolute top-0 right-0 text-2xl bg-white rounded-full p-0"
+                    className={`absolute top-3 right-5 text-4xl ${isCancelButtonTouched&&" text-red-200"} bg-white rounded-full p-0`}
                     onClick={handleCancle}
+                    onTouchStart={()=>{setIsCancelButtonTouched(true);}}
+                    onTouchEnd={()=>{setIsCancelButtonTouched(false);}}
                   />
                 </div>
               )}
