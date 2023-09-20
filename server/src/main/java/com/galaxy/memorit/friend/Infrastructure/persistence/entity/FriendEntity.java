@@ -24,14 +24,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(FriendKey.class)
 public class FriendEntity extends BaseEntity {
-	@Id
-	@Column(name = "user_id", columnDefinition = "BINARY(16)")
-	private UUID userId;
 	@Id
 	@Column(name = "friend_id", columnDefinition = "BINARY(16)")
 	private UUID friendId;
+	@Column(name = "user_id", columnDefinition = "BINARY(16)")
+	private UUID userId;
 	@Column(name = "name", length = 40, nullable = false)
 	private String name;
 	@Column(name = "category", length = 256)
