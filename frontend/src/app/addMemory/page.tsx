@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import SelectButton from '@/components/input/SelectButton';
-import SelectButtonGroup from '@/components/input/SelectButtonGroup';
+import SelectButton from '@/components/input/S2electButton';
+import SelectButtonGroup from '@/components/input/S2electButtonGroup';
 import TextareaInput from '@/components/input/MemoInput';
 
 import { IoMdClose } from 'react-icons/io';
@@ -23,7 +23,7 @@ import PresentInput from '@/components/input/PresentInput';
 import NameInput from '@/components/input/NameInput';
 import RelationInput from '@/components/input/RelationInput';
 import MemoInput from '@/components/input/MemoInput';
-import PictureInput from '@/components/input/PictureInput';
+import PictureInput from '@/components/input/P2ictureInput';
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
   const resetShowMenu = useResetRecoilState(showDropDownMenuState);
