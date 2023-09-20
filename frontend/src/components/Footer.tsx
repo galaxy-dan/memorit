@@ -26,7 +26,7 @@ const footerList = [
 
 export default function Footer() {
   return (
-    <footer className="sticky bottom-0 max-w-md w-full bg-slate-300 flex px-2 items-start gap-2">
+    <footer className="sticky bottom-0 h-[10vh] max-w-md w-full bg-slate-300 flex px-2 items-start gap-2">
       {footerList.map(({ icon, clickedIcon, path, text }) => (
         <FooterItem
           key={path}
