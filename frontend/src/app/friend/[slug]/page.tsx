@@ -9,10 +9,10 @@ import { useState } from 'react';
 import ExampleImage from 'public/example.jpg';
 import { useQuery } from '@tanstack/react-query';
 import { get } from '@/service/api/http';
+import HistoryModal from '@/components/friend/HistoryModal';
+import History from '@/components/friend/History';
 
 export default function FriendDetailPage() {
-  const [isModal, setIsModal] = useState(false);
-
   const { data } = useQuery({
     queryKey: ['friend'],
     queryFn: () => get('/friend/search'),
@@ -64,62 +64,8 @@ export default function FriendDetailPage() {
             />
           </div>
         </div>
-
-        <div className="bg-slate-200 grow rounded-t-xl p-6">
-          <div className="flex justify-between pb-2">
-            <div className="relative">
-              <p className="text-lg font-bold">히스토리</p>
-              <div className="absolute w-[66px] h-2 bg-blue-400 opacity-70 bottom-[0.15rem] " />
-            </div>
-            <p>받은 기억</p>
-          </div>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el) => (
-            <div
-              key={el}
-              onClick={() => setIsModal((prev) => !prev)}
-              className={`flex flex-col ${
-                el % 2 === 1 ? 'items-start' : 'items-end'
-              } my-1`}
-            >
-              <div className="flex flex-col border-2 shadow-md w-64 bg-white rounded-xl text-sm font-bold p-3">
-                <p>결혼식</p>
-                <p>100,000원</p>
-              </div>
-              <p className="text-xs font-medium ml-3 mt-">2023-07-13</p>
-            </div>
-          ))}
-        </div>
+        <History />
       </div>
-      {!isModal && (
-        <div className="fixed bottom-[105px] bg-orange-400 w-screen max-w-md z-30 rounded-t-xl px-7">
-          <div className="flex items-center justify-between my-6">
-            <div
-              className="flex items-center"
-              onClick={() => setIsModal((prev) => !prev)}
-            >
-              <MdClear size="30" />
-            </div>
-            <div className="flex items-center gap-2">
-              <Image src={WriteIcon} alt={'write'} width={'18'} />
-              <Image src={DeleteIcon} alt={'delete'} width={'24'} />
-            </div>
-          </div>
-          <p className="text-xl font-bold">결혼식</p>
-          <p className="text-sm font-medium my-6">200,000원</p>
-          <div className="relative aspect-video rounded-2xl overflow-hidden">
-            <Image
-              src={ExampleImage}
-              alt="example"
-              className="object-cover"
-              fill
-            />
-          </div>
-          <p className="text-xs my-3">2023-07-14</p>
-          <p className="text-xl font-medium my-5">
-            하연이의 결혼식, <br /> 내 결혼식때는 100만원 달라고 해야지
-          </p>
-        </div>
-      )}
     </>
   );
 }
