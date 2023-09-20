@@ -1,5 +1,8 @@
 import React, { ReactNode, useRef, useState } from 'react';
 import { containerCss, iconCss } from './inputCSS';
+import { useRecoilState } from 'recoil';
+import { addMemory } from '@/model/memory';
+import { addMemoryState } from '@/store/memory';
 
 type Props = {
   placeholder?: string;
@@ -7,7 +10,7 @@ type Props = {
 };
 
 export default function TextareaInput({ placeholder, icon }: Props) {
-  const [inputText, setInputText] = useState<string>('');
+  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -16,7 +19,6 @@ export default function TextareaInput({ placeholder, icon }: Props) {
       ref.current.style.height = 'auto';
       ref.current.style.height = ref.current.scrollHeight + 'px';
     }
-    console.log(inputText);
   };
   return (
     <>
@@ -25,11 +27,11 @@ export default function TextareaInput({ placeholder, icon }: Props) {
         <textarea
           className="w-full text-lg"
           placeholder={placeholder}
-          value={inputText}
+          value={memory.memo}
           rows={2}
           ref={ref}
           onChange={(e) => {
-            setInputText(e.target.value);
+            setMemory((prev) => ({...prev,memo:e.target.value}));
             handleResizeHeight();
           }}
           onFocus={() => {
