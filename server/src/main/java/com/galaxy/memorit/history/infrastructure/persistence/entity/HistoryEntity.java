@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.galaxy.memorit.common.entity.BaseEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoryEntity {
+public class HistoryEntity extends BaseEntity {
 	@Id
 	@Column(name = "article_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +46,5 @@ public class HistoryEntity {
 	@Column(name = "image")
 	private String image;
 	@Column(name = "is_given", nullable = false)
-	private Boolean is_given;
+	private Boolean isGiven;
 }
