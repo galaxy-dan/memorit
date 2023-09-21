@@ -1,4 +1,4 @@
-import { addMemory } from '@/model/memory';
+import { addMemoryType } from '@/model/memory';
 import { addMemoryState } from '@/store/memory';
 import { ReactNode, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function MoneyInput({ placeholder, icon, className }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
@@ -36,13 +36,15 @@ export default function MoneyInput({ placeholder, icon, className }: Props) {
       >
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <input
-          type="number"
+          type="text"
           className={`w-full text-lg ${!memory.isMoney && 'text-gray-300'}`}
           placeholder={placeholder}
-          value={memory.money===0?'':memory.money.toString()}
+          value={memory.money === 0 ? '' : memory.money.toString()}
           readOnly={!memory.isMoney}
           onChange={(e) => {
-            let num: number = Number(e.target.value);
+            let num: number = Number(
+              e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'),
+            );
             setMemory((prev) => ({ ...prev, money: num }));
           }}
           onFocus={() => {

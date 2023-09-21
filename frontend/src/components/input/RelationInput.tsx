@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { containerCss, iconCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
 import { addMemoryState } from '@/store/memory';
-import { addMemory } from '@/model/memory';
+import { addMemoryType } from '@/model/memory';
 
 type Props = {
   placeholder?: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function RelationInput({ placeholder, icon, className }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
 
   return (
     <>

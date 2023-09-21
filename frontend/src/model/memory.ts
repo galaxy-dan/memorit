@@ -1,4 +1,6 @@
-export type addMemory = {
+import { Dayjs } from 'dayjs';
+
+export type addMemoryType = {
   isSend: boolean;
   name: string;
   category: string;
@@ -13,9 +15,14 @@ export type addMemory = {
   memo: string;
   imageSrc: string;
   imageName: string;
+  date: Dayjs;
 };
 
-export type showDropDownMenu = {
-  showCategoryMenu : boolean;
-  showNameMenu : boolean;
-}
+export type showMenuType = {
+  showCategoryMenu: boolean;
+  showNameMenu: boolean;
+};
+
+export type showModalType = {
+  showDateMenu: boolean;
+};
