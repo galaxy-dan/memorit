@@ -4,19 +4,6 @@ import { useState } from 'react';
 
 import SelectButton from '@/components/input/SelectButton';
 import SelectButtonGroup from '@/components/input/SelectButtonGroup';
-import TextareaInput from '@/components/input/MemoInput';
-
-import { IoMdClose } from 'react-icons/io';
-import { BsPeople, BsPerson } from 'react-icons/bs';
-import { BiCategory } from 'react-icons/bi';
-import { MdOutlineAttachMoney } from 'react-icons/md';
-import { AiOutlineGift } from 'react-icons/ai';
-import { CgNotes } from 'react-icons/cg';
-
-import { motion } from 'framer-motion';
-import { addMemory, showDropDownMenu } from '@/model/memory';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { addMemoryState, showDropDownMenuState } from '@/store/memory';
 import CategoryInput from '@/components/input/CategoryInput';
 import MoneyInput from '@/components/input/MoneyInput';
 import PresentInput from '@/components/input/PresentInput';
@@ -24,10 +11,24 @@ import NameInput from '@/components/input/NameInput';
 import RelationInput from '@/components/input/RelationInput';
 import MemoInput from '@/components/input/MemoInput';
 import PictureInput from '@/components/input/PictureInput';
+
+import { IoMdClose } from 'react-icons/io';
+import { BsCalendarDate, BsPeople, BsPerson } from 'react-icons/bs';
+import { BiCategory } from 'react-icons/bi';
+import { MdOutlineAttachMoney } from 'react-icons/md';
+import { AiOutlineGift } from 'react-icons/ai';
+import { CgNotes } from 'react-icons/cg';
+
+import { motion } from 'framer-motion';
+import { addMemoryType } from '@/model/memory';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { addMemoryState, showMenuState } from '@/store/memory';
+import DateInput from '@/components/input/DateInput';
+
 export default function AddMemoryPage() {
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
-  const resetShowMenu = useResetRecoilState(showDropDownMenuState);
-  
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const resetShowMenu = useResetRecoilState(showMenuState);
+
   function setSendTrue() {
     setMemory((prev) => ({ ...prev, isSend: true }));
   }
@@ -133,6 +134,7 @@ export default function AddMemoryPage() {
       <NameInput type={'name'} icon={<BsPerson />} placeholder="이름" />
       <RelationInput icon={<BsPeople />} placeholder="관계" />
       <Line />
+      <DateInput icon={<BsCalendarDate />} />
       <MemoInput icon={<CgNotes />} placeholder="메모" />
       <PictureInput />
     </div>
