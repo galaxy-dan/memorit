@@ -37,10 +37,10 @@ public class FriendDynamicQueryRepositoryImpl implements FriendDynamicQueryRepos
 			);
 
 		if(keyword != null){
-			Expression<Integer> sortOrder = new CaseBuilder()
+			NumberExpression<Integer> sortOrder = new CaseBuilder()
 				.when(startsWithName).then(1)
 				.otherwise(0);
-			query.orderBy(new OrderSpecifier<>(Order.DESC, sortOrder),
+			query.orderBy(sortOrder.desc(),
 				orderSpecifier(dto.getSortBy()));
 		}else {
 			query.orderBy(orderSpecifier(dto.getSortBy()));
