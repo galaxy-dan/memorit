@@ -26,7 +26,7 @@ export default function RelationInput({ placeholder, icon, className }: Props) {
           className="w-full text-lg"
           placeholder={placeholder}
           value={memory.relation}
-          disabled={true}
+          readOnly={true}
         />
       </div>
     </>

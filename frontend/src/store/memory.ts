@@ -8,7 +8,6 @@ export const addMemoryState = atom<addMemoryType>({
     isSend: true,
     name: '',
     category: '',
-    nameList: [],
     categoryList: [],
     nameSelected: false,
     categorySelected: false,
