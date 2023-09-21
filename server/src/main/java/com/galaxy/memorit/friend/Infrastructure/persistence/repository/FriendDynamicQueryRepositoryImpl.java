@@ -5,8 +5,13 @@ import java.util.UUID;
 
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -20,13 +25,27 @@ public class FriendDynamicQueryRepositoryImpl implements FriendDynamicQueryRepos
 
 	@Override
 	public List<FriendEntity> findFriendsByDTO(UUID userId, FriendSearchReqDTO dto) {
+		String keyword = dto.getKeyword();
+		Predicate startsWithName = startsWithName(keyword);
+		Predicate containsName = containsName(keyword);
+
 		JPAQuery<FriendEntity> query =jpaQueryFactory.selectFrom(friendEntity)
 			.where(
 				eqUserId(userId),
-				containsName(dto.getKeyword()),
+				containsName,
 				eqCategory(dto.getCategory())
-			)
-			.orderBy(orderSpecifier(dto.getSortBy()));
+			);
+
+		if(keyword != null){
+			Expression<Integer> sortOrder = new CaseBuilder()
+				.when(startsWithName).then(1)
+				.otherwise(0);
+			query.orderBy(new OrderSpecifier<>(Order.DESC, sortOrder),
+				orderSpecifier(dto.getSortBy()));
+		}else {
+			query.orderBy(orderSpecifier(dto.getSortBy()));
+		}
+
 
 		Integer dataSize = dto.getDataSize();
 		if(dataSize != null){
@@ -39,6 +58,10 @@ public class FriendDynamicQueryRepositoryImpl implements FriendDynamicQueryRepos
 
 	public BooleanExpression eqUserId(UUID userId){
 		return friendEntity.userId.eq(userId);
+	}
+
+	public BooleanExpression startsWithName(String keyword){
+		return keyword == null ? null : friendEntity.name.startsWith(keyword);
 	}
 
 	public BooleanExpression containsName(String keyword){
