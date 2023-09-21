@@ -1,8 +1,8 @@
 import React, { ReactNode, useState } from 'react';
 import { containerCss, iconCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
-import { addMemory, showDropDownMenu } from '@/model/memory';
-import { addMemoryState, showDropDownMenuState } from '@/store/memory';
+import { addMemoryType, showMenuType } from '@/model/memory';
+import { addMemoryState, showMenuState } from '@/store/memory';
 import { motion } from 'framer-motion';
 
 type Props = {
@@ -15,17 +15,17 @@ export default function NameInput({ type, placeholder, icon }: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
-  const [showDropDownMenu, setShowDropDownMenu] = useRecoilState<showDropDownMenu>(showDropDownMenuState);
-  
-  function hideMenu(){
-    setShowDropDownMenu((prev)=>({...prev,showNameMenu: false}))
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const [showMenu, setShowMenu] = useRecoilState<showMenuType>(showMenuState);
+
+  function doHideMenu() {
+    setShowMenu((prev) => ({ ...prev, showNameMenu: false }));
   }
 
-  function showMenu(){
-    setShowDropDownMenu((prev)=>({...prev,showNameMenu: true}))
+  function doShowMenu() {
+    setShowMenu((prev) => ({ ...prev, showNameMenu: true }));
   }
-  
+
   return (
     <>
       <div className={containerCss + ' flex items-center border relative'}>
@@ -44,7 +44,7 @@ export default function NameInput({ type, placeholder, icon }: Props) {
               nameSelected: false,
             }));
             setMemory((prev) => ({ ...prev, nameList: ['1', '2', '3'] }));
-            e.target.value === '' ? hideMenu() : showMenu();
+            e.target.value === '' ? doHideMenu() : doShowMenu();
           }}
           onFocus={() => {
             setIsFocused(true);
@@ -59,11 +59,13 @@ export default function NameInput({ type, placeholder, icon }: Props) {
             setIsTouched(false);
           }}
         />
-        {showDropDownMenu.showNameMenu && (
+        {showMenu.showNameMenu && (
           <div className="w-8/12 rounded-xl bg-white absolute top-12 right-1 z-30 shadow-[0_0_2px_2px_rgba(0,0,0,0.1)]">
             {memory.nameList.map((item, index) => (
               <motion.p
-                className={`text-lg px-5 ${index===0&&"pt-5 rounded-t-xl"} py-3 truncate`}
+                className={`text-lg px-5 ${
+                  index === 0 && 'pt-5 rounded-t-xl'
+                } py-3 truncate`}
                 key={index}
                 onClick={() =>
                   setMemory((prev) => ({
@@ -91,7 +93,7 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                 backgroundColor: '#D0D0D0',
               }}
             >
-              추가 :  &nbsp;&quot;{memory.name}&quot;
+              추가 : &nbsp;&quot;{memory.name}&quot;
             </motion.p>
           </div>
         )}

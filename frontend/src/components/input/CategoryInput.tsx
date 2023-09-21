@@ -1,8 +1,8 @@
 import React, { ReactNode, useState } from 'react';
 import { containerCss, iconCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
-import { addMemory, showDropDownMenu } from '@/model/memory';
-import { addMemoryState, showDropDownMenuState } from '@/store/memory';
+import { addMemoryType, showMenuType } from '@/model/memory';
+import { addMemoryState, showMenuState } from '@/store/memory';
 import { motion } from 'framer-motion';
 
 type Props = {
@@ -15,17 +15,17 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
-  const [showDropDownMenu, setShowDropDownMenu] = useRecoilState<showDropDownMenu>(showDropDownMenuState);
-  
-  function hideMenu(){
-    setShowDropDownMenu((prev)=>({...prev,showCategoryMenu: false}))
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const [showMenu, setShowMenu] = useRecoilState<showMenuType>(showMenuState);
+
+  function doHideMenu() {
+    setShowMenu((prev) => ({ ...prev, showCategoryMenu: false }));
   }
 
-  function showMenu(){
-    setShowDropDownMenu((prev)=>({...prev,showCategoryMenu: true}))
+  function doShowMenu() {
+    setShowMenu((prev) => ({ ...prev, showCategoryMenu: true }));
   }
-  
+
   return (
     <>
       <div className={containerCss + ' flex items-center border relative'}>
@@ -44,7 +44,7 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
               categorySelected: false,
             }));
             setMemory((prev) => ({ ...prev, categoryList: ['1', '2', '3'] }));
-            e.target.value === '' ? hideMenu() : showMenu();
+            e.target.value === '' ? doHideMenu() : doShowMenu();
           }}
           onFocus={() => {
             setIsFocused(true);
@@ -59,11 +59,13 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
             setIsTouched(false);
           }}
         />
-        {showDropDownMenu.showCategoryMenu && (
+        {showMenu.showCategoryMenu && (
           <div className="w-8/12 rounded-xl bg-white absolute top-12 right-1 z-30 shadow-[0_0_2px_2px_rgba(0,0,0,0.1)]">
             {memory.categoryList.map((item, index) => (
               <motion.p
-                className={`text-lg px-5 ${index===0&&"pt-5 rounded-t-xl"} py-3 truncate`}
+                className={`text-lg px-5 ${
+                  index === 0 && 'pt-5 rounded-t-xl'
+                } py-3 truncate`}
                 key={index}
                 onClick={() =>
                   setMemory((prev) => ({
