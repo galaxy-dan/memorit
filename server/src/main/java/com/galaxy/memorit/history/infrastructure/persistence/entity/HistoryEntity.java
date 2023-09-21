@@ -34,9 +34,8 @@ public class HistoryEntity extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
-	private UserJpaEntity user;
+	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	private UUID user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "friend_id", columnDefinition = "BINARY(16)", nullable = false)
