@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRepository;
 import com.galaxy.memorit.history.application.service.HistoryService;
-import com.galaxy.memorit.history.domain.entity.History;
 import com.galaxy.memorit.history.dto.request.HistoryCreateReqDTO;
 import com.galaxy.memorit.history.dto.response.HistoryResDTO;
 import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntity;

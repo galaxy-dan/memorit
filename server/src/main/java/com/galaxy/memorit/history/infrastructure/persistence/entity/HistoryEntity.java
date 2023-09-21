@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import com.galaxy.memorit.common.entity.BaseEntity;
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
-import com.galaxy.memorit.user.infrastructure.persistence.entity.UserJpaEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
