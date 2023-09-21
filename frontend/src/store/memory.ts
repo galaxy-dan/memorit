@@ -1,8 +1,8 @@
-import { addMemory, showDropDownMenu } from '@/model/memory';
+import { addMemoryType, showMenuType, showModalType } from '@/model/memory';
+import dayjs from 'dayjs';
 import { atom } from 'recoil';
 
-
-export const addMemoryState = atom<addMemory>({
+export const addMemoryState = atom<addMemoryType>({
   key: 'addMemory',
   default: {
     isSend: true,
@@ -19,13 +19,21 @@ export const addMemoryState = atom<addMemory>({
     memo: '',
     imageSrc: '',
     imageName: '',
+    date: dayjs(),
   },
 });
 
-export const showDropDownMenuState = atom<showDropDownMenu>({
-  key: 'showDropDownMenu',
-  default:{
+export const showMenuState = atom<showMenuType>({
+  key: 'showMenu',
+  default: {
     showCategoryMenu: false,
-    showNameMenu: false
-  }
-})
+    showNameMenu: false,
+  },
+});
+
+export const showModalState = atom<showModalType>({
+  key: 'showModal',
+  default: {
+    showDateMenu: false,
+  },
+});
