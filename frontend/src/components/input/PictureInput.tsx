@@ -11,7 +11,7 @@ import {
   transitionCss,
   transitionCssSlower,
 } from './inputCSS';
-import { addMemory } from '@/model/memory';
+import { addMemoryType } from '@/model/memory';
 import { useRecoilState } from 'recoil';
 import { addMemoryState } from '@/store/memory';
 
@@ -22,7 +22,7 @@ export default function PictureInput({}: Props) {
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [isButtonTouched, setIsButtonTouched] = useState<boolean>(false);
   const [isCancelButtonTouched, setIsCancelButtonTouched] = useState<boolean>(false);
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
 
   const fileRef = useRef<HTMLInputElement>(null);
 

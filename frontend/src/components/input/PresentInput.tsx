@@ -1,4 +1,4 @@
-import { addMemory } from '@/model/memory';
+import { addMemoryType } from '@/model/memory';
 import { addMemoryState } from '@/store/memory';
 import { ReactNode, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function PresentInput({ placeholder, icon, className }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
 

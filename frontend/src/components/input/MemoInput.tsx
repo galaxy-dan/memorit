@@ -1,7 +1,7 @@
 import React, { ReactNode, useRef, useState } from 'react';
 import { containerCss, iconCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
-import { addMemory } from '@/model/memory';
+import { addMemoryType } from '@/model/memory';
 import { addMemoryState } from '@/store/memory';
 
 type Props = {
@@ -9,8 +9,8 @@ type Props = {
   icon?: ReactNode;
 };
 
-export default function TextareaInput({ placeholder, icon }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemory>(addMemoryState);
+export default function MemoInput({ placeholder, icon }: Props) {
+  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -31,7 +31,7 @@ export default function TextareaInput({ placeholder, icon }: Props) {
           rows={2}
           ref={ref}
           onChange={(e) => {
-            setMemory((prev) => ({...prev,memo:e.target.value}));
+            setMemory((prev) => ({ ...prev, memo: e.target.value }));
             handleResizeHeight();
           }}
           onFocus={() => {
