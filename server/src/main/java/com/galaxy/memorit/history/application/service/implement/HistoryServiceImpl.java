@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.galaxy.memorit.common.exception.AccessRefusedException;
 import com.galaxy.memorit.common.exception.NoSuchFriendException;
 import com.galaxy.memorit.common.exception.NoSuchUserException;
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
@@ -55,13 +56,13 @@ public class HistoryServiceImpl implements HistoryService {
 	@Override
 	public HistoryResDTO getHistory(String userId, long articleId) {
 		UUID userUUID = historyMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		HistoryEntity historyEntity = historyRepository.findById(articleId).orElseThrow();
-		/*if
-		userId랑 history의 userId 일치하는지 확인 필요. 일치하지 않으면 401
 
-		 */
+		if(!historyEntity.getUser().equals(userUUID)){
+			throw new AccessRefusedException();
+		}
 
 		return historyMapper.entityToDTO(historyEntity);
 	}
