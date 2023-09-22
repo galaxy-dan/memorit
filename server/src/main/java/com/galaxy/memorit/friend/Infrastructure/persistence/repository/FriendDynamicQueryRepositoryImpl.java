@@ -5,8 +5,14 @@ import java.util.UUID;
 
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -19,24 +25,43 @@ public class FriendDynamicQueryRepositoryImpl implements FriendDynamicQueryRepos
 
 	@Override
 	public List<FriendEntity> findFriendsByDTO(UUID userId, FriendSearchReqDTO dto) {
-		int dataSize = dto.getDataSize() == null ? 20 : dto.getDataSize();
-		int pageNumber = dto.getPageNumber() == null ? 0 : dto.getPageNumber()-1;
-		int offset = dataSize * pageNumber;
+		String keyword = dto.getKeyword();
+		Predicate startsWithName = startsWithName(keyword);
+		Predicate containsName = containsName(keyword);
 
-		return jpaQueryFactory.selectFrom(friendEntity)
+		JPAQuery<FriendEntity> query =jpaQueryFactory.selectFrom(friendEntity)
 			.where(
 				eqUserId(userId),
-				containsName(dto.getKeyword()),
+				containsName,
 				eqCategory(dto.getCategory())
-			)
-			.offset(offset)
-			.orderBy(orderSpecifier(dto.getSortBy()))
-			.limit(dataSize)
-			.fetch();
+			);
+
+		if(keyword != null){
+			NumberExpression<Integer> sortOrder = new CaseBuilder()
+				.when(startsWithName).then(1)
+				.otherwise(0);
+			query.orderBy(sortOrder.desc(),
+				orderSpecifier(dto.getSortBy()));
+		}else {
+			query.orderBy(orderSpecifier(dto.getSortBy()));
+		}
+
+
+		Integer dataSize = dto.getDataSize();
+		if(dataSize != null){
+			int pageNumber = dto.getPageNumber() == null ? 0 : dto.getPageNumber()-1;
+			int offset = dataSize * pageNumber;
+			query.offset(offset).limit(dataSize);
+		}
+		return query.fetch();
 	}
 
 	public BooleanExpression eqUserId(UUID userId){
 		return friendEntity.userId.eq(userId);
+	}
+
+	public BooleanExpression startsWithName(String keyword){
+		return keyword == null ? null : friendEntity.name.startsWith(keyword);
 	}
 
 	public BooleanExpression containsName(String keyword){
