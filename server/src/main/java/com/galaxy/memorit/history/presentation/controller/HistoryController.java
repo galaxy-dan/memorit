@@ -2,6 +2,7 @@ package com.galaxy.memorit.history.presentation.controller;
 
 import java.net.URI;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class HistoryController {
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		historyService.createHistory(uuid, dto);
 
-		return ResponseEntity.created(URI.create("")).build();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@GetMapping("/{articleId}")
