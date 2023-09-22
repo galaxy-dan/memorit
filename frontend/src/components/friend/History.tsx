@@ -8,7 +8,7 @@ export default function History() {
 
   return (
     <>
-      <div className="bg-slate-200 grow rounded-t-xl p-6">
+      <div className="bg-slate-200 grow rounded-t-xl p-6 snap-start">
         <div className="flex justify-between pb-2">
           <div className="relative">
             <p className="text-lg font-bold">히스토리</p>
@@ -16,7 +16,7 @@ export default function History() {
           </div>
           <p>받은 기억</p>
         </div>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((el) => (
           <div
             key={el}
             onClick={() => setIsModal((prev) => !prev)}

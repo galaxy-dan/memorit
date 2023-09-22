@@ -12,7 +12,7 @@ type Props = {
 export default function HistoryModal({ isModal, setIsModal }: Props) {
   return (
     <>
-      {!isModal && (
+      {isModal && (
         <div className="fixed bottom-[10vh] bg-orange-400 w-screen max-w-md z-30 rounded-t-xl px-7">
           <div className="flex items-center justify-between my-6">
             <div
