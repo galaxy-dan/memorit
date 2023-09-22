@@ -2,6 +2,7 @@ package com.galaxy.memorit.historytype.presentation.controller;
 
 import java.net.URI;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class HistoryTypeController {
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		historyTypeService.registerHistoryType(uuid, dto);
-		return ResponseEntity.created(URI.create("")).build();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@GetMapping

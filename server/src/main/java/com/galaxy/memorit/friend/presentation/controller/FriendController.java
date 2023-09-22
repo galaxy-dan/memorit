@@ -44,7 +44,7 @@ public class FriendController {
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		friendService.registerFriend(uuid, dto);
 
-		return ResponseEntity.created(URI.create("")).build();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@PostMapping("/select")
@@ -56,7 +56,8 @@ public class FriendController {
 		String uuid = "99d7f4dd55244c54a523032169193f40";
 		friendService.registerFriendsFromAddress(uuid, dto);
 
-		return new ResponseEntity<>(new FriendRegisterResDTO(201), HttpStatus.CREATED);
+		return ResponseEntity.status(HttpStatus.CREATED).body(
+			new FriendRegisterResDTO(201));
 	}
 
 	@GetMapping
