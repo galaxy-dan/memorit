@@ -5,20 +5,20 @@ import FooterItem from './FooterItem';
 
 const footerList = [
   {
-    icon: <GoHome size="50" />,
-    clickedIcon: <GoHomeFill size="50" />,
+    icon: <GoHome size="40" />,
+    clickedIcon: <GoHomeFill size="40" />,
     path: '/',
     text: '홈',
   },
   {
-    icon: <MdAddCircleOutline size="50" />,
-    clickedIcon: <MdAddCircleOutline size="50" />,
+    icon: <MdAddCircleOutline size="40" />,
+    clickedIcon: <MdAddCircleOutline size="40" />,
     path: '/add',
     text: '기록추가',
   },
   {
-    icon: <MdOutlinePeopleAlt size="50" />,
-    clickedIcon: <MdPeopleAlt size="50" />,
+    icon: <MdOutlinePeopleAlt size="40" />,
+    clickedIcon: <MdPeopleAlt size="40" />,
     path: '/friend',
     text: '친구',
   },
@@ -26,7 +26,7 @@ const footerList = [
 
 export default function Footer() {
   return (
-    <footer className="sticky bottom-0 h-[10vh] max-w-md w-full bg-slate-300 flex px-2 items-start gap-2">
+    <footer className="fixed bottom-0 h-[10vh] max-w-md w-full bg-slate-300 flex px-2 items-start gap-2">
       {footerList.map(({ icon, clickedIcon, path, text }) => (
         <FooterItem
           key={path}
