@@ -15,9 +15,9 @@ public class ApiResponse<T> {
 //    private final static String SUCCESS_MESSAGE = "SUCCESS";
 //    private final static String NOT_FOUND_MESSAGE = "NOT FOUND";
 //    private final static String FAILED_MESSAGE = "Server got an error.";
-//    private final static String INVALID_ACCESS_TOKEN = "Invalid access token.";
-//    private final static String INVALID_REFRESH_TOKEN = "Invalid refresh token.";
-//    private final static String NOT_EXPIRED_TOKEN_YET = "Not expired token yet.";
+    private final static String INVALID_ACCESS_TOKEN = "Invalid access token.";
+    private final static String INVALID_REFRESH_TOKEN = "Invalid refresh token.";
+    private final static String NOT_EXPIRED_TOKEN_YET = "Not expired token yet.";
 
     private final static int OK = 200;
     private final static int BAD_REQUEST = 400;
@@ -68,7 +68,17 @@ public class ApiResponse<T> {
         return new ApiResponse(new ApiResponseHeader(SERVER_INTERNAL_ERROR, SERVER_INTERNAL_ERROR_MESSAGE), map);
     }
 
+    public static <T> ApiResponse<T> invalidAccessToken() {
+        return new ApiResponse(new ApiResponseHeader(SERVER_INTERNAL_ERROR, INVALID_ACCESS_TOKEN), null);
+    }
 
+    public static <T> ApiResponse<T> invalidRefreshToken() {
+        return new ApiResponse(new ApiResponseHeader(SERVER_INTERNAL_ERROR, INVALID_REFRESH_TOKEN), null);
+    }
+
+    public static <T> ApiResponse<T> notExpiredTokenYet() {
+        return new ApiResponse(new ApiResponseHeader(SERVER_INTERNAL_ERROR, NOT_EXPIRED_TOKEN_YET), null);
+    }
 
 
 }
