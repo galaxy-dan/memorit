@@ -41,7 +41,7 @@ export default function RootLayout({
         <QueryProvider>
           <RecoilProvider>
             <div className="flex flex-col max-w-md min-h-screen mx-auto">
-              <main className="grow">{children}</main>
+              <main className="grow pb-[9.5vh]">{children}</main>
               <Footer />
             </div>
           </RecoilProvider>
