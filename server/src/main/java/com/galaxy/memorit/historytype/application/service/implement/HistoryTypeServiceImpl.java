@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.memorit.common.exception.NoSuchUserException;
 import com.galaxy.memorit.historytype.application.service.HistoryTypeService;
@@ -27,6 +28,7 @@ public class HistoryTypeServiceImpl implements HistoryTypeService {
 	private final BaseHistoryTypeRepository baseHistoryTypeRepository;
 	private final HistoryTypeMapper historyTypeMapper;
 	private final UserRepository userRepository;
+	@Transactional
 	@Override
 	public void registerHistoryType(String userId, HistoryTypeRegisterReqDTO dto) {
 		UUID userUUID = historyTypeMapper.stringToUUID(userId);
@@ -39,6 +41,7 @@ public class HistoryTypeServiceImpl implements HistoryTypeService {
 		userHistoryTypeRepository.save(userHistoryTypeEntity);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public HistoryTypeResDTO getHistoryType(String userId) {
 		UUID userUUID = historyTypeMapper.stringToUUID(userId);

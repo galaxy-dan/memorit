@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.memorit.category.application.service.CategoryService;
 import com.galaxy.memorit.category.dto.request.CategoryRegisterReqDTO;
@@ -26,6 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 	private final BaseCategoryRepository baseCategoryRepository;
 	private final CategoryMapper categoryMapper;
 	private final UserRepository userRepository;
+	@Transactional
 	@Override
 	public void registerCategory(String userId, CategoryRegisterReqDTO dto) {
 		UUID userUUID = categoryMapper.stringToUUID(userId);
@@ -38,6 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
 		userCategoryRepository.save(userCategoryEntity);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public CategoryResDTO getCategory(String userId) {
 		UUID userUUID = categoryMapper.stringToUUID(userId);

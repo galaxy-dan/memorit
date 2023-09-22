@@ -3,6 +3,7 @@ package com.galaxy.memorit.history.application.service.implement;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.memorit.common.exception.NoSuchFriendException;
 import com.galaxy.memorit.common.exception.NoSuchUserException;
@@ -25,6 +26,7 @@ public class HistoryServiceImpl implements HistoryService {
 	private final HistoryMapper historyMapper;
 	private final FriendRepository friendRepository;
 	private final UserRepository userRepository;
+	@Transactional
 	@Override
 	public void createHistory(String userId, HistoryCreateReqDTO dto) {
 		UUID userUUID = historyMapper.stringToUUID(userId);
@@ -49,6 +51,7 @@ public class HistoryServiceImpl implements HistoryService {
 		historyRepository.save(history);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public HistoryResDTO getHistory(String userId, long articleId) {
 		UUID userUUID = historyMapper.stringToUUID(userId);
