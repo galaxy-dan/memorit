@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+    private String providerId;
     private String userId;
     private String nickname;
     private int receivedCount;
@@ -19,8 +20,9 @@ public class User {
 
 
     // 유저 계정 생성
-    public static User create(String userId, String nickname, int receivedCount, int sentCount, int receivedMoney, int sentMoney) {
+    public static User create(String providerId, String userId, String nickname, int receivedCount, int sentCount, int receivedMoney, int sentMoney) {
         return User.builder()
+            .providerId(providerId)
             .userId(userId)
             .nickname(nickname)
             .receivedCount(receivedCount)
@@ -30,7 +32,11 @@ public class User {
             .build();
     }
 
-      // 닉네임 수정
+    public void registerUserInformation(String nickname) {
+        this.nickname = nickname;
+    }
+
+    // 닉네임 수정
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
