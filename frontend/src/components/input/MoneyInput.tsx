@@ -25,13 +25,13 @@ export default function MoneyInput({ placeholder, icon, className }: Props) {
       <input
         id="isMoney"
         type="radio"
-        className="accent-pink-500 w-5 h-5"
+        className="accent-pink-500 w-5 h-5 ml-5"
         checked={memory.isMoney}
         readOnly={true}
       ></input>
       <div
         className={
-          containerCss + ' flex items-center border relative ' + className
+          containerCss + ' first:mx-0 flex items-center border relative ' + className
         }
       >
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
