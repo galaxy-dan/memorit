@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDtoReq {
+    private String providerId;
     private String userId;
     private String nickname;
     private int receivedCount;
@@ -25,4 +26,5 @@ public class UserDtoReq {
         this.receivedMoney = receivedMoney;
         this.sentMoney = sentMoney;
     }
+
 }
