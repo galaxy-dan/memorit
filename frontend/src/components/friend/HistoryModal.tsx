@@ -2,7 +2,7 @@ import { MdClear } from 'react-icons/md';
 import WriteIcon from 'public/icons/write.svg';
 import DeleteIcon from 'public/icons/delete.svg';
 import Image from 'next/image';
-import ExampleImage from 'public/example.jpg';
+import ExampleImage from 'public/images/example.jpg';
 
 type Props = {
   isModal: boolean;
