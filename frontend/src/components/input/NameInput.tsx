@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { containerCss, iconCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
 import { addMemoryType, showMenuType } from '@/model/memory';
@@ -30,15 +30,27 @@ export default function NameInput({ type, placeholder, icon }: Props) {
     queryFn: () => getFriendListByName(memory.name),
   });
 
+  const [nameInput, setNameInput] = useState<string>('');
   const queryClient = useQueryClient();
-
-  function doHideMenu() {
-    setShowMenu((prev) => ({ ...prev, showNameMenu: false }));
-  }
 
   function doShowMenu() {
     setShowMenu((prev) => ({ ...prev, showNameMenu: true }));
   }
+
+  const addFriendAsync = async (name: string, relation: string | null) => {
+    await addFriend(name, relation);
+    queryClient.invalidateQueries({ queryKey: ['friend'] });
+  };
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      return setMemory((prev) => ({
+        ...prev,
+        name: nameInput,
+      }));
+    }, 180);
+    return () => clearTimeout(debounce);
+  }, [nameInput, setMemory]);
 
   return (
     <>
@@ -50,14 +62,13 @@ export default function NameInput({ type, placeholder, icon }: Props) {
             memory.nameSelected ? 'text-black' : 'text-gray-400'
           }`}
           placeholder={placeholder}
-          value={memory.name}
+          value={nameInput}
           onChange={(e) => {
+            setNameInput(e.target.value);
             setMemory((prev) => ({
               ...prev,
-              name: e.target.value,
               nameSelected: false,
             }));
-            e.target.value === '' ? doHideMenu() : doShowMenu();
           }}
           onFocus={() => {
             setIsFocused(true);
@@ -84,13 +95,14 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                   index === 0 && 'pt-5 rounded-t-xl'
                 } py-3 truncate`}
                 key={index}
-                onClick={(e) => {
+                onClick={() => {
                   setMemory((prev) => ({
                     ...prev,
                     name: item.name,
                     nameSelected: true,
                     relation: item.category === null ? '미지정' : item.category,
                   }));
+                  setNameInput(item.name);
                 }}
                 whileTap={{
                   backgroundColor: '#D0D0D0',
@@ -107,8 +119,8 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                     ...prev,
                     nameSelected: true,
                   }));
-                  addFriend(memory.name, null);
-                  queryClient.invalidateQueries({ queryKey: ['friend'] });
+                  setNameInput(memory.name);
+                  addFriendAsync(memory.name, null);
                 }}
                 whileTap={{
                   backgroundColor: '#D0D0D0',
