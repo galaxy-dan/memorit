@@ -21,6 +21,8 @@ public class UserJpaEntity {
     @Id
     @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
+    @Column(name = "provider_id")
+    private String providerId;
     @Column(name = "nickname", length = 16, nullable = false)
     private String nickname;
     @Column(name = "received_count")

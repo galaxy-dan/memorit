@@ -13,4 +13,5 @@ public interface UserRepository extends JpaRepository<UserJpaEntity, UUID> {
     User findByNickname(String nickname);
     User updateNicknameByUserId(UUID userId, String nickname);
 
+    User findByProviderId(String providerId);
 }
