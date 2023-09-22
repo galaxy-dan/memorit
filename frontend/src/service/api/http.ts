@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 const axios = Axios.create({
-  withCredentials: true,
+  // withCredentials: true,
   // headers: {
   // Authorization:
   //   localStorage && localStorage.getItem('accessToken')
