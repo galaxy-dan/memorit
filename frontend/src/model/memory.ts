@@ -12,6 +12,7 @@ export type addMemoryType = {
   present: string;
   relation: string | undefined;
   memo: string;
+  imageFile: File | null;
   imageSrc: string;
   imageName: string;
   date: Dayjs;

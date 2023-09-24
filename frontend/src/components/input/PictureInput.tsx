@@ -21,7 +21,8 @@ export default function PictureInput({}: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [isButtonTouched, setIsButtonTouched] = useState<boolean>(false);
-  const [isCancelButtonTouched, setIsCancelButtonTouched] = useState<boolean>(false);
+  const [isCancelButtonTouched, setIsCancelButtonTouched] =
+    useState<boolean>(false);
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -30,17 +31,29 @@ export default function PictureInput({}: Props) {
     fileRef?.current?.click();
   };
 
-  const handleChange = (e: React.ChangeEvent) => {
+  const handleChange = (e: any) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    setMemory((prev) => ({
-      ...prev,
-      imageName: targetFiles[0].name,
-      imageSrc: URL.createObjectURL(targetFiles[0]),
-    }));
+    // 파일 용량이 80kb이하
+    if (targetFiles[0].size < 80000) {
+      setMemory((prev) => ({
+        ...prev,
+        imageName: targetFiles[0].name,
+        imageSrc: URL.createObjectURL(targetFiles[0]),
+        imageFile: e.target.files[0],
+      }));
+    } else { 
+      alert("용량이 커요");
+    }
+    
   };
 
   const handleCancle = () => {
-    setMemory((prev) => ({ ...prev, imageName: '', imageSrc: '' }));
+    setMemory((prev) => ({
+      ...prev,
+      imageName: '',
+      imageSrc: '',
+      imageFile: null,
+    }));
     if (fileRef && fileRef.current) {
       fileRef.current.value = '';
     }
@@ -140,10 +153,16 @@ export default function PictureInput({}: Props) {
                     onClick={handleClick}
                   ></Image>
                   <MdCancel
-                    className={`absolute top-3 right-5 text-4xl ${isCancelButtonTouched&&" text-red-200"} bg-white rounded-full p-0`}
+                    className={`absolute top-3 right-5 text-4xl ${
+                      isCancelButtonTouched && ' text-red-200'
+                    } bg-white rounded-full p-0`}
                     onClick={handleCancle}
-                    onTouchStart={()=>{setIsCancelButtonTouched(true);}}
-                    onTouchEnd={()=>{setIsCancelButtonTouched(false);}}
+                    onTouchStart={() => {
+                      setIsCancelButtonTouched(true);
+                    }}
+                    onTouchEnd={() => {
+                      setIsCancelButtonTouched(false);
+                    }}
                   />
                 </div>
               )}
