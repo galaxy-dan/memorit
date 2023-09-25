@@ -37,8 +37,8 @@ export default function NameInput({ type, placeholder, icon }: Props) {
     setShowMenu((prev) => ({ ...prev, showNameMenu: true }));
   }
 
-  const addFriendAsync = async (name: string, relation: string | null) => {
-    await addFriend(name, relation);
+  const addFriendAsync = async (name: string, category: string | null) => {
+    await addFriend(name, category);
     queryClient.invalidateQueries({ queryKey: ['friend'] });
   };
 
@@ -100,7 +100,7 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                     ...prev,
                     name: item.name,
                     nameSelected: true,
-                    relation: item.category === null ? '미지정' : item.category,
+                    category: item.category === null ? '미지정' : item.category,
                   }));
                   setNameInput(item.name);
                 }}

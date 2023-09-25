@@ -2,11 +2,11 @@
 
 import SelectButton from '@/components/input/SelectButton';
 import SelectButtonGroup from '@/components/input/SelectButtonGroup';
-import CategoryInput from '@/components/input/CategoryInput';
+import TypeInput from '@/components/input/TypeInput';
 import MoneyInput from '@/components/input/MoneyInput';
 import PresentInput from '@/components/input/PresentInput';
 import NameInput from '@/components/input/NameInput';
-import RelationInput from '@/components/input/RelationInput';
+import CategoryInput from '@/components/input/CategoryInput';
 import MemoInput from '@/components/input/MemoInput';
 import PictureInput from '@/components/input/PictureInput';
 
@@ -27,17 +27,14 @@ import Button from '@/components/input/Button';
 
 const Line = () => {
   return <hr className="border border-neutral-300 my-1" />;
-}
+};
 
 import { getS3URL, uploadImage } from '@/service/image';
-
 
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
 
   const resetShowMenu = useResetRecoilState(showMenuState);
-
- 
 
   function setSendTrue() {
     setMemory((prev) => ({ ...prev, isSend: true }));
@@ -47,14 +44,11 @@ export default function AddMemoryPage() {
     setMemory((prev) => ({ ...prev, isSend: false }));
   }
 
-
   const onSubmit = async () => {
-
-    if(memory.imageFile){
+    if (memory.imageFile) {
       const url = await getS3URL(memory.imageName);
       await uploadImage(url, memory.imageFile);
     }
-    
   };
 
   function onCancle() {}
@@ -66,9 +60,9 @@ export default function AddMemoryPage() {
     >
       {/* 상단 탭 부분 */}
       <div className="flex justify-between items-center w-full py-5 px-4">
-        <Button onClick={()=>onCancle} icon={<IoMdClose/>}/>
+        <Button onClick={() => onCancle} icon={<IoMdClose />} />
         <p className="text-[1.65rem]">기억 더하기</p>
-        <Button onClick={()=>onSubmit} text='저장'/>
+        <Button onClick={() => onSubmit} text="저장" />
       </div>
 
       <SelectButtonGroup>
@@ -86,10 +80,10 @@ export default function AddMemoryPage() {
         />
       </SelectButtonGroup>
 
-      <CategoryInput
-        type={'category'}
+      <TypeInput
+        type={'type'}
         icon={<BiCategory />}
-        placeholder="카테고리"
+        placeholder="경조사 타입"
       />
 
       <Line />
@@ -106,7 +100,7 @@ export default function AddMemoryPage() {
       />
       <Line />
       <NameInput type={'name'} icon={<BsPerson />} placeholder="이름" />
-      <RelationInput icon={<BsPeople />} placeholder="관계" />
+      <CategoryInput icon={<BsPeople />} placeholder="카테고리" />
       <Line />
       <DateInput icon={<BsCalendarDate />} />
       <MemoInput icon={<CgNotes />} placeholder="메모" />

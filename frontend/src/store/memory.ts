@@ -7,14 +7,14 @@ export const addMemoryState = atom<addMemoryType>({
   default: {
     isSend: true,
     name: '',
-    category: '',
-    categoryList: [],
+    type: '',
+    typeList: [],
     nameSelected: false,
-    categorySelected: false,
+    typeSelected: false,
     money: 0,
     isMoney: true,
     present: '',
-    relation: '',
+    category: '',
     memo: '',
     imageFile: null,
     imageSrc: '',
@@ -26,7 +26,7 @@ export const addMemoryState = atom<addMemoryType>({
 export const showMenuState = atom<showMenuType>({
   key: 'showMenu',
   default: {
-    showCategoryMenu: false,
+    showTypeMenu: false,
     showNameMenu: false,
   },
 });

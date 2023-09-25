@@ -3,14 +3,14 @@ import { Dayjs } from 'dayjs';
 export type addMemoryType = {
   isSend: boolean;
   name: string;
-  category: string;
-  categoryList: string[];
+  type: string;
+  typeList: string[];
   nameSelected: boolean;
-  categorySelected: boolean;
+  typeSelected: boolean;
   money: number;
   isMoney: boolean;
   present: string;
-  relation: string | undefined;
+  category: string | undefined;
   memo: string;
   imageFile: File | null;
   imageSrc: string;
@@ -19,7 +19,7 @@ export type addMemoryType = {
 };
 
 export type showMenuType = {
-  showCategoryMenu: boolean;
+  showTypeMenu: boolean;
   showNameMenu: boolean;
 };
 
