@@ -1,6 +1,8 @@
 package com.galaxy.memorit.user.dto.response;
 
 import com.galaxy.memorit.user.domain.entity.User;
+import com.galaxy.memorit.user.infrastructure.persistence.entity.UserJpaEntity;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,14 +14,14 @@ import lombok.NoArgsConstructor;
 public class UserDtoRes {
 
     private String providerId;
-    private String userId;
+    private UUID userId;
     private String nickname;
     private int receivedCount;
     private int sentCount;
     private int receivedMoney;
     private int sentMoney;
 
-    public static UserDtoRes from(User user) {
+    public static UserDtoRes from(UserJpaEntity user) {
         return new UserDtoRes(
             user.getProviderId(),
             user.getUserId(),

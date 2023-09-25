@@ -1,6 +1,6 @@
 package com.galaxy.memorit.common.config.security;
 
-import com.galaxy.memorit.common.auth.oauth.token.AuthTokenProvider;
+import com.galaxy.memorit.common.authtemp.token.AuthTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
