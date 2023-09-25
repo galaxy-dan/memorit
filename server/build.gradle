@@ -40,6 +40,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation "org.springframework.boot:spring-boot-starter-actuator"
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	//mapStruct
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'

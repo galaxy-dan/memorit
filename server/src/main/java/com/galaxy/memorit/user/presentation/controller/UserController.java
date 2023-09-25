@@ -5,6 +5,7 @@ import com.galaxy.memorit.user.application.service.UserService;
 import com.galaxy.memorit.user.domain.entity.User;
 import com.galaxy.memorit.user.dto.request.UserDtoReq;
 import com.galaxy.memorit.user.dto.response.UserDtoRes;
+import com.galaxy.memorit.user.infrastructure.persistence.entity.UserJpaEntity;
 import java.net.http.HttpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
@@ -22,13 +24,13 @@ public class UserController {
 
     @GetMapping
     public ApiResponse<UserDtoRes> describeAuthenticatedUser() {
-        User user = userService.getAuthenticatedUser();
+        UserJpaEntity user = userService.getAuthenticatedUser();
         return ApiResponse.ok("user", UserDtoRes.from(user));
     }
 
     @PutMapping
     public ApiResponse<UserDtoRes> registerUserInformation(@RequestBody UserDtoReq requestDto) {
-        User user = userService.registerUserInformation(requestDto);
+        UserJpaEntity user = userService.registerUserInformation(requestDto);
         return ApiResponse.ok("user", UserDtoRes.from(user));
     }
 
