@@ -26,19 +26,17 @@ public class FriendDynamicQueryRepositoryImpl implements FriendDynamicQueryRepos
 	@Override
 	public List<FriendEntity> findFriendsByDTO(UUID userId, FriendSearchReqDTO dto) {
 		String keyword = dto.getKeyword();
-		Predicate startsWithName = startsWithName(keyword);
-		Predicate containsName = containsName(keyword);
 
 		JPAQuery<FriendEntity> query =jpaQueryFactory.selectFrom(friendEntity)
 			.where(
 				eqUserId(userId),
-				containsName,
+				containsName(keyword),
 				eqCategory(dto.getCategory())
 			);
 
 		if(keyword != null){
 			NumberExpression<Integer> sortOrder = new CaseBuilder()
-				.when(startsWithName).then(1)
+				.when(startsWithName(keyword)).then(1)
 				.otherwise(0);
 			query.orderBy(sortOrder.desc(),
 				orderSpecifier(dto.getSortBy()));

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.galaxy.memorit.category.dto.response.CategoryResDTO;
 import com.galaxy.memorit.historytype.application.service.HistoryTypeService;
 import com.galaxy.memorit.historytype.dto.request.HistoryTypeRegisterReqDTO;
+import com.galaxy.memorit.historytype.dto.request.HistoryTypeSearchReqDTO;
 import com.galaxy.memorit.historytype.dto.response.HistoryTypeResDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -34,13 +34,14 @@ public class HistoryTypeController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@GetMapping
-	public ResponseEntity<HistoryTypeResDTO> getHistoryType(Authentication authentication){
+	@GetMapping("/search")
+	public ResponseEntity<HistoryTypeResDTO> searchHistoryType(HistoryTypeSearchReqDTO dto, Authentication authentication){
 		//이게 찐
-		//return ResponseEntity.ok(historyTypeService.getHistoryType(authentication.getName()));
+		//return ResponseEntity.ok(historyTypeService.searchHistoryType(authentication.getName(), dto));
 
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
-		return ResponseEntity.ok(historyTypeService.getHistoryType(uuid));
+		System.out.println(dto.getKeyword());
+		return ResponseEntity.ok(historyTypeService.searchHistoryType(uuid, dto));
 	}
 }
