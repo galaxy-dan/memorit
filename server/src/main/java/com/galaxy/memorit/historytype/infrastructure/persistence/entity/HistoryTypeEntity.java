@@ -15,17 +15,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "userHistoryType")
+@Table(name = "historyType")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserHistoryTypeEntity {
+public class HistoryTypeEntity {
 	@Id
 	@Column(name = "type_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "user_id", columnDefinition = "BINARY(16)")
 	private UUID userId;
 	@Column(name = "type_name", length = 128, nullable = false)
 	private String typeName;
