@@ -41,7 +41,7 @@ public class UserJpaEntity {
     private int receivedMoney;
     @Column(name = "sent_money")
     private int sentMoney;
-    @Temporal(TemporalType.DATE)
+    @Column(name = "withdrawal")
     private boolean withdrawal;
 
 
