@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryResDTO {
-	private String userName;
-	private String friendName;
+	private String articleId;
+	private String friendId;
 	private LocalDate date;
 	private String type;
 	private Integer amount;

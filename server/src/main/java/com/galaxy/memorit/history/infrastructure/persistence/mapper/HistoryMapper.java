@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import com.galaxy.memorit.common.utils.converter.UUIDConverter;
+import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.history.dto.response.HistoryResDTO;
 import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntity;
 
@@ -13,9 +14,8 @@ public interface HistoryMapper extends UUIDConverter {
 
 	default HistoryResDTO entityToDTO(HistoryEntity entity){
 		return HistoryResDTO.builder()
-			//.username(entity.getUser().getNickName())
-			.userName("싸피")
-			.friendName(entity.getFriend().getName())
+			.articleId(String.valueOf(entity.getId()))
+			.friendId(UUIDToHexString(entity.getFriendId()))
 			.date(entity.getDate())
 			.type(entity.getType())
 			.amount(entity.getAmount())
