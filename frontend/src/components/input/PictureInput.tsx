@@ -14,7 +14,7 @@ import {
 import { addMemoryType } from '@/model/memory';
 import { useRecoilState } from 'recoil';
 import { addMemoryState } from '@/store/memory';
-
+import imageCompression from 'browser-image-compression';
 type Props = {};
 
 export default function PictureInput({}: Props) {
@@ -31,19 +31,15 @@ export default function PictureInput({}: Props) {
     fileRef?.current?.click();
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = async (e: any) => {
+
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    // 파일 용량이 80kb이하
-    if (targetFiles[0].size < 80000) {
-      setMemory((prev) => ({
-        ...prev,
-        imageName: targetFiles[0].name,
-        imageSrc: URL.createObjectURL(targetFiles[0]),
-        imageFile: e.target.files[0],
-      }));
-    } else { 
-      alert("용량이 커요");
-    }
+    setMemory((prev) => ({
+      ...prev,
+      imageName: targetFiles[0].name,
+      imageSrc: URL.createObjectURL(targetFiles[0]),
+      imageFile: e.target.files[0],
+    }));
     
   };
 
