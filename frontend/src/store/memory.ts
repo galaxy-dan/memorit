@@ -16,6 +16,7 @@ export const addMemoryState = atom<addMemoryType>({
     present: '',
     relation: '',
     memo: '',
+    imageFile: null,
     imageSrc: '',
     imageName: '',
     date: dayjs(),

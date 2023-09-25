@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import SelectButton from '@/components/input/SelectButton';
 import SelectButtonGroup from '@/components/input/SelectButtonGroup';
 import CategoryInput from '@/components/input/CategoryInput';
@@ -24,10 +22,14 @@ import { addMemoryType } from '@/model/memory';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { addMemoryState, showMenuState } from '@/store/memory';
 import DateInput from '@/components/input/DateInput';
+import { getS3URL, uploadImage } from '@/service/image';
 
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+
   const resetShowMenu = useResetRecoilState(showMenuState);
+
+ 
 
   function setSendTrue() {
     setMemory((prev) => ({ ...prev, isSend: true }));
@@ -41,9 +43,14 @@ export default function AddMemoryPage() {
     return <hr className="border border-neutral-300 my-2" />;
   }
 
-  function onSubmit() {
-    console.log(memory);
-  }
+  const onSubmit = async () => {
+
+    if(memory.imageFile){
+      const url = await getS3URL(memory.imageName);
+      await uploadImage(url, memory.imageFile);
+    }
+    
+  };
 
   function onCancle() {}
 
