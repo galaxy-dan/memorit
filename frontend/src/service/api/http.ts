@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 const axios = Axios.create({
-  withCredentials: true,
+  // withCredentials: true,
   // headers: {
   // Authorization:
   //   localStorage && localStorage.getItem('accessToken')
@@ -67,5 +67,7 @@ export const patch = async (url: string, body?: any) => {
 };
 
 export const getUrl = (path: string) => {
-  return `${process.env.NEXT_PUBLIC_BACKEND_URL}${path}`;
+  const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  console.log(BASE_URL);
+  return `${BASE_URL}${path}`;
 };

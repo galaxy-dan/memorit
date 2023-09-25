@@ -15,7 +15,7 @@ import {
 import { addMemoryType } from '@/model/memory';
 import { useRecoilState } from 'recoil';
 import { addMemoryState } from '@/store/memory';
-
+import imageCompression from 'browser-image-compression';
 type Props = {};
 
 export default function PictureInput({}: Props) {
@@ -32,19 +32,28 @@ export default function PictureInput({}: Props) {
     fileRef?.current?.click();
   };
 
-  const handleChange = (e: React.ChangeEvent) => {
+  const handleChange = async (e: any) => {
+
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
+
+  
     if (targetFiles[0]) {
       setMemory((prev) => ({
         ...prev,
         imageName: targetFiles[0].name,
         imageSrc: URL.createObjectURL(targetFiles[0]),
+        imageFile: e.target.files[0],
       }));
     }
   };
 
   const handleCancle = () => {
-    setMemory((prev) => ({ ...prev, imageName: '', imageSrc: '' }));
+    setMemory((prev) => ({
+      ...prev,
+      imageName: '',
+      imageSrc: '',
+      imageFile: null,
+    }));
     if (fileRef && fileRef.current) {
       fileRef.current.value = '';
     }
