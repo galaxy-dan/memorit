@@ -8,7 +8,9 @@ export function iconCss(cond1: boolean, cond2: boolean): string {
   } ${transitionCss} `;
 }
 
+export const containerMX = 'mx-5';
+
 export const containerCss =
-  'mx-2 px-3 py-2 border rounded-xl bg-white my-[0.65rem]';
+  `${containerMX} px-3 py-2 border rounded-xl bg-white my-[0.5rem]`;
 
 export const innerShadow = 'shadow-[inset_0_0_3px_3px_rgba(0,0,0,0.2)]';

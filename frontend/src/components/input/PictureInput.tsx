@@ -6,6 +6,7 @@ import { RiImageAddFill } from 'react-icons/ri';
 import { MdCancel } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import {
+  containerMX,
   iconCss,
   innerShadow,
   transitionCss,
@@ -34,13 +35,16 @@ export default function PictureInput({}: Props) {
   const handleChange = async (e: any) => {
 
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    setMemory((prev) => ({
-      ...prev,
-      imageName: targetFiles[0].name,
-      imageSrc: URL.createObjectURL(targetFiles[0]),
-      imageFile: e.target.files[0],
-    }));
-    
+
+  
+    if (targetFiles[0]) {
+      setMemory((prev) => ({
+        ...prev,
+        imageName: targetFiles[0].name,
+        imageSrc: URL.createObjectURL(targetFiles[0]),
+        imageFile: e.target.files[0],
+      }));
+    }
   };
 
   const handleCancle = () => {
@@ -56,7 +60,7 @@ export default function PictureInput({}: Props) {
   };
 
   return (
-    <div className="px-2 pb-4 bg-neutral-200">
+    <div className={`${containerMX} pb-4 bg-neutral-200 border`}>
       <div className="relative">
         <div
           className={`px-3 py-2 border border-white rounded-xl bg-white ${
@@ -141,7 +145,7 @@ export default function PictureInput({}: Props) {
               ) : (
                 <div className="px-2 my-4 relative ">
                   <Image
-                    className="mx-auto max-h-72 rounded-2xl"
+                    className={`mx-auto max-h-72 rounded-2xl shadow-sm`}
                     alt="이미지 선택"
                     src={memory.imageSrc}
                     width={400}

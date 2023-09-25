@@ -14,7 +14,7 @@ export default function RelationInput({ placeholder, icon, className }: Props) {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
 
   return (
-    <>
+    <div className="border">
       <div
         className={
           containerCss + ' flex items-center border relative ' + className
@@ -29,6 +29,6 @@ export default function RelationInput({ placeholder, icon, className }: Props) {
           readOnly={true}
         />
       </div>
-    </>
+    </div>
   );
 }

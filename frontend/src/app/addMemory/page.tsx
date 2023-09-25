@@ -22,7 +22,15 @@ import { addMemoryType } from '@/model/memory';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { addMemoryState, showMenuState } from '@/store/memory';
 import DateInput from '@/components/input/DateInput';
+
+import Button from '@/components/input/Button';
+
+const Line = () => {
+  return <hr className="border border-neutral-300 my-1" />;
+}
+
 import { getS3URL, uploadImage } from '@/service/image';
+
 
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
@@ -39,9 +47,6 @@ export default function AddMemoryPage() {
     setMemory((prev) => ({ ...prev, isSend: false }));
   }
 
-  function Line() {
-    return <hr className="border border-neutral-300 my-2" />;
-  }
 
   const onSubmit = async () => {
 
@@ -56,53 +61,15 @@ export default function AddMemoryPage() {
 
   return (
     <div
-      className="bg-neutral-200 w-full min-h-screen pb-16"
+      className="bg-neutral-200 w-full min-h-screen border"
       onClick={resetShowMenu}
     >
       {/* 상단 탭 부분 */}
-      <div className="flex justify-between items-center w-full py-5 px-5">
-        <motion.button
-          className="rounded-full p-1"
-          initial={false}
-          whileTap={{
-            backgroundColor: '#D0D0D0',
-          }}
-          transition={{
-            duration: 0.7,
-            scale: {
-              type: 'spring',
-              damping: 5,
-              stiffness: 100,
-              restDelta: 0.001,
-            },
-          }}
-          onClick={onCancle}
-        >
-          <IoMdClose className="text-2xl" />
-        </motion.button>
-        <p className="text-2xl">기억 더하기</p>
-        <motion.button
-          className="text-red-400 p-1"
-          initial={false}
-          whileTap={{
-            backgroundColor: '#D0D0D0',
-          }}
-          transition={{
-            duration: 0.7,
-            scale: {
-              type: 'spring',
-              damping: 5,
-              stiffness: 100,
-              restDelta: 0.001,
-            },
-          }}
-          onClick={onSubmit}
-        >
-          저장
-        </motion.button>
+      <div className="flex justify-between items-center w-full py-5 px-4">
+        <Button onClick={onCancle} icon={<IoMdClose/>}/>
+        <p className="text-[1.65rem]">기억 더하기</p>
+        <Button onClick={onSubmit} text='저장'/>
       </div>
-
-      {/* 송수신 선택 부분 */}
 
       <SelectButtonGroup>
         <SelectButton

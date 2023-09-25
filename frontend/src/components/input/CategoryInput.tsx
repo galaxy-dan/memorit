@@ -27,8 +27,8 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
   }
 
   return (
-    <>
-      <div className={containerCss + ' flex items-center border relative'}>
+    <div className='border'>
+      <div className={containerCss + ' flex items-center relative'}>
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <input
           type="text"
@@ -98,6 +98,6 @@ export default function CategoryInput({ type, placeholder, icon }: Props) {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
