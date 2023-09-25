@@ -67,5 +67,7 @@ export const patch = async (url: string, body?: any) => {
 };
 
 export const getUrl = (path: string) => {
-  return `${process.env.NEXT_PUBLIC_BACKEND_URL}${path}`;
+  const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  console.log(BASE_URL);
+  return `${BASE_URL}${path}`;
 };
