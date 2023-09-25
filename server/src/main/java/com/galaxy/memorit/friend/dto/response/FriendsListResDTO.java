@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FriendsListResDTO {
+	private long totalPages;
 	private List<FriendInfoDTO> list;
 }

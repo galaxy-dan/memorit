@@ -41,7 +41,7 @@ public class HistoryTypeController {
 
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
-		System.out.println(dto.getKeyword());
+
 		return ResponseEntity.ok(historyTypeService.searchHistoryType(uuid, dto));
 	}
 }

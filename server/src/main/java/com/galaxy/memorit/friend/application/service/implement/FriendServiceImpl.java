@@ -81,7 +81,7 @@ public class FriendServiceImpl implements FriendService {
 			.map(friendMapper::toInfoDTO)
 			.collect(Collectors.toList());
 
-		return new FriendsListResDTO(infoList);
+		return new FriendsListResDTO(1, infoList);
 	}
 
 	@Transactional(readOnly = true)
@@ -172,12 +172,7 @@ public class FriendServiceImpl implements FriendService {
 		UUID userUUID = friendMapper.stringToUUID(userId);
 		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
-		List<FriendEntity> entityList = friendRepository.findFriendsByDTO(userUUID, dto);
-
-		List<FriendInfoDTO> infoList = entityList.stream()
-			.map(friendMapper::toInfoDTO)
-			.collect(Collectors.toList());
-		return new FriendsListResDTO(infoList);
+		return friendRepository.findFriendsByDTO(userUUID, dto);
 	}
 
 }
