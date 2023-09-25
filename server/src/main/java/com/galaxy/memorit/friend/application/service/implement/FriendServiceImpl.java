@@ -139,6 +139,7 @@ public class FriendServiceImpl implements FriendService {
 		friendRepository.deleteAllByFriendsList(friendMapper.stringToUUID(userId), uuidList);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public FriendRankResDTO getFriendsRank(String userId) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
@@ -165,6 +166,7 @@ public class FriendServiceImpl implements FriendService {
 		);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public FriendsListResDTO searchFriends(String userId, FriendSearchReqDTO dto) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
