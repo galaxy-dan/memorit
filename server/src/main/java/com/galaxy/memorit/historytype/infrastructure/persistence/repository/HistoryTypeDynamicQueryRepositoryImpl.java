@@ -20,7 +20,7 @@ public class HistoryTypeDynamicQueryRepositoryImpl implements HistoryTypeDynamic
 	@Override
 	public List<String> searchHistoryTypes(UUID userId, HistoryTypeSearchReqDTO dto) {
 		String keyword = dto.getKeyword();
-		System.out.println(keyword);
+
 		JPAQuery<String> query = jpaQueryFactory.select(historyTypeEntity.typeName)
 			.from(historyTypeEntity)
 			.where(
