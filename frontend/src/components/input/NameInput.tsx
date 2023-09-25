@@ -53,7 +53,7 @@ export default function NameInput({ type, placeholder, icon }: Props) {
   }, [nameInput, setMemory]);
 
   return (
-    <>
+    <div className="border">
       <div className={containerCss + ' flex items-center border relative'}>
         <div className={iconCss(isFocused, isTouched)}>{icon}</div>
         <input
@@ -132,6 +132,6 @@ export default function NameInput({ type, placeholder, icon }: Props) {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -29,7 +29,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
     useState<boolean>(false);
 
   return (
-    <>
+    <div className='border'>
       <div
         className={containerCss + ' flex items-center border file:' + className}
         onClick={() => {
@@ -95,6 +95,6 @@ export default function DateInput({ placeholder, icon, className }: Props) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
