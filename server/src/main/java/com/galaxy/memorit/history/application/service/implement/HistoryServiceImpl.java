@@ -2,6 +2,9 @@ package com.galaxy.memorit.history.application.service.implement;
 
 import java.util.UUID;
 
+import com.galaxy.memorit.history.domain.entity.History;
+import com.galaxy.memorit.user.infrastructure.persistence.entity.UserJpaEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +15,7 @@ import com.galaxy.memorit.common.exception.NoSuchUserException;
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRepository;
 import com.galaxy.memorit.history.application.service.HistoryService;
-import com.galaxy.memorit.history.dto.request.HistoryCreateReqDTO;
+import com.galaxy.memorit.history.dto.request.HistoryReqDTO;
 import com.galaxy.memorit.history.dto.request.HistoryListReqDTO;
 import com.galaxy.memorit.history.dto.response.HistoryListResDTO;
 import com.galaxy.memorit.history.dto.response.HistoryResDTO;
@@ -23,6 +26,8 @@ import com.galaxy.memorit.user.domain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.EntityManager;
+
 @Service
 @RequiredArgsConstructor
 public class HistoryServiceImpl implements HistoryService {
@@ -30,9 +35,12 @@ public class HistoryServiceImpl implements HistoryService {
 	private final HistoryMapper historyMapper;
 	private final FriendRepository friendRepository;
 	private final UserRepository userRepository;
+
+	@Autowired
+	private EntityManager entityManager;
 	@Transactional
 	@Override
-	public void createHistory(String userId, HistoryCreateReqDTO dto) {
+	public void createHistory(String userId, HistoryReqDTO dto) {
 		UUID userUUID = historyMapper.stringToUUID(userId);
 		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
@@ -87,5 +95,53 @@ public class HistoryServiceImpl implements HistoryService {
 		}
 
 		return historyRepository.getHistoriesByDTO(userUUID, dto, friendUUID);
+	}
+
+	@Override
+	public void updateHistory(String userId, Long articleId,HistoryReqDTO dto) {
+		UUID userUUID = historyMapper.stringToUUID(userId);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		Long id = articleId;
+
+
+		// HistoryEntity historyEntity = historyRepository.findById(article_id).orElseThrow(NoSuchHistoryException::new);
+		HistoryEntity history = entityManager.find(HistoryEntity.class, id);
+
+		if (history != null) {
+			if(history.getUserId().equals(userUUID)) {
+				// todo: 추후 friendId만 가져오도록 리펙토링
+				FriendEntity friend = friendRepository.findByFriendIdAndUserId(historyMapper.stringToUUID(dto.getFriendId()), userUUID);
+				if(friend == null){
+					throw new NoSuchFriendException();
+				}
+
+				HistoryEntity modifiedHistory = HistoryEntity.builder()
+						.id(id)
+						.userId(userUUID)
+						.friendId(friend.getFriendId())
+						.date(dto.getDate())
+						.type(dto.getType())
+						.amount(dto.getAmount())
+						.item(dto.getItem())
+						.detail(dto.getDetail())
+						.image(dto.getImage())
+						.given(dto.isGiven())
+						.build();
+				historyRepository.save(modifiedHistory);
+			}
+		}
+		else {
+			throw new NoSuchHistoryException();
+		}
+	}
+
+	@Override
+	public void deleteHistory(String userId, Long articleId) {
+
+		if (entityManager.find(HistoryEntity.class, articleId) != null){
+			historyRepository.deleteById(articleId);
+		} else {
+			throw new NoSuchHistoryException();
+		}
 	}
 }
