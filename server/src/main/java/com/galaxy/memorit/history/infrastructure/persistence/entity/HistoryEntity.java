@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.galaxy.memorit.common.entity.BaseEntity;
@@ -33,7 +32,7 @@ public class HistoryEntity extends BaseEntity {
 	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
 	private UUID userId;
 
-	@JoinColumn(name = "friend_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "friend_id", columnDefinition = "BINARY(16)", nullable = false)
 	private UUID friendId;
 
 	@Column(name = "date", nullable = false)

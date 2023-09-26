@@ -1,8 +1,6 @@
 package com.galaxy.memorit.history.application.service.implement;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +12,7 @@ import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRepository;
 import com.galaxy.memorit.history.application.service.HistoryService;
 import com.galaxy.memorit.history.dto.request.HistoryCreateReqDTO;
+import com.galaxy.memorit.history.dto.request.HistoryListReqDTO;
 import com.galaxy.memorit.history.dto.response.HistoryListResDTO;
 import com.galaxy.memorit.history.dto.response.HistoryResDTO;
 import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntity;
@@ -34,7 +33,7 @@ public class HistoryServiceImpl implements HistoryService {
 	@Override
 	public void createHistory(String userId, HistoryCreateReqDTO dto) {
 		UUID userUUID = historyMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		FriendEntity friend = friendRepository.findByFriendIdAndUserId(historyMapper.stringToUUID(dto.getFriendId()), userUUID);
 		if(friend == null){
@@ -67,28 +66,25 @@ public class HistoryServiceImpl implements HistoryService {
 			throw new AccessRefusedException();
 		}
 
-		return historyMapper.entityToDTO(historyEntity);
+		return historyMapper.entityToResDTO(historyEntity);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
-	public HistoryListResDTO getTotalHistory(String userId, String friendId) {
+	public HistoryListResDTO getTotalHistory(String userId, HistoryListReqDTO dto) {
 		UUID userUUID = historyMapper.stringToUUID(userId);
 		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
-		if(friendId == null){
-			//내 전체 히스토리 반환
-
-			return null;
+		String friendId = dto.getFriendId();
+		UUID friendUUID = null;
+		if(friendId != null) {
+			friendUUID = historyMapper.stringToUUID(friendId);
+			FriendEntity friend = friendRepository.findByFriendIdAndUserId(friendUUID, userUUID);
+			if (friend == null) {
+				throw new NoSuchFriendException();
+			}
 		}
 
-		//친구와의 히스토리 반환
-
-		UUID friendUUID = historyMapper.stringToUUID(friendId);
-		FriendEntity friend = friendRepository.findByFriendIdAndUserId(friendUUID, userUUID);
-		if(friend == null){
-			throw new NoSuchFriendException();
-		}
-
-		return null;
+		return historyRepository.getHistoriesByDTO(userUUID, dto, friendUUID);
 	}
 }

@@ -1,8 +1,5 @@
 package com.galaxy.memorit.history.presentation.controller;
 
-import java.net.URI;
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.galaxy.memorit.history.application.service.HistoryService;
 import com.galaxy.memorit.history.dto.request.HistoryCreateReqDTO;
+import com.galaxy.memorit.history.dto.request.HistoryListReqDTO;
 import com.galaxy.memorit.history.dto.response.HistoryListResDTO;
 import com.galaxy.memorit.history.dto.response.HistoryResDTO;
 
@@ -37,7 +35,7 @@ public class HistoryController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@GetMapping("/{articleId}")
+	@GetMapping("detail/{articleId}")
 	public ResponseEntity<HistoryResDTO> getHistory(@PathVariable long articleId){
 		//이게 찐
 		//historyService.getHistory(authentication.getName(), articleId);
@@ -47,13 +45,13 @@ public class HistoryController {
 		return ResponseEntity.ok(historyService.getHistory(uuid, articleId));
 	}
 
-	@GetMapping("/all/{friendId}")
-	public ResponseEntity<HistoryListResDTO> getTotalHistory(@PathVariable String friendId){
+	@GetMapping("/all")
+	public ResponseEntity<HistoryListResDTO> getTotalHistory(HistoryListReqDTO dto){
 		//이게 찐
-		//historyService.getTotalHistory(authentication.getName(), articleId);
+		//historyService.getTotalHistory(authentication.getName(), dto);
 
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
-		return ResponseEntity.ok(historyService.getTotalHistory(uuid, friendId));
+		return ResponseEntity.ok(historyService.getTotalHistory(uuid, dto));
 	}
 }
