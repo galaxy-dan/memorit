@@ -78,7 +78,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userInfo.getReceivedCount(),
             userInfo.getSentCount(),
             userInfo.getReceivedMoney(),
-            userInfo.getSentMoney()
+            userInfo.getSentMoney(),
+            userInfo.getWithdrawal()
         );
 
         return userRepository.save(user);

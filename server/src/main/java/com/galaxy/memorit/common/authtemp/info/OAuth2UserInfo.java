@@ -21,5 +21,6 @@ public abstract class OAuth2UserInfo {
     public abstract int getSentCount();
     public abstract int getReceivedMoney();
     public abstract int getSentMoney();
+    public abstract boolean getWithdrawal();
 
 }

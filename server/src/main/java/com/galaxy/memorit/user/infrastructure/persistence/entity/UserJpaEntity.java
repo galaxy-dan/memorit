@@ -47,7 +47,7 @@ public class UserJpaEntity {
 
 
     // 유저 계정 생성
-    public static UserJpaEntity create(String providerId, Provider provider, UUID userId, String nickname, int receivedCount, int sentCount, int receivedMoney, int sentMoney) {
+    public static UserJpaEntity create(String providerId, Provider provider, UUID userId, String nickname, int receivedCount, int sentCount, int receivedMoney, int sentMoney, boolean withdrawal) {
         return UserJpaEntity.builder()
             .providerId(providerId)
             .provider(provider)
@@ -57,6 +57,7 @@ public class UserJpaEntity {
             .sentCount(sentCount)
             .receivedMoney(receivedMoney)
             .sentMoney(sentMoney)
+            .withdrawal(withdrawal)
             .build();
     }
 
