@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntity;
 
 @Repository
-public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
+public interface HistoryRepository extends JpaRepository<HistoryEntity, Long>, HistoryDynamicQueryRepository{
+
 }

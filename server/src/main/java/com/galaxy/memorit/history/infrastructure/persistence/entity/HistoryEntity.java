@@ -5,16 +5,12 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.galaxy.memorit.common.entity.BaseEntity;
-import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,11 +30,10 @@ public class HistoryEntity extends BaseEntity {
 	private Long id;
 
 	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
-	private UUID user;
+	private UUID userId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "friend_id", columnDefinition = "BINARY(16)", nullable = false)
-	private FriendEntity friend;
+	@Column(name = "friend_id", columnDefinition = "BINARY(16)", nullable = false)
+	private UUID friendId;
 
 	@Column(name = "date", nullable = false)
 	private LocalDate date;
