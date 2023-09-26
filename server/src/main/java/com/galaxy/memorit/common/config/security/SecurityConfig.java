@@ -2,16 +2,25 @@ package com.galaxy.memorit.common.config.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import com.galaxy.memorit.common.authtemp.exception.RestAuthenticationEntryPoint;
+import com.galaxy.memorit.common.authtemp.handler.OAuth2AuthenticationFailureHandler;
+import com.galaxy.memorit.common.authtemp.handler.OAuth2AuthenticationSuccessHandler;
+import com.galaxy.memorit.common.authtemp.handler.TokenAccessDeniedHandler;
+import com.galaxy.memorit.common.authtemp.repository.OAuth2CookieRepository;
+import com.galaxy.memorit.common.authtemp.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Configuration
 public class SecurityConfig {
 
     @Bean
@@ -19,17 +28,54 @@ public class SecurityConfig {
         return (web) -> web.ignoring().antMatchers("/ignore1", "ignore2");
     }
 
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable();
+//        http
+//            .authorizeHttpRequests((authz) -> authz
+//                //.anyRequest().authenticated()
+//                .anyRequest().permitAll()
+//            )
+//            .httpBasic(withDefaults());
+//        return http.build();
+//    }
+
+    private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
+    private final OAuth2CookieRepository oAuth2CookieRepository;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        
         http
-            .authorizeHttpRequests((authz) -> authz
-                //.anyRequest().authenticated()
-                .anyRequest().permitAll()
-            )
-            .httpBasic(withDefaults());
+                .cors().disable()
+                .csrf().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .logout().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .accessDeniedHandler(tokenAccessDeniedHandler)
+            .and()
+                .oauth2Login()
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorization")
+                .authorizationRequestRepository(oAuth2CookieRepository)
+            .and()
+                .redirectionEndpoint()
+                .baseUri("/*/oauth2/code/*")
+            .and()
+                .userInfoEndpoint()
+                .userService(oAuth2UserService)
+            .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
+
         return http.build();
     }
+
 
 //
 //    private final CorsProperties corsProperties;
