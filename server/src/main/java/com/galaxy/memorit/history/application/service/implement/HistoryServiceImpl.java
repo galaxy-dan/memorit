@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.memorit.common.exception.AccessRefusedException;
 import com.galaxy.memorit.common.exception.NoSuchFriendException;
+import com.galaxy.memorit.common.exception.NoSuchHistoryException;
 import com.galaxy.memorit.common.exception.NoSuchUserException;
 import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
 import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRepository;
@@ -60,7 +61,7 @@ public class HistoryServiceImpl implements HistoryService {
 		UUID userUUID = historyMapper.stringToUUID(userId);
 		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
-		HistoryEntity historyEntity = historyRepository.findById(articleId).orElseThrow();
+		HistoryEntity historyEntity = historyRepository.findById(articleId).orElseThrow(NoSuchHistoryException::new);
 
 		if(!historyEntity.getUserId().equals(userUUID)){
 			throw new AccessRefusedException();
