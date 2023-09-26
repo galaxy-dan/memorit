@@ -1,5 +1,6 @@
 package com.galaxy.memorit.history.infrastructure.persistence.mapper;
 
+import com.galaxy.memorit.history.domain.entity.History;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,6 @@ import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntit
 @Component
 @Mapper(componentModel = "spring")
 public interface HistoryMapper extends UUIDConverter {
-
 	default HistoryResDTO entityToResDTO(HistoryEntity entity){
 		return HistoryResDTO.builder()
 			.articleId(String.valueOf(entity.getId()))
