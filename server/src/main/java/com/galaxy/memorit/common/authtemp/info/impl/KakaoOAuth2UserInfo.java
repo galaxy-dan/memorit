@@ -51,6 +51,11 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
         return 0;
     }
 
+    @Override
+    public boolean getWithdrawal() {
+        return false;
+    }
+
 //    public abstract String getUserId();
 //    public abstract String getNickname();
 //    public abstract int getReceivedCount();

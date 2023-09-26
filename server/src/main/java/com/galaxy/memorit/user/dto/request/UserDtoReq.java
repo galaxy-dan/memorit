@@ -15,16 +15,18 @@ public class UserDtoReq {
     private int sentCount;
     private int receivedMoney;
     private int sentMoney;
+    private boolean withdrawal;
 
     @Builder
     public UserDtoReq(String userId, String nickname, int receivedCount, int sentCount,
-        int receivedMoney, int sentMoney) {
+        int receivedMoney, int sentMoney, boolean withdrawal) {
         this.userId = userId;
         this.nickname = nickname;
         this.receivedCount = receivedCount;
         this.sentCount = sentCount;
         this.receivedMoney = receivedMoney;
         this.sentMoney = sentMoney;
+        this.withdrawal = withdrawal;
     }
 
 }
