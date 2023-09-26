@@ -8,26 +8,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/ignore1", "ignore2");
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // http basic을 통한 인증은 하지 않으므로 설정 해제
+        http.httpBasic().disable();
+        // 기본 Cors 설정은 제외하며, CorsConfigurationSource를 통해 Cors 설정을 제어한다.
+        http.cors();
+        // Rest API 서버 이므로 csrf 관련 설정은 사용하지 않는다.
         http.csrf().disable();
-        http
-            .authorizeHttpRequests((authz) -> authz
-                //.anyRequest().authenticated()
-                .anyRequest().permitAll()
-            )
-            .httpBasic(withDefaults());
+
+        http.authorizeRequests()
+            .anyRequest().permitAll();
+        // http Session을 사용하지 않을 것이므로 Policy를 stateless로 설정한다.
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
 
