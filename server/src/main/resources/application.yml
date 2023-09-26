@@ -131,6 +131,9 @@ jwt:
 #    allowed-headers: '*'
 #    max-age: 3600
 
+
+
+
 server:
   servlet:
     #    context-path: /api

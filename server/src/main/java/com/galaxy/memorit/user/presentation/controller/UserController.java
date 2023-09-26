@@ -35,15 +35,14 @@ public class UserController {
     }
 
     @PutMapping("/update-nickname")
-    public ApiResponse<Boolean> updateNickname(@RequestBody String nickname) {
-        userService.updateNickname(nickname);
-
+    public ApiResponse<Boolean> updateNickname(@RequestBody UserDtoReq requestDto, String nickname) {
+        userService.updateNickname(requestDto, nickname);
         return  ApiResponse.ok("result", true);
     }
 
     @PutMapping("/withdrawal")
-    public ApiResponse<Boolean> updateWithdrawal() {
-        userService.updateWithdrawal();
+    public ApiResponse<Boolean> updateWithdrawal(@RequestBody UserDtoReq requestDto) {
+        userService.updateWithdrawal(requestDto);
 
         return ApiResponse.ok("result", true);
     }
