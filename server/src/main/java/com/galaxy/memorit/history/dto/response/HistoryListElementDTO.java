@@ -11,14 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoryResDTO {
+public class HistoryListElementDTO {
 	private String articleId;
 	private String friendId;
 	private LocalDate date;
 	private String type;
 	private Integer amount;
 	private String item;
-	private String detail;
-	private String image;
 	private boolean given;
 }
