@@ -1,5 +1,6 @@
 package com.galaxy.memorit.user.dto.request;
 
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDtoReq {
     private String providerId;
-    private String userId;
+    private UUID userId;
     private String nickname;
     private int receivedCount;
     private int sentCount;
@@ -18,7 +19,7 @@ public class UserDtoReq {
     private boolean withdrawal;
 
     @Builder
-    public UserDtoReq(String userId, String nickname, int receivedCount, int sentCount,
+    public UserDtoReq(UUID userId, String nickname, int receivedCount, int sentCount,
         int receivedMoney, int sentMoney, boolean withdrawal) {
         this.userId = userId;
         this.nickname = nickname;
