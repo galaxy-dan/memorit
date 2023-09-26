@@ -3,6 +3,7 @@ package com.galaxy.memorit.history.application.service.implement;
 import java.util.UUID;
 
 import com.galaxy.memorit.history.domain.entity.History;
+import com.galaxy.memorit.user.infrastructure.persistence.entity.UserJpaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,6 +137,11 @@ public class HistoryServiceImpl implements HistoryService {
 
 	@Override
 	public void deleteHistory(String userId, Long articleId) {
-		historyRepository.deleteById(articleId);
+
+		if (entityManager.find(HistoryEntity.class, articleId) != null){
+			historyRepository.deleteById(articleId);
+		} else {
+			throw new NoSuchHistoryException();
+		}
 	}
 }
