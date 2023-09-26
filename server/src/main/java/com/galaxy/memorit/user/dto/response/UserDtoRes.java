@@ -20,6 +20,7 @@ public class UserDtoRes {
     private int sentCount;
     private int receivedMoney;
     private int sentMoney;
+    private boolean withdrawal;
 
     public static UserDtoRes from(UserJpaEntity user) {
         return new UserDtoRes(
@@ -29,7 +30,8 @@ public class UserDtoRes {
             user.getReceivedCount(),
             user.getSentCount(),
             user.getReceivedMoney(),
-            user.getSentMoney()
+            user.getSentMoney(),
+            user.isWithdrawal()
         );
     }
 }

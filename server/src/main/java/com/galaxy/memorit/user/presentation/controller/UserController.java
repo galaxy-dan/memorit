@@ -40,4 +40,11 @@ public class UserController {
 
         return  ApiResponse.ok("result", true);
     }
+
+    @PutMapping("/withdrawal")
+    public ApiResponse<Boolean> updateWithdrawal() {
+        userService.updateWithdrawal();
+
+        return ApiResponse.ok("result", true);
+    }
 }

@@ -39,6 +39,12 @@ public class UserService {
         user.updateNickname(nickname);
     }
 
+    @Transactional
+    public void updateWithdrawal() {
+        user.updateWithdraw();
+    }
+
+
     // 닉네임 중복 체크
     // 동기화 기능과 유저간의 상호작용을 추가하면 필요할 듯?
 //    public boolean isRegisteredNickname(String nickname) {
