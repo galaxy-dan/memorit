@@ -38,7 +38,7 @@ public class FriendServiceImpl implements FriendService {
 	public void registerFriend(String userId, FriendRegisterReqDTO dto) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
 		//userId에 해당하는 회원이 존재하지 않을 때 예외 처리
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		FriendEntity friendEntity = FriendEntity.builder()
 			.friendId(UUID.randomUUID())
@@ -55,7 +55,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public void registerFriendsFromAddress(String userId, FriendRegisterFromAddressReqDTO dto) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		List<FriendEntity> list = dto.getNameList().stream()
 				.map(name -> FriendEntity.builder()
@@ -72,7 +72,7 @@ public class FriendServiceImpl implements FriendService {
 	public FriendsListResDTO getFriendsList(String userId) {
 		//byte[]를 UUID로 변경해서 db 조회
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		List<FriendEntity> entityList = friendRepository.findAllByUserId(userUUID);
 
@@ -88,7 +88,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public FriendInfoDTO getFriendInfo(String userId, String friendId) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendMapper.stringToUUID(friendId), userUUID);
 		if(entity == null){
@@ -102,7 +102,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public void updateFriendInfo(String userId, String friendId, FriendUpdateReqDTO dto) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendMapper.stringToUUID(friendId), userUUID);
 		if(entity == null){
@@ -116,7 +116,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public void deleteFriendById(String userId, String friendId) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendMapper.stringToUUID(friendId), userUUID);
 		if(entity == null){
@@ -130,7 +130,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public void deleteFriendsByList(String userId, FriendMultiDeleteReqDTO dto) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		//요청 받은 string list를 uuid list로 변환
 		List<UUID> uuidList = dto.getIdList().stream()
@@ -143,7 +143,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public FriendRankResDTO getFriendsRank(String userId) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		Pageable pageable = PageRequest.of(0,1);
 
@@ -170,7 +170,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public FriendsListResDTO searchFriends(String userId, FriendSearchReqDTO dto) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		return friendRepository.findFriendsByDTO(userUUID, dto);
 	}
