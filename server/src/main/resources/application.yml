@@ -119,17 +119,20 @@ spring:
         jdbc:
           batch_size: 100
 
-  jwt:
-    header: Authorization
-    secret: ${JWT_SECRET_KEY}
-    access-token-expire: ${ACCESS_TOKEN_EXPIRE}
-    refresh-token-expire: ${REFRESH_TOKEN_EXPIRE}
+jwt:
+  header: Authorization
+  secret: ${JWT_SECRET_KEY}
+  access-token-expire: ${ACCESS_TOKEN_EXPIRE}
+  refresh-token-expire: ${REFRESH_TOKEN_EXPIRE}
 
 #  cors:
 #    allowed-origins: '*'
 #    allowed-methods: '*'
 #    allowed-headers: '*'
 #    max-age: 3600
+
+
+
 
 server:
   servlet:
@@ -183,11 +186,11 @@ spring:
           jdbc:
             batch_size: 100
 
-    jwt:
-      header: Authorization
-      secret: ${JWT_SECRET_KEY}
-      access-token-expire: ${ACCESS_TOKEN_EXPIRE}
-      refresh-token-expire: ${REFRESH_TOKEN_EXPIRE}
+jwt:
+  header: Authorization
+  secret: ${JWT_SECRET_KEY}
+  access-token-expire: ${ACCESS_TOKEN_EXPIRE}
+  refresh-token-expire: ${REFRESH_TOKEN_EXPIRE}
 
 #    cors:
 #      allowed-origins: '*'
@@ -246,11 +249,11 @@ spring:
           jdbc:
             batch_size: 100
 
-    jwt:
-      header: Authorization
-      secret: ${JWT_SECRET_KEY}
-      access-token-expire: ${ACCESS_TOKEN_EXPIRE}
-      refresh-token-expire: ${REFRESH_TOKEN_EXPIRE}
+jwt:
+  header: Authorization
+  secret: ${JWT_SECRET_KEY}
+  access-token-expire: ${ACCESS_TOKEN_EXPIRE}
+  refresh-token-expire: ${REFRESH_TOKEN_EXPIRE}
 
 #    cors:
 #      allowed-origins: '*'
