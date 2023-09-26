@@ -15,17 +15,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "userCategory")
+@Table(name = "category")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCategoryEntity {
+public class CategoryEntity {
 	@Id
 	@Column(name = "category_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "user_id", columnDefinition = "BINARY(16)")
 	private UUID userId;
 	@Column(name = "category_name", length = 128, nullable = false)
 	private String categoryName;

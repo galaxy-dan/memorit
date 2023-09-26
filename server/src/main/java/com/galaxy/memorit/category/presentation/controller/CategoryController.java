@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.galaxy.memorit.category.application.service.CategoryService;
 import com.galaxy.memorit.category.dto.request.CategoryRegisterReqDTO;
+import com.galaxy.memorit.category.dto.request.CategorySearchReqDTO;
 import com.galaxy.memorit.category.dto.response.CategoryResDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -34,12 +35,12 @@ public class CategoryController {
 	}
 
 	@GetMapping
-	public ResponseEntity<CategoryResDTO> getCategory(Authentication authentication){
+	public ResponseEntity<CategoryResDTO> searchCategory(CategorySearchReqDTO dto, Authentication authentication){
 		//이게 찐
-		//return ResponseEntity.ok(categoryService.getCategory(authentication.getName()));
+		//return ResponseEntity.ok(categoryService.searchCategory(authentication.getName()));
 
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
-		return ResponseEntity.ok(categoryService.getCategory(uuid));
+		return ResponseEntity.ok(categoryService.searchCategory(uuid, dto));
 	}
 }

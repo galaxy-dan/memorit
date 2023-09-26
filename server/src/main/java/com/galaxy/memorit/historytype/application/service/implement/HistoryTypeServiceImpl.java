@@ -28,7 +28,7 @@ public class HistoryTypeServiceImpl implements HistoryTypeService {
 	@Override
 	public void registerHistoryType(String userId, HistoryTypeRegisterReqDTO dto) {
 		UUID userUUID = historyTypeMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		HistoryTypeEntity historyTypeEntity = HistoryTypeEntity.builder()
 			.userId(userUUID)
@@ -41,7 +41,7 @@ public class HistoryTypeServiceImpl implements HistoryTypeService {
 	@Override
 	public HistoryTypeResDTO searchHistoryType(String userId, HistoryTypeSearchReqDTO dto) {
 		UUID userUUID = historyTypeMapper.stringToUUID(userId);
-		userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
+		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
 		List<String> typeList = historyTypeRepository.searchHistoryTypes(userUUID, dto);
 		return new HistoryTypeResDTO(typeList);
