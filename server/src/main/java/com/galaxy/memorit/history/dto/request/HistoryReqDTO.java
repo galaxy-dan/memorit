@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoryCreateReqDTO {
+public class HistoryReqDTO {
 	private String friendId;
 	private LocalDate date;
 	private String type;
