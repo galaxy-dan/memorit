@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserJpaEntity user;    // 인텔리제이 버그??
 
     public UserJpaEntity getAuthenticatedUser() {
         String username = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
@@ -36,12 +35,12 @@ public class UserService {
     @Transactional
     public void updateNickname(String nickname) {
 //        User user = getAuthenticatedUser();
-        user.updateNickname(nickname);
+        //user.updateNickname(nickname);
     }
 
     @Transactional
     public void updateWithdrawal() {
-        user.updateWithdraw();
+        //user.updateWithdraw();
     }
 
 
