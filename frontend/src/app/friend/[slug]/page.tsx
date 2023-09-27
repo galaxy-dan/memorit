@@ -70,13 +70,13 @@ const gradeList = [
 
 const getGrade = (send = 0, receive = 0) => {
   const total = send + receive;
-  return total / 2 > 6 ? 6 : total / 2;
+  return Math.floor(total / 2) > 6 ? 6 : Math.floor(total / 2);
 };
 
 const getGradeExp = (send = 0, receive = 0) => {
-  const total = (send + receive) % 5;
+  const total = (send + receive) % 2;
 
-  return (100 / 5) * total;
+  return (100 / 2) * total;
 };
 
 export default function FriendDetailPage() {
@@ -103,7 +103,7 @@ export default function FriendDetailPage() {
   const gradeIndex = getGrade(friendData?.sentCount, friendData?.receivedCount);
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col grow h-[90vh]">
       <div className="sticky top-0 flex items-center justify-between pt-6 pr-6 bg-white z-10">
         <div className="flex items-center">
           <div onClick={() => router.push('/friend')}>
@@ -158,7 +158,7 @@ export default function FriendDetailPage() {
           />
         </div>
       </div>
-      <History />
+      <History friendId={pathNames.split('/')[2]} />
     </div>
   );
 }

@@ -1,15 +1,32 @@
+'use client';
+
 import { MdClear } from 'react-icons/md';
 import WriteIcon from 'public/icons/write.svg';
 import DeleteIcon from 'public/icons/delete.svg';
 import Image from 'next/image';
 import ExampleImage from 'public/images/example.jpg';
+import { get } from '@/service/api/http';
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import { history, historyDetail } from '@/model/history';
 
 type Props = {
   isModal: boolean;
   setIsModal: Function;
+  articleId: number;
 };
 
-export default function HistoryModal({ isModal, setIsModal }: Props) {
+export default function HistoryModal({
+  isModal,
+  setIsModal,
+  articleId,
+}: Props) {
+  const { data: historyData }: UseQueryResult<historyDetail> = useQuery({
+    queryKey: ['history', articleId],
+    queryFn: () => get(`/history/detail/${articleId}`),
+    refetchInterval: 5000,
+    enabled: !!articleId,
+  });
+
   return (
     <>
       {isModal && (
@@ -26,20 +43,18 @@ export default function HistoryModal({ isModal, setIsModal }: Props) {
               <Image src={DeleteIcon} alt={'delete'} width={'24'} />
             </div>
           </div>
-          <p className="text-xl font-bold">결혼식</p>
-          <p className="text-sm font-medium my-6">200,000원</p>
+          <p className="text-xl font-bold">{historyData?.type}</p>
+          <p className="text-sm font-medium my-6">{`${historyData?.amount}원`}</p>
           <div className="relative aspect-video rounded-2xl overflow-hidden">
             <Image
-              src={ExampleImage}
+              src={historyData?.image ?? ExampleImage}
               alt="example"
               className="object-cover"
               fill
             />
           </div>
-          <p className="text-xs my-3">2023-07-14</p>
-          <p className="text-xl font-medium my-5">
-            하연이의 결혼식, <br /> 내 결혼식때는 100만원 달라고 해야지
-          </p>
+          <p className="text-xs my-3">{historyData?.date}</p>
+          <p className="text-xl font-medium my-5">{historyData?.detail}</p>
         </div>
       )}
     </>
