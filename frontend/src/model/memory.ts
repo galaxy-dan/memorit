@@ -4,7 +4,6 @@ export type addMemoryType = {
   isSend: boolean;
   name: string;
   type: string;
-  typeList: string[];
   nameSelected: boolean;
   typeSelected: boolean;
   money: number;

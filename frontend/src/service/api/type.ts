@@ -5,12 +5,12 @@ export function getTypeList(){
 
 }
 
-export const getTypeListByName = async(name:string) =>{
-    const res = await get(`/friend/search?keyword=${name}`);
+export const getTypeListByName = async(type:string) =>{
+    const res = await get(`/type/search?keyword=${type}`);
     return res;
 }
 
-export const addType = async(name:string, type:string|null) => {
-    const res = await post(`/friend`,{name:name, type: type});
+export const addType = async(type:string) => {
+    const res = await post(`/type`,{typeName:type});
     return res;
 }
