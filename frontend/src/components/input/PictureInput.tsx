@@ -35,7 +35,6 @@ export default function PictureInput({}: Props) {
   const handleChange = async (e: any) => {
 
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
-
   
     if (targetFiles[0]) {
       setMemory((prev) => ({
