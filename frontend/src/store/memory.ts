@@ -1,3 +1,4 @@
+import { errorType } from '@/model/error';
 import { addMemoryType, showMenuType, showModalType } from '@/model/memory';
 import dayjs from 'dayjs';
 import { atom } from 'recoil';
@@ -37,3 +38,15 @@ export const showModalState = atom<showModalType>({
     showDateMenu: false,
   },
 });
+
+export const errorState = atom<errorType>({
+  key: 'error',
+  default:{
+    name : '',
+    type : '',
+    category : '',
+    money : '',
+    present : '',
+    memo : '',
+  }
+})
