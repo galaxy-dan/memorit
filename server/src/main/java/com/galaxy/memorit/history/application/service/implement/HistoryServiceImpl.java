@@ -17,6 +17,7 @@ import com.galaxy.memorit.history.application.service.HistoryService;
 import com.galaxy.memorit.history.dto.request.HistoryReqDTO;
 import com.galaxy.memorit.history.dto.request.HistoryListReqDTO;
 import com.galaxy.memorit.history.dto.response.HistoryListResDTO;
+import com.galaxy.memorit.history.dto.response.HistoryRegisterResDTO;
 import com.galaxy.memorit.history.dto.response.HistoryResDTO;
 import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntity;
 import com.galaxy.memorit.history.infrastructure.persistence.mapper.HistoryMapper;
@@ -39,7 +40,7 @@ public class HistoryServiceImpl implements HistoryService {
 	private EntityManager entityManager;
 	@Transactional
 	@Override
-	public void createHistory(String userId, HistoryReqDTO dto) {
+	public HistoryRegisterResDTO createHistory(String userId, HistoryReqDTO dto) {
 		UUID userUUID = historyMapper.stringToUUID(userId);
 		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
@@ -77,6 +78,8 @@ public class HistoryServiceImpl implements HistoryService {
 		}
 		friendRepository.save(friend);
 		historyRepository.save(history);
+
+		return new HistoryRegisterResDTO(String.valueOf(history.getId()));
 	}
 
 	@Transactional(readOnly = true)
