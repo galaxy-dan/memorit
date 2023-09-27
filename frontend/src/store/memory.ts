@@ -9,7 +9,6 @@ export const addMemoryState = atom<addMemoryType>({
     isSend: true,
     name: '',
     type: '',
-    typeList: [],
     nameSelected: false,
     typeSelected: false,
     money: 0,
