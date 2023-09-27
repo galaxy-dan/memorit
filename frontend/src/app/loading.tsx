@@ -1,7 +1,7 @@
 'use client';
 
 import { CSSProperties } from 'react';
-import GridLoader from 'react-spinners/GridLoader';
+import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader';
 
 const override: CSSProperties = {
   display: 'block',
@@ -11,9 +11,9 @@ const override: CSSProperties = {
 
 export default function Loading() {
   return (
-    <div className="flex h-[60vh] justify-center items-center">
+    <div className="flex h-[100vh] justify-center items-center">
       <div>
-        <GridLoader size={100} color="#4ade80" cssOverride={override} />
+        <ClimbingBoxLoader size={50} color="#4ade80" cssOverride={override} />
       </div>
     </div>
   );
