@@ -19,7 +19,7 @@ export function getS3URL(name: string) {
     Expires: 60 * 60 * 3,
   });
 
-  return url.split('?')[0];
+  return url;
 }
 
 export function uploadImage(url: string, file: File) {
@@ -39,22 +39,21 @@ export function uploadImage(url: string, file: File) {
     });
 }
 
-export async function compressImage(originImage: File){
+export async function compressImage(originImage: File) {
+  let image = originImage;
 
-    let image = originImage;
-
-    if (image) {
-        // 파일 용량이 800kb이상은 압축
-        if (image.size > 800000) {
-          image = await imageCompression(image, {
-            maxSizeMB: 0.8,
-            alwaysKeepResolution: true,
-            maxWidthOrHeight: 600,
-          });
-        }
-        console.log(image.size +" vs " + originImage.size );
-  
-        return image;
+  if (image) {
+    // 파일 용량이 800kb이상은 압축
+    if (image.size > 800000) {
+      image = await imageCompression(image, {
+        maxSizeMB: 0.8,
+        alwaysKeepResolution: true,
+        maxWidthOrHeight: 600,
+      });
     }
-    return originImage;
+    console.log(image.size + ' vs ' + originImage.size);
+
+    return image;
+  }
+  return originImage;
 }
