@@ -9,6 +9,7 @@ import com.galaxy.memorit.history.application.service.HistoryService;
 import com.galaxy.memorit.history.dto.request.HistoryReqDTO;
 import com.galaxy.memorit.history.dto.request.HistoryListReqDTO;
 import com.galaxy.memorit.history.dto.response.HistoryListResDTO;
+import com.galaxy.memorit.history.dto.response.HistoryRegisterResDTO;
 import com.galaxy.memorit.history.dto.response.HistoryResDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -21,15 +22,14 @@ public class HistoryController {
 	private final HistoryService historyService;
 
 	@PostMapping
-	public ResponseEntity<Void> createHistory(@RequestBody HistoryReqDTO dto){
+	public ResponseEntity<HistoryRegisterResDTO> createHistory(@RequestBody HistoryReqDTO dto){
 		//이게 찐
 		//historyService.createHistory(authentication.getName(), dto);
 
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
-		historyService.createHistory(uuid, dto);
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(historyService.createHistory(uuid, dto));
 	}
 
 	@GetMapping("/detail/{articleId}")
