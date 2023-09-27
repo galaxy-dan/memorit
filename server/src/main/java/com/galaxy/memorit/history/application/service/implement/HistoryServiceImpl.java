@@ -71,7 +71,8 @@ public class HistoryServiceImpl implements HistoryService {
 				friend.updateSentMoney(friend.getSentMoney() + dto.getAmount());
 			}
 		}
-		if(friend.getRecentDate().isBefore(dto.getDate())) {
+
+		if(friend.getRecentDate() == null || friend.getRecentDate().isBefore(dto.getDate())) {
 			friend.updateRecentDate(dto.getDate());
 		}
 		friendRepository.save(friend);
