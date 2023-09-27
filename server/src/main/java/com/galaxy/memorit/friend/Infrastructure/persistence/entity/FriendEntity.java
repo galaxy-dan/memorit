@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -54,7 +53,20 @@ public class FriendEntity extends BaseEntity {
 		this.category = newCategory;
 	}
 
-	public void updateRecentDate(){
-		this.recentDate = LocalDate.now();
+	public void updateRecentDate(LocalDate recentDate){
+		this.recentDate = recentDate;
+	}
+
+	public void updateReceivedCount(int value){
+		this.receivedCount = value;
+	}
+	public void updateSentCount(int value){
+		this.sentCount = value;
+	}
+	public void updateReceivedMoney(int value){
+		this.receivedMoney = value;
+	}
+	public void updateSentMoney(int value){
+		this.sentMoney = value;
 	}
 }
