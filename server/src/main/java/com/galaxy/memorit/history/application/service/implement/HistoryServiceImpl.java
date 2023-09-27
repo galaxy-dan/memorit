@@ -1,9 +1,8 @@
 package com.galaxy.memorit.history.application.service.implement;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
-import com.galaxy.memorit.history.domain.entity.History;
-import com.galaxy.memorit.user.infrastructure.persistence.entity.UserJpaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +59,22 @@ public class HistoryServiceImpl implements HistoryService {
 			.image(dto.getImage())
 			.given(dto.isGiven())
 			.build();
+
+		if(dto.isGiven()){
+			friend.updateReceivedCount(friend.getReceivedCount()+1);
+			if(dto.getAmount() != null) {
+				friend.updateReceivedMoney(friend.getReceivedMoney() + dto.getAmount());
+			}
+		}else{
+			friend.updateSentCount(friend.getSentCount()+1);
+			if(dto.getAmount() != null) {
+				friend.updateSentMoney(friend.getSentMoney() + dto.getAmount());
+			}
+		}
+		if(friend.getRecentDate().isBefore(dto.getDate())) {
+			friend.updateRecentDate(dto.getDate());
+		}
+		friendRepository.save(friend);
 		historyRepository.save(history);
 	}
 
@@ -137,11 +152,35 @@ public class HistoryServiceImpl implements HistoryService {
 
 	@Override
 	public void deleteHistory(String userId, Long articleId) {
-
-		if (entityManager.find(HistoryEntity.class, articleId) != null){
-			historyRepository.deleteById(articleId);
-		} else {
-			throw new NoSuchHistoryException();
+		HistoryEntity history = historyRepository.findById(articleId).orElseThrow(NoSuchHistoryException::new);
+		UUID userUUID = history.getUserId();
+		UUID friendUUID = history.getFriendId();
+		if(!userUUID.equals(historyMapper.stringToUUID(userId))){
+			throw new AccessRefusedException();
 		}
+
+		FriendEntity friend = friendRepository.findByFriendIdAndUserId(friendUUID, userUUID);
+
+		if(friend == null) {
+			throw new NoSuchFriendException();
+		}
+
+		if(history.isGiven()){
+			friend.updateReceivedCount(friend.getReceivedCount()-1);
+			if(history.getAmount() != null) {
+				friend.updateReceivedMoney(friend.getReceivedMoney() - history.getAmount());
+			}
+		}else{
+			friend.updateSentCount(friend.getSentCount()-1);
+			if(history.getAmount() != null) {
+				friend.updateSentMoney(friend.getSentMoney() - history.getAmount());
+			}
+		}
+
+		historyRepository.deleteById(articleId);
+
+		LocalDate recentDate = historyRepository.findRecentDate(userUUID,friendUUID);
+		friend.updateRecentDate(recentDate);
+		friendRepository.save(friend);
 	}
 }
