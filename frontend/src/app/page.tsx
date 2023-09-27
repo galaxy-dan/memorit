@@ -1,17 +1,12 @@
-"use client"
+'use client';
 
 import History from '@/components/friend/History';
-import { get } from '@/service/api/http';
-import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
+import { useState } from 'react';
 import { FaAnglesDown } from 'react-icons/fa6';
 
 export default function Home() {
-  const { data} = useQuery({
-    queryKey: ['history'],
-    queryFn: () => get('/history'),
-    refetchInterval: 5000,
-  });
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPeople, setTotalPeople] = useState(0);
 
   return (
     <div className="snap-y snap-mandatory h-[90vh] overflow-scroll scrollbar-hide">
@@ -21,8 +16,8 @@ export default function Home() {
         <div className="flex flex-col text-4xl font-bold gap-8">
           <p>김싸피님은</p>
           <div className="text-5xl">
-            <p className="inline text-blue-500">123</p>명과{' '}
-            <p className="inline text-blue-500">79</p>번의
+            <p className="inline text-blue-500">{totalPeople}</p>명과{' '}
+            <p className="inline text-blue-500">{totalCount}</p>번의
           </div>
           <p>기억을 나눴어요.</p>
         </div>
@@ -31,7 +26,7 @@ export default function Home() {
           <FaAnglesDown size="25" />
         </div>
       </div>
-      <History />
+      <History friendId={null} setTotalCount={setTotalCount} setTotalPeople={setTotalPeople} />
     </div>
   );
 }
