@@ -1,4 +1,4 @@
-package com.galaxy.memorit.common.authtemp.config;
+package com.galaxy.memorit.common.config.security;
 
 import java.util.ArrayList;
 import java.util.List;
