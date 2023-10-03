@@ -25,6 +25,7 @@ export default function PictureInput({}: Props) {
   const [isCancelButtonTouched, setIsCancelButtonTouched] =
     useState<boolean>(false);
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const [imageSrc, setImageSrc] = useState<string>('');
 
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -40,19 +41,19 @@ export default function PictureInput({}: Props) {
       setMemory((prev) => ({
         ...prev,
         imageName: targetFiles[0].name,
-        imageSrc: URL.createObjectURL(targetFiles[0]),
         imageFile: e.target.files[0],
       }));
     }
+    setImageSrc(URL.createObjectURL(targetFiles[0]));
   };
 
   const handleCancle = () => {
     setMemory((prev) => ({
       ...prev,
       imageName: '',
-      imageSrc: '',
       imageFile: null,
     }));
+    setImageSrc('');
     if (fileRef && fileRef.current) {
       fileRef.current.value = '';
     }
@@ -146,7 +147,7 @@ export default function PictureInput({}: Props) {
                   <Image
                     className={`mx-auto max-h-72 rounded-2xl shadow-sm`}
                     alt="이미지 선택"
-                    src={memory.imageSrc}
+                    src={imageSrc}
                     width={400}
                     height={200}
                     onClick={handleClick}

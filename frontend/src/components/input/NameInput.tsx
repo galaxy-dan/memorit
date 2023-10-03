@@ -36,12 +36,15 @@ export default function NameInput({ type, placeholder, icon }: Props) {
   const queryClient = useQueryClient();
 
   const [error, setError] = useRecoilState<errorType>(errorState);
+  
+
 
   function doShowMenu() {
     setShowMenu((prev) => ({ ...prev, showNameMenu: true }));
   }
 
   const addFriendAsync = async (name: string, category: string | null) => {
+    // 여기서 추가한 친구 ID 받기
     await addFriend(name, category);
     queryClient.invalidateQueries({ queryKey: ['friend'] });
   };
@@ -76,7 +79,6 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                 ...prev,
                 nameSelected: false,
               }));
-              console.log("key down!");
             }}
             onFocus={() => {
               setIsFocused(true);
@@ -111,8 +113,8 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                       nameSelected: true,
                       category:
                       item.category === null ? '미지정' : item.category,
+                      friendID: item.friendId
                     }));
-                    console.log("?"+memory.nameSelected);
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',
@@ -129,9 +131,9 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                       ...prev,
                       nameSelected: true,
                     }));
-                    console.log("?"+memory.nameSelected);
                     setNameInput(memory.name);
                     addFriendAsync(memory.name, null);
+                    // 여기서 받은 ID로 설정하기
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',
