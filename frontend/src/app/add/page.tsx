@@ -196,7 +196,7 @@ export default function AddMemoryPage() {
   return (
     <div>
       <div
-        className="bg-neutral-200 w-full min-h-screen border fixed z-10"
+        className="bg-neutral-200 border fixed z-10 w-full h-screen overflow-y-auto"
         onClick={resetShowMenu}
       >
         {/* 상단 탭 부분 */}
