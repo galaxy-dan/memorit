@@ -22,9 +22,10 @@ export function getS3URL(name: string) {
   return url;
 }
 
-export function uploadImage(url: string, file: File) {
+export function uploadImage(url: string, file: File): boolean {
+  const compressedFile = compressImage(file);
   axios
-    .put(url, file, {
+    .put(url, compressedFile, {
       headers: {
         'Content-Type': 'image/png', // 업로드할 파일의 콘텐츠 유형 지정
       },
@@ -37,6 +38,7 @@ export function uploadImage(url: string, file: File) {
       error;
       return false;
     });
+  return true;
 }
 
 export async function compressImage(originImage: File) {
@@ -51,8 +53,6 @@ export async function compressImage(originImage: File) {
         maxWidthOrHeight: 600,
       });
     }
-    console.log(image.size + ' vs ' + originImage.size);
-
     return image;
   }
   return originImage;
