@@ -16,9 +16,9 @@ import { BiCategory } from 'react-icons/bi';
 import { MdOutlineAttachMoney } from 'react-icons/md';
 import { AiOutlineGift } from 'react-icons/ai';
 import { CgNotes } from 'react-icons/cg';
-import { addMemoryType } from '@/model/memory';
+import { addMemoryType, showModalType } from '@/model/memory';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { addMemoryState, errorState, showMenuState } from '@/store/memory';
+import { addMemoryState, errorState, showMenuState, showModalState } from '@/store/memory';
 import DateInput from '@/components/input/DateInput';
 
 import Button from '@/components/input/Button';
@@ -62,7 +62,8 @@ export default function AddMemoryPage() {
 
   const resetShowMenu = useResetRecoilState(showMenuState);
   const resetMemory = useResetRecoilState(addMemoryState);
-  const resetError =  useResetRecoilState(errorState);
+  const resetError = useResetRecoilState(errorState);
+  const [showModal, setShowModal] = useRecoilState<showModalType>(showModalState);
 
   const router = useRouter();
 
@@ -196,7 +197,7 @@ export default function AddMemoryPage() {
   return (
     <div>
       <div
-        className="bg-neutral-200 border fixed z-10 w-full h-screen overflow-y-auto"
+        className={`bg-neutral-200 border fixed z-10 w-full h-screen ${showModal.showDateMenu?"overflow-hidden":"overflow-y-auto"}`}
         onClick={resetShowMenu}
       >
         {/* 상단 탭 부분 */}
