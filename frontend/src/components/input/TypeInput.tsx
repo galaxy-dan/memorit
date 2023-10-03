@@ -80,7 +80,6 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                 ...prev,
                 typeSelected: false,
               }));
-              console.log('key down!');
             }}
             onFocus={() => {
               setIsFocused(true);
@@ -114,7 +113,6 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                       type: item,
                       typeSelected: true,
                     }));
-                    console.log('?' + memory.typeSelected);
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',
@@ -123,7 +121,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                   {item}
                 </motion.p>
               ))}
-              {memory.type !== '' && (
+              {memory.type !== '' && !typeList?.typeList.includes(memory.type) && (
                 <motion.p
                   className="text-lg px-5 pt-3 pb-5 truncate rounded-b-xl"
                   onClick={() => {
@@ -131,7 +129,6 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                       ...prev,
                       typeSelected: true,
                     }));
-                    console.log('?' + memory.typeSelected);
                     setTypeInput(memory.type);
                     addTypeAsync(memory.type);
                   }}
