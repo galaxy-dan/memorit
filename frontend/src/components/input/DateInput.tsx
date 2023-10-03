@@ -17,8 +17,6 @@ type Props = {
   className?: string;
 };
 
-
-
 export default function DateInput({ placeholder, icon, className }: Props) {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [showModal, setShowModal] =
@@ -29,31 +27,35 @@ export default function DateInput({ placeholder, icon, className }: Props) {
   const [date, setDate] = useState<Dayjs>(dayjs());
 
   return (
-    <div className='border'>
-      <div
-        className={containerCss + ' flex items-center border file:' + className}
-        onClick={() => {
-          setShowModal((prev) => ({ ...prev, showDateMenu: true }));
-        }}
-        onTouchStart={() => {
-          setIsTouched(true);
-        }}
-        onTouchEnd={() => {
-          setIsTouched(false);
-        }}
-      >
-        <div className={`${iconCss(isTouched, false)}`}>{icon}</div>
-        <input
-          type="text"
-          className="w-full text-lg"
-          placeholder={placeholder}
-          value={dateToStrKR(date)}
-          readOnly={true}
-        />
+    <>
+      <div className="border">
+        <div
+          className={
+            containerCss + ' flex items-center border file:' + className
+          }
+          onClick={() => {
+            setShowModal((prev) => ({ ...prev, showDateMenu: true }));
+          }}
+          onTouchStart={() => {
+            setIsTouched(true);
+          }}
+          onTouchEnd={() => {
+            setIsTouched(false);
+          }}
+        >
+          <div className={`${iconCss(isTouched, false)}`}>{icon}</div>
+          <input
+            type="text"
+            className="w-full text-lg"
+            placeholder={placeholder}
+            value={dateToStrKR(date)}
+            readOnly={true}
+          />
+        </div>
       </div>
       {showModal.showDateMenu && (
         <div
-          className="w-screen h-full bg-opacity-30 bg-black absolute z-20 top-0 left-0 flex justify-center items-center"
+          className="w-screen h-full bg-opacity-30 bg-black fixed z-20 top-0 left-0 flex justify-center items-center"
           onClick={(e) => {
             setShowModal((prev) => ({ ...prev, showDateMenu: false }));
             e.stopPropagation();
@@ -93,6 +95,6 @@ export default function DateInput({ placeholder, icon, className }: Props) {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
