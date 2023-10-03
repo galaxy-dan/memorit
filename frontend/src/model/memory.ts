@@ -12,9 +12,9 @@ export type addMemoryType = {
   category: string | undefined;
   memo: string;
   imageFile: File | null;
-  imageSrc: string;
   imageName: string;
-  date: Dayjs;
+  date: string;
+  friendID: string;
 };
 
 export type showMenuType = {
@@ -25,3 +25,7 @@ export type showMenuType = {
 export type showModalType = {
   showDateMenu: boolean;
 };
+
+export type postArticle = {
+  articleId: number;
+}

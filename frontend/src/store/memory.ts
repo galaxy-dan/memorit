@@ -1,5 +1,6 @@
 import { errorType } from '@/model/error';
 import { addMemoryType, showMenuType, showModalType } from '@/model/memory';
+import { dateToStr } from '@/service/date';
 import dayjs from 'dayjs';
 import { atom } from 'recoil';
 
@@ -8,6 +9,7 @@ export const addMemoryState = atom<addMemoryType>({
   default: {
     isSend: true,
     name: '',
+    friendID: '',
     type: '',
     nameSelected: false,
     typeSelected: false,
@@ -16,10 +18,9 @@ export const addMemoryState = atom<addMemoryType>({
     present: '',
     category: '',
     memo: '',
+    imageName:'',
     imageFile: null,
-    imageSrc: '',
-    imageName: '',
-    date: dayjs(),
+    date: dateToStr(dayjs()),
   },
 });
 

@@ -23,13 +23,37 @@ import DateInput from '@/components/input/DateInput';
 
 import Button from '@/components/input/Button';
 
+import { getS3URL, uploadImage } from '@/service/image';
+import { useState } from 'react';
+import { errorType } from '@/model/error';
+import { addMemory, editMemory } from '@/service/api/memory';
+import { useRouter } from 'next/navigation';
+
+
 const Line = () => {
   return <hr className="border border-neutral-300 my-1" />;
 };
 
-import { getS3URL, uploadImage } from '@/service/image';
-import { useState } from 'react';
-import { errorType } from '@/model/error';
+const inputValid = {
+  type : {
+    minLength: 1,
+    maxLength: 10,
+  },
+  money: {
+    minSize: 1,
+  },
+  present : {
+    minLength: 1,
+    maxLength: 10,
+  },
+  name : {
+    minLength: 1,
+    maxLength: 30,
+  },
+  memo : {
+    maxLength: 40,
+  },
+}
 
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
@@ -37,6 +61,10 @@ export default function AddMemoryPage() {
   const [error, setError] = useRecoilState<errorType>(errorState);
 
   const resetShowMenu = useResetRecoilState(showMenuState);
+  const resetMemory = useResetRecoilState(addMemoryState);
+  const resetError =  useResetRecoilState(errorState);
+
+  const router = useRouter();
 
   function setSendTrue() {
     setMemory((prev) => ({ ...prev, isSend: true }));
@@ -47,43 +75,61 @@ export default function AddMemoryPage() {
   }
 
   const onSubmit = async () => {
+    
     if (!isSubmitting && CheckError()) {
-      console.log(memory);
       try {
         setIsSubmitting(true);
+
+        // 이미지 있을 때
         if (memory.imageFile) {
           // URL을 먼저 받고 백엔드에 관련 파일 올리고
           const url = await getS3URL(memory.imageName);
           // 이후에 이미지를 S3 서버에 전송, 실패하면 백엔드에 실패 및 url 삭제 요청
           const imgUrl = url.split('?')[0];
-          await uploadImage(url, memory.imageFile);
+          const id  = await addMemory(memory, imgUrl);
+          // 업로드 실패 시
+          if (!await uploadImage(url, memory.imageFile)) { 
+            await editMemory(id, memory, null);
+          }
         }
+        // 이미지 없을 때
+        else {
+          await addMemory(memory, null);
+        }
+        resetError();
+        resetMemory();
+        router.push('/');
       } catch {
+        
+      } finally { 
         setIsSubmitting(false);
       }
     }
-    setIsSubmitting(false);
+    
   };
 
-  function onCancle() {}
+  function onCancle() {
+    history.back();
+    resetError();
+    resetMemory();
+  }
 
   function CheckError() {
-    var result = true;
+    let result = true;
     result =CheckType()&& result;
     result =CheckMoney()&& result;
     result =CheckPresent()&& result;
     result =CheckName()&& result;
     result =CheckMemo()&& result;
-
     return result;
   }
 
   function CheckType() {
-    // 타입 : 필수, 1자 이상 20자 이하
-    if (memory.type.length > 20) {
-      setError((prev) => ({ ...prev, type: '최대 글자 수는 20자 입니다.' }));
+    // 타입 : 필수, 1자 이상 10자 이하
+    if (memory.type.length > inputValid.type.maxLength) {
+      setError((prev) => ({ ...prev, type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.` }));
       return false;
-    } else if (memory.type.length == 0) {
+    } else if (memory.type.length < inputValid.type.minLength) {
       setError((prev) => ({ ...prev, type: '타입을 입력해주세요' }));
       return false;
     } else {
@@ -95,7 +141,7 @@ export default function AddMemoryPage() {
   function CheckMoney() {
     // 금액 : 반필수, 100000000원 이하, 1원 이상
     if (memory.isMoney) {
-      if (!memory.money || memory.money === 0) {
+      if (!memory.money || memory.money < inputValid.money.minSize) {
         setError((prev) => ({ ...prev, money: '금액을 입력해주세요' }));
         return false;
       }
@@ -107,13 +153,13 @@ export default function AddMemoryPage() {
   function CheckPresent() {
     // 선물 : 반필수, 20자 이하, 1자 이상
     if (!memory.isMoney) {
-      if (memory.present.length > 20) {
+      if (memory.present.length > inputValid.present.maxLength) {
         setError((prev) => ({
           ...prev,
-          present: '최대 글자 수는 20자 입니다.',
+          present: `최대 글자 수는 ${inputValid.present.maxLength}자 입니다.`,
         }));
         return false;
-      } else if (memory.present.length === 0) {
+      } else if (memory.present.length < inputValid.present.minLength) {
         setError((prev) => ({ ...prev, present: '금액을 입력해주세요' }));
         return false;
       }
@@ -124,11 +170,11 @@ export default function AddMemoryPage() {
 
   function CheckName() {
     // 이름 : 필수, 1자 이상, 20자 이하
-    if (memory.name.length > 20) {
-      setError((prev) => ({ ...prev, name: '최대 글자 수는 20자 입니다.' }));
+    if (memory.name.length > inputValid.name.maxLength) {
+      setError((prev) => ({ ...prev, name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.` }));
       return false;
-    } else if (memory.name.length == 0) {
-      setError((prev) => ({ ...prev, name: '타입을 입력해주세요' }));
+    } else if (memory.name.length == inputValid.name.minLength) {
+      setError((prev) => ({ ...prev, name: '이름을 입력해주세요' }));
       return false;
     } else {
       setError((prev) => ({ ...prev, name: '' }));
@@ -136,21 +182,10 @@ export default function AddMemoryPage() {
     }
   }
 
-  function CheckCategory() {
-    // 메모 : 20자 이하
-    if (memory.category && memory.category.length > 20) {
-      setError((prev) => ({ ...prev, category: '최대 글자 수는 20자 입니다.' }));
-      return false;
-    } else {
-      setError((prev) => ({ ...prev, category: '' }));
-      return true;
-    }
-  }
-
   function CheckMemo() {
     // 메모 : 20자 이하
-    if (memory.memo.length > 20) {
-      setError((prev) => ({ ...prev, memo: '최대 글자 수는 20자 입니다.' }));
+    if (memory.memo.length > inputValid.memo.maxLength) {
+      setError((prev) => ({ ...prev, memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.` }));
       return false;
     } else {
       setError((prev) => ({ ...prev, memo: '' }));
@@ -161,7 +196,7 @@ export default function AddMemoryPage() {
   return (
     <div>
       <div
-        className="bg-neutral-200 w-full min-h-screen border"
+        className="bg-neutral-200 w-full min-h-screen border fixed z-10"
         onClick={resetShowMenu}
       >
         {/* 상단 탭 부분 */}

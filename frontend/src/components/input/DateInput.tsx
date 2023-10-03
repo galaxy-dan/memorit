@@ -9,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import { MdCancel } from 'react-icons/md';
+import { dateToStr, dateToStrKR } from '@/service/date';
 
 type Props = {
   placeholder?: string;
@@ -16,9 +17,7 @@ type Props = {
   className?: string;
 };
 
-function dayjsToString(date: Dayjs) {
-  return dayjs(date).locale('ko').format(`YYYY-MM-DD(ddd)`);
-}
+
 
 export default function DateInput({ placeholder, icon, className }: Props) {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
@@ -27,6 +26,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [isCancelButtonTouched, setIsCancelButtonTouched] =
     useState<boolean>(false);
+  const [date, setDate] = useState<Dayjs>(dayjs());
 
   return (
     <div className='border'>
@@ -47,7 +47,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
           type="text"
           className="w-full text-lg"
           placeholder={placeholder}
-          value={dayjsToString(memory.date)}
+          value={dateToStrKR(date)}
           readOnly={true}
         />
       </div>
@@ -67,12 +67,10 @@ export default function DateInput({ placeholder, icon, className }: Props) {
           >
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
               <DateCalendar
-                value={memory.date}
+                value={date}
                 onChange={(newValue) => {
-                  setMemory((prev) => ({
-                    ...prev,
-                    date: newValue || dayjs(),
-                  }));
+                  setDate(newValue || dayjs());
+                  setMemory((prev) => ({...prev, date:dateToStr(newValue||dayjs())}));
                 }}
                 views={['year', 'month', 'day']}
               ></DateCalendar>
