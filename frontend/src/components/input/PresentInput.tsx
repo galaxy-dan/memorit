@@ -29,9 +29,9 @@ export default function PresentInput({ placeholder, icon, className }: Props) {
       } else if (memory.present && memory.present.length === 0) {
         setError((prev) => ({ ...prev, present: '선물을 입력해주세요' }));
         return false;
-      } 
+      }
     }
-    setError((prev) => ({ ...prev, present: '', money: ''}));
+    setError((prev) => ({ ...prev, present: '', money: '' }));
     return true;
   }
 
@@ -45,6 +45,7 @@ export default function PresentInput({ placeholder, icon, className }: Props) {
         className="flex w-full pl-2 items-center relative"
         onClick={() => {
           setMemory((prev) => ({ ...prev, isMoney: false }));
+          setError((prev) => ({ ...prev, money: '' }));
         }}
         onChange={onChange}
       >
@@ -69,6 +70,7 @@ export default function PresentInput({ placeholder, icon, className }: Props) {
             readOnly={memory.isMoney}
             onChange={(e) => {
               setMemory((prev) => ({ ...prev, present: e.target.value }));
+              setError((prev) => ({ ...prev, present: '', money: '' }));
             }}
             onFocus={() => {
               setIsFocused(true);
