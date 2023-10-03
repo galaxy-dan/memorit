@@ -30,13 +30,15 @@ export default function MemoInput({ placeholder, icon }: Props) {
         <div className={containerCss + ' flex items-start border relative'}>
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <textarea
-            className="w-full text-lg"
+            className="w-full text-l resize-none"
             placeholder={placeholder}
             value={memory.memo}
             rows={2}
+            
             ref={ref}
             onChange={(e) => {
               setMemory((prev) => ({ ...prev, memo: e.target.value }));
+              setError((prev) => ({ ...prev, memo: '' }));
               handleResizeHeight();
             }}
             onFocus={() => {
@@ -53,7 +55,6 @@ export default function MemoInput({ placeholder, icon }: Props) {
             }}
           />
         </div>
-        
       </div>
       <AlertMessage>{error.memo}</AlertMessage>
     </div>

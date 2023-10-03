@@ -76,6 +76,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
             value={typeInput}
             onChange={(e) => {
               setTypeInput(e.target.value);
+              setError((prev) => ({...prev, type:''}));
             }}
             onKeyDown={() => {
               setMemory((prev) => ({

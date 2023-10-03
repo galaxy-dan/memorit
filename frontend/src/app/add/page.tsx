@@ -34,13 +34,14 @@ const Line = () => {
   return <hr className="border border-neutral-300 my-1" />;
 };
 
-const inputValid = {
+export const inputValid = {
   type : {
     minLength: 1,
     maxLength: 10,
   },
   money: {
     minSize: 1,
+    maxSize: 999999999,
   },
   present : {
     minLength: 1,
@@ -116,11 +117,12 @@ export default function AddMemoryPage() {
 
   function CheckError() {
     let result = true;
-    result =CheckType()&& result;
-    result =CheckMoney()&& result;
-    result =CheckPresent()&& result;
-    result =CheckName()&& result;
-    result =CheckMemo()&& result;
+    // 각 함수를 1회씩 무조건 실행해야 함
+    result = CheckType() && result;
+    result = CheckMoney() && result;
+    result = CheckPresent() && result;
+    result = CheckName() && result;
+    result = CheckMemo() && result;
     return result;
   }
 
@@ -129,8 +131,8 @@ export default function AddMemoryPage() {
     if (memory.type.length > inputValid.type.maxLength) {
       setError((prev) => ({ ...prev, type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.` }));
       return false;
-    } else if (memory.type.length < inputValid.type.minLength) {
-      setError((prev) => ({ ...prev, type: '타입을 입력해주세요' }));
+    } else if (!memory.typeSelected || memory.type.length < inputValid.type.minLength) {
+      setError((prev) => ({ ...prev, type: '타입을 선택해주세요' }));
       return false;
     } else {
       setError((prev) => ({ ...prev, type: '' }));
@@ -160,7 +162,7 @@ export default function AddMemoryPage() {
         }));
         return false;
       } else if (memory.present.length < inputValid.present.minLength) {
-        setError((prev) => ({ ...prev, present: '금액을 입력해주세요' }));
+        setError((prev) => ({ ...prev, present: '선물을 입력해주세요' }));
         return false;
       }
     }
@@ -173,8 +175,8 @@ export default function AddMemoryPage() {
     if (memory.name.length > inputValid.name.maxLength) {
       setError((prev) => ({ ...prev, name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.` }));
       return false;
-    } else if (memory.name.length == inputValid.name.minLength) {
-      setError((prev) => ({ ...prev, name: '이름을 입력해주세요' }));
+    } else if (!memory.nameSelected || memory.name.length < inputValid.name.minLength) {
+      setError((prev) => ({ ...prev, name: '친구를 선택해주세요' }));
       return false;
     } else {
       setError((prev) => ({ ...prev, name: '' }));

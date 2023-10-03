@@ -37,7 +37,11 @@ export default function NameInput({ type, placeholder, icon }: Props) {
   const queryClient = useQueryClient();
 
   function doShowMenu() {
-    setShowMenu((prev) => ({ ...prev, showNameMenu: true , showTypeMenu: false}));
+    setShowMenu((prev) => ({
+      ...prev,
+      showNameMenu: true,
+      showTypeMenu: false,
+    }));
   }
 
   const addFriendAsync = async (name: string, category: string | null) => {
@@ -70,8 +74,9 @@ export default function NameInput({ type, placeholder, icon }: Props) {
             value={nameInput}
             onChange={(e) => {
               setNameInput(e.target.value);
+              setError((prev) => ({ ...prev, name: '' }));
             }}
-            onKeyDown={()=>{
+            onKeyDown={() => {
               setMemory((prev) => ({
                 ...prev,
                 nameSelected: false,
@@ -109,8 +114,8 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                       name: item.name,
                       nameSelected: true,
                       category:
-                      item.category === null ? '미지정' : item.category,
-                      friendID: item.friendId
+                        item.category === null ? '미지정' : item.category,
+                      friendID: item.friendId,
                     }));
                   }}
                   whileTap={{

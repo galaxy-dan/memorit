@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { containerCss, iconCss } from './inputCSS';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
+import { inputValid } from '@/app/add/page';
 
 type Props = {
   placeholder?: string;
@@ -19,13 +20,13 @@ export default function MoneyInput({ placeholder, icon, className }: Props) {
 
   const [error, setError] = useRecoilState<errorType>(errorState);
 
-
   return (
     <div>
       <div
         className="flex w-full pl-2 items-center relative"
         onClick={() => {
           setMemory((prev) => ({ ...prev, isMoney: true }));
+          setError((prev) => ({ ...prev, present: '' }));
         }}
       >
         <input
@@ -55,10 +56,11 @@ export default function MoneyInput({ placeholder, icon, className }: Props) {
                   .replace(/[^0-9.]/g, '')
                   .replace(/(\..*)\./g, '$1'),
               );
-              if(num > 100){
-                num = 100;
+              if (num > inputValid.money.maxSize) {
+                num = inputValid.money.maxSize;
               }
               setMemory((prev) => ({ ...prev, money: num }));
+              setError((prev) => ({ ...prev, present: '', money: '' }));
             }}
             onFocus={() => {
               setIsFocused(true);
@@ -73,7 +75,6 @@ export default function MoneyInput({ placeholder, icon, className }: Props) {
               setIsTouched(false);
             }}
           />
-          
         </div>
       </div>
       <AlertMessage>{error.money}</AlertMessage>
