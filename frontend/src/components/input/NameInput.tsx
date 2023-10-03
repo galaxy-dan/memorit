@@ -23,24 +23,21 @@ type Props = {
 export default function NameInput({ type, placeholder, icon }: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
+  const [nameInput, setNameInput] = useState<string>('');
 
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [showMenu, setShowMenu] = useRecoilState<showMenuType>(showMenuState);
+  const [error, setError] = useRecoilState<errorType>(errorState);
 
   const { data: friendList }: UseQueryResult<friendList> = useQuery({
     queryKey: ['friend', memory.name],
     queryFn: () => getFriendListByName(memory.name),
   });
 
-  const [nameInput, setNameInput] = useState<string>('');
   const queryClient = useQueryClient();
 
-  const [error, setError] = useRecoilState<errorType>(errorState);
-  
-
-
   function doShowMenu() {
-    setShowMenu((prev) => ({ ...prev, showNameMenu: true }));
+    setShowMenu((prev) => ({ ...prev, showNameMenu: true , showTypeMenu: false}));
   }
 
   const addFriendAsync = async (name: string, category: string | null) => {
