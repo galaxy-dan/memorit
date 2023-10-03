@@ -27,22 +27,24 @@ type TypeList = {
 export default function TypeInput({ type, placeholder, icon }: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
+  const [typeInput, setTypeInput] = useState<string>('');
 
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [showMenu, setShowMenu] = useRecoilState<showMenuType>(showMenuState);
+  const [error, setError] = useRecoilState<errorType>(errorState);
 
   const { data: typeList }: UseQueryResult<TypeList> = useQuery({
     queryKey: ['type', memory.type],
     queryFn: () => getTypeListByName(memory.type),
   });
 
-  const [typeInput, setTypeInput] = useState<string>('');
   const queryClient = useQueryClient();
 
-  const [error, setError] = useRecoilState<errorType>(errorState);
+  
 
   function doShowMenu() {
-    setShowMenu((prev) => ({ ...prev, showTypeMenu: true }));
+    setShowMenu((prev) => ({ ...prev, showTypeMenu: true , showNameMenu: false }));
+
   }
 
   const addTypeAsync = async (type: string) => {
