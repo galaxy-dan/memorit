@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HistoryListResDTO {
 	private long totalPages;
+	private long numOfFriends;
+	private long numOfHistories;
 	private List<HistoryListElementDTO> list;
 }
