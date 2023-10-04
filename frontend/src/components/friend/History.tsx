@@ -25,12 +25,9 @@ export default function History({
   const getHistoryList = async (query = {}, page = 1) => {
     const res: any = await get('/history/all', query);
 
-    if (friendId == null && setTotalCount && setTotalPeople) {
-      setTotalCount(res.list.length);
-      const set = new Set();
-      res.list.map((el: any) => set.add(el.friendId));
-
-      setTotalPeople(set.size);
+    if (setTotalCount && setTotalPeople) {
+      setTotalCount(res.numOfHistories ?? 0);
+      setTotalPeople(res.numOfFriends ?? 0);
     }
 
     return {
@@ -69,13 +66,12 @@ export default function History({
 
   return (
     <>
-      <div className="bg-slate-200 grow rounded-t-xl p-6 snap-start">
+      <div className="bg-slate-200 grow rounded-t-xl p-6">
         <div className="flex justify-between pb-2">
           <div className="relative">
             <p className="text-lg font-bold">히스토리</p>
             <div className="absolute w-[66px] h-2 bg-blue-400 opacity-70 bottom-[0.15rem] " />
           </div>
-          <p>받은 기억</p>
         </div>
 
         <div>
