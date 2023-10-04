@@ -27,7 +27,7 @@ export default function Button({ onClick, text, icon }: Props) {
       onClick={onClick()}
     >
       <div className="text-3xl px-1">{icon}</div>
-      <div className="text-2xl text-blue-500">{text}</div>
+      <div className="text-xl font-semibold text-blue-500">{text}</div>
     </motion.button>
   );
 }

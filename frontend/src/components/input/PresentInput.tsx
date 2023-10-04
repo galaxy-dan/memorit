@@ -2,7 +2,7 @@ import { addMemoryType } from '@/model/memory';
 import { addMemoryState, errorState } from '@/store/memory';
 import { ReactNode, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { containerCss, iconCss } from './inputCSS';
+import { containerCss, iconCss, inputCss } from './inputCSS';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
 
@@ -64,7 +64,7 @@ export default function PresentInput({ placeholder, icon, className }: Props) {
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <input
             type="text"
-            className={`w-full text-lg ${memory.isMoney && 'text-gray-300'}`}
+            className={`${inputCss} ${memory.isMoney && 'text-gray-300'}`}
             placeholder={placeholder}
             value={memory.present}
             readOnly={memory.isMoney}
