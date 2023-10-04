@@ -1,6 +1,7 @@
-import { addMemoryType, postArticle } from '@/model/memory';
-import { getConfig, getUrl, post, put } from './http';
+import { addMemoryType, memory, postArticle } from '@/model/memory';
+import { get, getConfig, getUrl, post, put } from './http';
 import axios from 'axios';
+import { historyDetail } from '@/model/history';
 
 export const addMemory = async (
   memory: addMemoryType,
@@ -39,5 +40,10 @@ export const editMemory = async (
     image: image,
     given: !memory.isSend,
   });
+  return res;
+};
+
+export const getMemory = async (articleId: number) => {
+  const res = await get(`/history/detail/${articleId}`);
   return res;
 };

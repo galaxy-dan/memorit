@@ -15,7 +15,7 @@ import { getTypeListByName } from '@/service/api/type';
 import { addType } from '@/service/api/type';
 
 type Props = {
-  type: string;
+  type?: string;
   placeholder?: string;
   icon?: ReactNode;
 };
@@ -27,9 +27,9 @@ type TypeList = {
 export default function TypeInput({ type, placeholder, icon }: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
-  const [typeInput, setTypeInput] = useState<string>('');
 
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const [typeInput, setTypeInput] = useState<string>('');
   const [showMenu, setShowMenu] = useRecoilState<showMenuType>(showMenuState);
   const [error, setError] = useRecoilState<errorType>(errorState);
 
@@ -40,11 +40,12 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
 
   const queryClient = useQueryClient();
 
-  
-
   function doShowMenu() {
-    setShowMenu((prev) => ({ ...prev, showTypeMenu: true , showNameMenu: false }));
-
+    setShowMenu((prev) => ({
+      ...prev,
+      showTypeMenu: true,
+      showNameMenu: false,
+    }));
   }
 
   const addTypeAsync = async (type: string) => {
@@ -76,7 +77,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
             value={typeInput}
             onChange={(e) => {
               setTypeInput(e.target.value);
-              setError((prev) => ({...prev, type:''}));
+              setError((prev) => ({ ...prev, type: '' }));
             }}
             onKeyDown={() => {
               setMemory((prev) => ({
@@ -125,25 +126,26 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                   {item}
                 </motion.p>
               ))}
-              {memory.type !== '' && !typeList?.typeList.includes(memory.type) && (
-                <motion.p
-                  className={`${inputCss} px-5 pt-3 pb-5 truncate rounded-b-xl`}
-                  onClick={() => {
-                    setMemory((prev) => ({
-                      ...prev,
-                      typeSelected: true,
-                    }));
-                    setTypeInput(memory.type);
-                    addTypeAsync(memory.type);
-                    setError((prev) => ({ ...prev, type: '' }));
-                  }}
-                  whileTap={{
-                    backgroundColor: '#D0D0D0',
-                  }}
-                >
-                  추가 : &nbsp;&quot;{memory.type}&quot;
-                </motion.p>
-              )}
+              {memory.type !== '' &&
+                !typeList?.typeList.includes(memory.type) && (
+                  <motion.p
+                    className={`${inputCss} px-5 pt-3 pb-5 truncate rounded-b-xl`}
+                    onClick={() => {
+                      setMemory((prev) => ({
+                        ...prev,
+                        typeSelected: true,
+                      }));
+                      setTypeInput(memory.type);
+                      addTypeAsync(memory.type);
+                      setError((prev) => ({ ...prev, type: '' }));
+                    }}
+                    whileTap={{
+                      backgroundColor: '#D0D0D0',
+                    }}
+                  >
+                    추가 : &nbsp;&quot;{memory.type}&quot;
+                  </motion.p>
+                )}
             </div>
           )}
         </div>

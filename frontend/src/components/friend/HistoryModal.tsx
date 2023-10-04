@@ -8,6 +8,11 @@ import ExampleImage from 'public/images/example.jpg';
 import { get } from '@/service/api/http';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { history, historyDetail } from '@/model/history';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { editType } from '@/model/memory';
+import { editState } from '@/store/memory';
 
 type Props = {
   isModal: boolean;
@@ -26,6 +31,8 @@ export default function HistoryModal({
     refetchInterval: 5000,
     enabled: !!articleId,
   });
+  const setEditArticleNo = useSetRecoilState<editType>(editState);
+  const router = useRouter();
 
   return (
     <>
@@ -39,7 +46,15 @@ export default function HistoryModal({
               <MdClear size="30" />
             </div>
             <div className="flex items-center gap-2">
-              <Image src={WriteIcon} alt={'write'} width={'18'} />
+              <Image
+                src={WriteIcon}
+                alt={'write'}
+                width={'18'}
+                onClick={() => {
+                  setEditArticleNo({articleId:articleId});
+                  router.push(`/edit`);
+                }}
+              />
               <Image src={DeleteIcon} alt={'delete'} width={'24'} />
             </div>
           </div>
