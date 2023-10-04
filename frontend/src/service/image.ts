@@ -22,8 +22,8 @@ export function getS3URL(name: string) {
   return url;
 }
 
-export function uploadImage(url: string, file: File): boolean {
-  const compressedFile = compressImage(file);
+export async function uploadImage(url: string, file: File) {
+  const compressedFile = await compressImage(file);
   axios
     .put(url, compressedFile, {
       headers: {
@@ -41,18 +41,15 @@ export function uploadImage(url: string, file: File): boolean {
   return true;
 }
 
-export async function compressImage(originImage: File) {
-  let image = originImage;
+export async function compressImage(originImage: File){
 
-  if (image) {
+  if (originImage && originImage.size > 800000) {
     // 파일 용량이 800kb이상은 압축
-    if (image.size > 800000) {
-      image = await imageCompression(image, {
-        maxSizeMB: 0.8,
-        alwaysKeepResolution: true,
-        maxWidthOrHeight: 600,
-      });
-    }
+    let image = await imageCompression(originImage, {
+      maxSizeMB: 0.8,
+      alwaysKeepResolution: true,
+      maxWidthOrHeight: 600,
+    });
     return image;
   }
   return originImage;
