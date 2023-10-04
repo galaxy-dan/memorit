@@ -13,3 +13,7 @@ export type friend = {
 export type friendList = {
   list: friend[];
 };
+
+export type friendID = {
+  friendUUID: string;
+}
