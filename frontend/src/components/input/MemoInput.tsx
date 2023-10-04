@@ -30,7 +30,7 @@ export default function MemoInput({ placeholder, icon }: Props) {
         <div className={containerCss + ' flex items-start border relative'}>
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <textarea
-            className="w-full text-l resize-none"
+            className="w-full text-lg resize-none"
             placeholder={placeholder}
             value={memory.memo}
             rows={2}
