@@ -1,7 +1,5 @@
 package com.galaxy.memorit.friend.presentation.controller;
 
-import java.net.URI;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.galaxy.memorit.friend.application.service.FriendService;
@@ -24,6 +21,7 @@ import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
+import com.galaxy.memorit.friend.dto.response.FriendRegisterFromAddressResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRegisterResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
@@ -38,19 +36,18 @@ public class FriendController {
 
 	//수동으로 친구 등록
 	@PostMapping
-	public ResponseEntity<Void> registerFriendManually(@RequestBody FriendRegisterReqDTO dto, Authentication authentication){
+	public ResponseEntity<FriendRegisterResDTO> registerFriendManually(@RequestBody FriendRegisterReqDTO dto, Authentication authentication){
 		//이게 찐
 		//friendService.registerFriend(authentication.getName(), dto);
 
 		//테스트용
 		String uuid = "99d7f4dd55244c54a523032169193f40";
-		friendService.registerFriend(uuid, dto);
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(friendService.registerFriend(uuid, dto));
 	}
 
 	@PostMapping("/select")
-	public ResponseEntity<FriendRegisterResDTO> registerFriendsFromAddress(@RequestBody FriendRegisterFromAddressReqDTO dto, Authentication authentication){
+	public ResponseEntity<FriendRegisterFromAddressResDTO> registerFriendsFromAddress(@RequestBody FriendRegisterFromAddressReqDTO dto, Authentication authentication){
 		//이게 찐
 		//friendService.registerFriendsFromAddress(authentication.getName(), dto);
 
@@ -59,7 +56,7 @@ public class FriendController {
 		friendService.registerFriendsFromAddress(uuid, dto);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(
-			new FriendRegisterResDTO(201));
+			new FriendRegisterFromAddressResDTO(201));
 	}
 
 	@GetMapping

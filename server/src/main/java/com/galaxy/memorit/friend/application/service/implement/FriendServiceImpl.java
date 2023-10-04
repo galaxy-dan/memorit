@@ -22,6 +22,7 @@ import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
+import com.galaxy.memorit.friend.dto.response.FriendRegisterResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 import com.galaxy.memorit.user.domain.repository.UserRepository;
 
@@ -35,13 +36,14 @@ public class FriendServiceImpl implements FriendService {
 	private final UserRepository userRepository;
 	@Transactional
 	@Override
-	public void registerFriend(String userId, FriendRegisterReqDTO dto) {
+	public FriendRegisterResDTO registerFriend(String userId, FriendRegisterReqDTO dto) {
 		UUID userUUID = friendMapper.stringToUUID(userId);
 		//userId에 해당하는 회원이 존재하지 않을 때 예외 처리
 		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
+		UUID friendUUID = UUID.randomUUID();
 		FriendEntity friendEntity = FriendEntity.builder()
-			.friendId(UUID.randomUUID())
+			.friendId(friendUUID)
 			.userId(userUUID)
 			.name(dto.getName())
 			.category(dto.getCategory())
@@ -49,6 +51,8 @@ public class FriendServiceImpl implements FriendService {
 
 		//friendId에 새로운 UUID 생성하여 저장
 		friendRepository.save(friendEntity);
+
+		return new FriendRegisterResDTO(friendMapper.UUIDToHexString(friendUUID));
 	}
 
 	@Transactional
