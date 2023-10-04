@@ -16,20 +16,34 @@ import { BiCategory } from 'react-icons/bi';
 import { MdOutlineAttachMoney } from 'react-icons/md';
 import { AiOutlineGift } from 'react-icons/ai';
 import { CgNotes } from 'react-icons/cg';
-import { addMemoryType } from '@/model/memory';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { addMemoryState, errorState, showMenuState } from '@/store/memory';
+import { addMemoryType, editType, memory } from '@/model/memory';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import {
+  addMemoryState,
+  editState,
+  errorState,
+  showMenuState,
+} from '@/store/memory';
 import DateInput from '@/components/input/DateInput';
 
 import Button from '@/components/input/Button';
 
 import { getS3URL, uploadImage } from '@/service/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { errorType } from '@/model/error';
-import { addMemory, editMemory } from '@/service/api/memory';
-import { useRouter } from 'next/navigation';
+import { addMemory, editMemory, getMemory } from '@/service/api/memory';
+import {
+  useRouter,
+  usePathname,
+  useParams,
+  useSearchParams,
+} from 'next/navigation';
 import { inputValid } from '@/service/input';
 import useCustomBack from '@/service/useCustomBack';
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import TypeInputNoEdit from '@/components/input/TypeInputEdit';
+import NameInputEdit from '@/components/input/NameInputEdit';
+import NameCateInputNoEdit from '@/components/input/NameInputEdit';
 
 const Line = () => {
   return <hr className="border-[0.01rem] border-neutral-300 my-1" />;
@@ -39,12 +53,39 @@ export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useRecoilState<errorType>(errorState);
-
+  const article = useRecoilValue<editType>(editState);
   const resetShowMenu = useResetRecoilState(showMenuState);
   const resetMemory = useResetRecoilState(addMemoryState);
   const resetError = useResetRecoilState(errorState);
 
   const router = useRouter();
+
+  const { data: categoryData }: UseQueryResult<memory> = useQuery({
+    queryKey: ['memory', article.articleId],
+    queryFn: () => getMemory(article.articleId),
+  });
+
+  useEffect(() => {
+    if (article.articleId === 0) {
+      history.back();
+    }
+    if (categoryData) {
+      setMemory((prev) => ({
+        ...prev,
+        type: categoryData?.type,
+        money: categoryData?.amount || 0,
+        present: categoryData?.item || '',
+        date: categoryData?.date || '',
+        memo: categoryData?.detail || '',
+        isSend: !categoryData?.given,
+        isMoney: categoryData?.amount !== null,
+        imageName:
+          categoryData.image !== null ? categoryData.image.split('/')[3] : '',
+        image: categoryData.image,
+        friendID: categoryData?.friendId,
+      }));
+    }
+  }, [categoryData, setMemory, article.articleId]);
 
   function setSendTrue() {
     setMemory((prev) => ({ ...prev, isSend: true }));
@@ -71,15 +112,15 @@ export default function AddMemoryPage() {
           const url = await getS3URL(memory.imageName);
           // 이후에 이미지를 S3 서버에 전송, 실패하면 백엔드에 실패 및 url 삭제 요청
           const imgUrl = url.split('?')[0];
-          const id = await addMemory(memory, imgUrl);
+          const id = await editMemory(article.articleId, memory, imgUrl);
           // 업로드 실패 시
           if (!(await uploadImage(url, memory.imageFile))) {
-            await editMemory(id, memory, null);
+            await editMemory(article.articleId, memory, null);
           }
         }
         // 이미지 없을 때
         else {
-          await addMemory(memory, null);
+          await editMemory(article.articleId, memory, memory.image);
         }
         resetError();
         resetMemory();
@@ -217,8 +258,8 @@ export default function AddMemoryPage() {
             onClickFunction={setSendFalse}
           />
         </SelectButtonGroup>
-        <TypeInput
-          type={'type'}
+        <TypeInputNoEdit
+          type={'type '}
           icon={<BiCategory />}
           placeholder="*경조사 타입"
         />
@@ -235,8 +276,7 @@ export default function AddMemoryPage() {
           className="w-full"
         />
         <Line />
-        <NameInput type={'name'} icon={<BsPerson />} placeholder="*이름" />
-        <CategoryInput icon={<BsPeople />} placeholder="카테고리" />
+        <NameCateInputNoEdit icon1={<BsPerson />} icon2={<BsPeople />} />
         <Line />
         <DateInput icon={<BsCalendarDate />} />
         <MemoInput icon={<CgNotes />} placeholder="메모" />
