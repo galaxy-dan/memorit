@@ -77,10 +77,12 @@ export default function NameInput({ type, placeholder, icon }: Props) {
               setError((prev) => ({ ...prev, name: '' }));
             }}
             onKeyDown={() => {
-              setMemory((prev) => ({
-                ...prev,
-                nameSelected: false,
-              }));
+              if(memory.nameSelected){
+                setMemory((prev) => ({
+                  ...prev,
+                  nameSelected: false,
+                }));
+              }
             }}
             onFocus={() => {
               setIsFocused(true);
