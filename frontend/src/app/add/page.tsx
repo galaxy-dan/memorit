@@ -29,11 +29,11 @@ import { errorType } from '@/model/error';
 import { addMemory, editMemory } from '@/service/api/memory';
 import { useRouter } from 'next/navigation';
 import { inputValid } from '@/service/input';
+import useCustomBack from '@/service/useCustomBack';
 
 const Line = () => {
-  return <hr className="border-[0.01rem] border-neutral-300 my-[0.5rem]" />;
+  return <hr className="border-[0.01rem] border-neutral-300 my-1" />;
 };
-
 
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
@@ -53,6 +53,12 @@ export default function AddMemoryPage() {
   function setSendFalse() {
     setMemory((prev) => ({ ...prev, isSend: false }));
   }
+
+  useCustomBack(() => {
+    resetError();
+    resetMemory();
+    history.back();
+  });
 
   const onSubmit = async () => {
     if (!isSubmitting && CheckError()) {
@@ -87,8 +93,6 @@ export default function AddMemoryPage() {
 
   function onCancle() {
     history.back();
-    resetError();
-    resetMemory();
   }
 
   function CheckError() {
@@ -189,7 +193,7 @@ export default function AddMemoryPage() {
   return (
     <div>
       <div
-        className="bg-white border fixed z-10 w-full h-screen overflow-y-auto"
+        className="bg-white border fixed z-10 w-full h-screen overflow-y-auto select-none"
         onClick={resetShowMenu}
       >
         {/* 상단 탭 부분 */}
@@ -222,12 +226,12 @@ export default function AddMemoryPage() {
 
         <MoneyInput
           icon={<MdOutlineAttachMoney />}
-          placeholder={`${memory.isMoney?"*":""}금액`}
+          placeholder={`${memory.isMoney ? '*' : ''}금액`}
           className="w-full"
         />
         <PresentInput
           icon={<AiOutlineGift />}
-          placeholder={`${!memory.isMoney?"*":""}선물`}
+          placeholder={`${!memory.isMoney ? '*' : ''}선물`}
           className="w-full"
         />
         <Line />
