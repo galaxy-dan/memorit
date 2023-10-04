@@ -42,10 +42,6 @@ public class HistoryDynamicQueryRepositoryImpl implements HistoryDynamicQueryRep
 			.where(whereConditions)
 			.fetchOne();
 
-		if(tuple == null){
-			System.out.println("tuple == null");
-		}
-
 		long totalPages = 1;
 		List<HistoryListElementDTO> result = new ArrayList<>();
 
