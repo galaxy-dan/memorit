@@ -146,7 +146,7 @@ export default function PictureInput({}: Props) {
                   <Image
                     className={`mx-auto max-h-72 rounded-2xl shadow-sm`}
                     alt="이미지 선택"
-                    src={imageSrc}
+                    src={imageSrc || memory.image}
                     width={400}
                     height={200}
                     onClick={handleClick}

@@ -24,8 +24,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [isCancelButtonTouched, setIsCancelButtonTouched] =
     useState<boolean>(false);
-  const [date, setDate] = useState<Dayjs>(dayjs());
-
+ 
   return (
     <>
       <div className="border border-white">
@@ -48,7 +47,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
             type="text"
             className={inputCss}
             placeholder={placeholder}
-            value={dateToStrKR(date)}
+            value={memory.date}
             readOnly={true}
           />
         </div>
@@ -69,9 +68,8 @@ export default function DateInput({ placeholder, icon, className }: Props) {
           >
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
               <DateCalendar
-                value={date}
+                value={dayjs(memory.date)}
                 onChange={(newValue) => {
-                  setDate(newValue || dayjs());
                   setMemory((prev) => ({
                     ...prev,
                     date: dateToStr(newValue || dayjs()),

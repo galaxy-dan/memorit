@@ -1,5 +1,10 @@
 import { errorType } from '@/model/error';
-import { addMemoryType, showMenuType, showModalType } from '@/model/memory';
+import {
+  addMemoryType,
+  editType,
+  showMenuType,
+  showModalType,
+} from '@/model/memory';
 import { dateToStr } from '@/service/date';
 import dayjs from 'dayjs';
 import { atom } from 'recoil';
@@ -18,8 +23,9 @@ export const addMemoryState = atom<addMemoryType>({
     present: '',
     category: '',
     memo: '',
-    imageName:'',
+    imageName: '',
     imageFile: null,
+    image: '',
     date: dateToStr(dayjs()),
   },
 });
@@ -41,12 +47,19 @@ export const showModalState = atom<showModalType>({
 
 export const errorState = atom<errorType>({
   key: 'error',
-  default:{
-    name : '',
-    type : '',
-    category : '',
-    money : '',
-    present : '',
-    memo : '',
-  }
-})
+  default: {
+    name: '',
+    type: '',
+    category: '',
+    money: '',
+    present: '',
+    memo: '',
+  },
+});
+
+export const editState = atom<editType>({
+  key: 'error',
+  default: {
+    articleId: 0,
+  },
+});

@@ -13,6 +13,7 @@ export type addMemoryType = {
   memo: string;
   imageFile: File | null;
   imageName: string;
+  image: string;
   date: string;
   friendID: string;
 };
@@ -28,4 +29,21 @@ export type showModalType = {
 
 export type postArticle = {
   articleId: number;
-}
+};
+
+export type editType = {
+  articleId: number;
+};
+
+export type memory = {
+  articleId: number;
+  friendId: string;
+  date: string;
+  type: string;
+  amount: number;
+  item: string;
+  given: boolean;
+  errorMsg: string;
+  detail: string;
+  image: string;
+};
