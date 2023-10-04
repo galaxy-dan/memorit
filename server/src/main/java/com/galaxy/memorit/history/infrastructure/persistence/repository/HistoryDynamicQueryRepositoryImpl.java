@@ -11,6 +11,7 @@ import com.galaxy.memorit.history.dto.response.HistoryListResDTO;
 import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntity;
 import com.galaxy.memorit.history.infrastructure.persistence.mapper.HistoryMapper;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -35,32 +36,46 @@ public class HistoryDynamicQueryRepositoryImpl implements HistoryDynamicQueryRep
 			whereConditions.and(eqGiven(given));
 		}
 
-		Long totalCounts = jpaQueryFactory.select(historyEntity.count())
+		Tuple tuple = jpaQueryFactory.select(historyEntity.count().as("numOfHistories"),
+				historyEntity.friendId.countDistinct().as("numOfFriends"))
 			.from(historyEntity)
 			.where(whereConditions)
 			.fetchOne();
 
+		if(tuple == null){
+			System.out.println("tuple == null");
+		}
+
 		long totalPages = 1;
 		List<HistoryListElementDTO> result = new ArrayList<>();
 
-		if(totalCounts != null && totalCounts > 0){
-			JPAQuery<HistoryEntity> query = jpaQueryFactory.selectFrom(historyEntity)
-				.where(whereConditions)
-				.orderBy(historyEntity.date.desc());
+		long numOfHistories = 0;
+		long numOfFriends = 0;
 
-			int dataSize = dto.getDataSize() != null ? dto.getDataSize() : 20;
+		if(tuple != null){
+			Long totalCounts = tuple.get(0, Long.class);
+			if(totalCounts != null && totalCounts > 0) {
+				JPAQuery<HistoryEntity> query = jpaQueryFactory.selectFrom(historyEntity)
+					.where(whereConditions)
+					.orderBy(historyEntity.date.desc());
 
-			int pageNumber = dto.getPageNumber() == null ? 0 : dto.getPageNumber() - 1;
-			int offset = dataSize * pageNumber;
-			query.offset(offset).limit(dataSize);
+				int dataSize = dto.getDataSize() != null ? dto.getDataSize() : 20;
 
-			totalPages = (totalCounts + dataSize - 1) / dataSize;
+				int pageNumber = dto.getPageNumber() == null ? 0 : dto.getPageNumber() - 1;
+				int offset = dataSize * pageNumber;
+				query.offset(offset).limit(dataSize);
 
-			result = query.fetch().stream()
-				.map(historyMapper::entityToListElementDTO)
-				.collect(Collectors.toList());
+				totalPages = (totalCounts + dataSize - 1) / dataSize;
+
+				result = query.fetch().stream()
+					.map(historyMapper::entityToListElementDTO)
+					.collect(Collectors.toList());
+
+				numOfHistories = totalCounts;
+				numOfFriends = tuple.get(1, Long.class);
+			}
 		}
-		return new HistoryListResDTO(totalPages, result);
+		return new HistoryListResDTO(totalPages, numOfFriends, numOfHistories, result);
 	}
 	public BooleanExpression eqUserId(UUID userId){
 		return historyEntity.userId.eq(userId);
