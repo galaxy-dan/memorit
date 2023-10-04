@@ -28,33 +28,12 @@ import { useState } from 'react';
 import { errorType } from '@/model/error';
 import { addMemory, editMemory } from '@/service/api/memory';
 import { useRouter } from 'next/navigation';
-
+import { inputValid } from '@/service/input';
 
 const Line = () => {
   return <hr className="border border-neutral-300 my-1" />;
 };
 
-export const inputValid = {
-  type : {
-    minLength: 1,
-    maxLength: 10,
-  },
-  money: {
-    minSize: 1,
-    maxSize: 999999999,
-  },
-  present : {
-    minLength: 1,
-    maxLength: 10,
-  },
-  name : {
-    minLength: 1,
-    maxLength: 30,
-  },
-  memo : {
-    maxLength: 40,
-  },
-}
 
 export default function AddMemoryPage() {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
@@ -63,7 +42,7 @@ export default function AddMemoryPage() {
 
   const resetShowMenu = useResetRecoilState(showMenuState);
   const resetMemory = useResetRecoilState(addMemoryState);
-  const resetError =  useResetRecoilState(errorState);
+  const resetError = useResetRecoilState(errorState);
 
   const router = useRouter();
 
@@ -76,7 +55,6 @@ export default function AddMemoryPage() {
   }
 
   const onSubmit = async () => {
-    
     if (!isSubmitting && CheckError()) {
       try {
         setIsSubmitting(true);
@@ -87,9 +65,9 @@ export default function AddMemoryPage() {
           const url = await getS3URL(memory.imageName);
           // 이후에 이미지를 S3 서버에 전송, 실패하면 백엔드에 실패 및 url 삭제 요청
           const imgUrl = url.split('?')[0];
-          const id  = await addMemory(memory, imgUrl);
+          const id = await addMemory(memory, imgUrl);
           // 업로드 실패 시
-          if (!await uploadImage(url, memory.imageFile)) { 
+          if (!(await uploadImage(url, memory.imageFile))) {
             await editMemory(id, memory, null);
           }
         }
@@ -101,12 +79,10 @@ export default function AddMemoryPage() {
         resetMemory();
         router.push('/');
       } catch {
-        
-      } finally { 
+      } finally {
         setIsSubmitting(false);
       }
     }
-    
   };
 
   function onCancle() {
@@ -129,9 +105,15 @@ export default function AddMemoryPage() {
   function CheckType() {
     // 타입 : 필수, 1자 이상 10자 이하
     if (memory.type.length > inputValid.type.maxLength) {
-      setError((prev) => ({ ...prev, type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.` }));
+      setError((prev) => ({
+        ...prev,
+        type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.`,
+      }));
       return false;
-    } else if (!memory.typeSelected || memory.type.length < inputValid.type.minLength) {
+    } else if (
+      !memory.typeSelected ||
+      memory.type.length < inputValid.type.minLength
+    ) {
       setError((prev) => ({ ...prev, type: '타입을 선택해주세요' }));
       return false;
     } else {
@@ -173,9 +155,15 @@ export default function AddMemoryPage() {
   function CheckName() {
     // 이름 : 필수, 1자 이상, 20자 이하
     if (memory.name.length > inputValid.name.maxLength) {
-      setError((prev) => ({ ...prev, name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.` }));
+      setError((prev) => ({
+        ...prev,
+        name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.`,
+      }));
       return false;
-    } else if (!memory.nameSelected || memory.name.length < inputValid.name.minLength) {
+    } else if (
+      !memory.nameSelected ||
+      memory.name.length < inputValid.name.minLength
+    ) {
       setError((prev) => ({ ...prev, name: '친구를 선택해주세요' }));
       return false;
     } else {
@@ -187,7 +175,10 @@ export default function AddMemoryPage() {
   function CheckMemo() {
     // 메모 : 20자 이하
     if (memory.memo.length > inputValid.memo.maxLength) {
-      setError((prev) => ({ ...prev, memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.` }));
+      setError((prev) => ({
+        ...prev,
+        memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.`,
+      }));
       return false;
     } else {
       setError((prev) => ({ ...prev, memo: '' }));
