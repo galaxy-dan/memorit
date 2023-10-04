@@ -28,7 +28,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
 
   return (
     <>
-      <div className="border">
+      <div className="border border-white">
         <div
           className={
             containerCss + ' flex items-center border file:' + className
@@ -79,7 +79,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
             </LocalizationProvider>
             <MdCancel
               className={`absolute -top-2 -right-2 text-4xl ${
-                isCancelButtonTouched && ' text-red-200'
+                isCancelButtonTouched && ' text-slate-200'
               } bg-white rounded-full p-0`}
               onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 setShowModal((prev) => ({ ...prev, showDateMenu: false }));

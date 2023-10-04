@@ -26,7 +26,7 @@ export default function MemoInput({ placeholder, icon }: Props) {
   };
   return (
     <div>
-      <div className="border">
+      <div className="border border-white">
         <div className={containerCss + ' flex items-start border relative'}>
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <textarea

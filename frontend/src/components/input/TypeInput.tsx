@@ -64,7 +64,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
 
   return (
     <div>
-      <div className="border">
+      <div className="border border-white">
         <div className={containerCss + ' flex items-center border relative'}>
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <input
@@ -116,6 +116,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                       type: item,
                       typeSelected: true,
                     }));
+                    setError((prev) => ({ ...prev, type: '' }));
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',
@@ -134,6 +135,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                     }));
                     setTypeInput(memory.type);
                     addTypeAsync(memory.type);
+                    setError((prev) => ({ ...prev, type: '' }));
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',

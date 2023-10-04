@@ -31,7 +31,7 @@ import { useRouter } from 'next/navigation';
 import { inputValid } from '@/service/input';
 
 const Line = () => {
-  return <hr className="border border-neutral-300 my-1" />;
+  return <hr className="border-[0.01rem] border-neutral-300 my-[0.5rem]" />;
 };
 
 
@@ -189,13 +189,13 @@ export default function AddMemoryPage() {
   return (
     <div>
       <div
-        className="bg-neutral-200 border fixed z-10 w-full h-screen overflow-y-auto"
+        className="bg-white border fixed z-10 w-full h-screen overflow-y-auto"
         onClick={resetShowMenu}
       >
         {/* 상단 탭 부분 */}
         <div className="flex justify-between items-center w-full py-5 px-4">
           <Button onClick={() => onCancle} icon={<IoMdClose />} />
-          <p className="text-[1.65rem]">기억 더하기</p>
+          <p className="text-[1.65rem] font-semibold">기억 더하기</p>
           <Button text="저장" onClick={() => onSubmit} />
         </div>
 
@@ -216,22 +216,22 @@ export default function AddMemoryPage() {
         <TypeInput
           type={'type'}
           icon={<BiCategory />}
-          placeholder="경조사 타입"
+          placeholder="*경조사 타입"
         />
         <Line />
 
         <MoneyInput
           icon={<MdOutlineAttachMoney />}
-          placeholder="금액"
+          placeholder={`${memory.isMoney?"*":""}금액`}
           className="w-full"
         />
         <PresentInput
           icon={<AiOutlineGift />}
-          placeholder="선물"
+          placeholder={`${!memory.isMoney?"*":""}선물`}
           className="w-full"
         />
         <Line />
-        <NameInput type={'name'} icon={<BsPerson />} placeholder="이름" />
+        <NameInput type={'name'} icon={<BsPerson />} placeholder="*이름" />
         <CategoryInput icon={<BsPeople />} placeholder="카테고리" />
         <Line />
         <DateInput icon={<BsCalendarDate />} />

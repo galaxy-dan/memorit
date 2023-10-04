@@ -62,7 +62,7 @@ export default function NameInput({ type, placeholder, icon }: Props) {
 
   return (
     <div>
-      <div className="border">
+      <div className="border border-white">
         <div className={containerCss + ' flex items-center border relative'}>
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <input
@@ -119,6 +119,7 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                         item.category === null ? '미지정' : item.category,
                       friendID: item.friendId,
                     }));
+                    setError((prev) => ({ ...prev, name: '' }));
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',
@@ -137,6 +138,7 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                     }));
                     setNameInput(memory.name);
                     addFriendAsync(memory.name, null);
+                    setError((prev) => ({ ...prev, name: '' }));
                     // 여기서 받은 ID로 설정하기
                   }}
                   whileTap={{
