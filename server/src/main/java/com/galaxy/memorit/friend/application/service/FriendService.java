@@ -6,10 +6,11 @@ import com.galaxy.memorit.friend.dto.request.FriendSearchReqDTO;
 import com.galaxy.memorit.friend.dto.request.FriendUpdateReqDTO;
 import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
+import com.galaxy.memorit.friend.dto.response.FriendRegisterResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
 
 public interface FriendService {
-	void registerFriend(String userId, FriendRegisterReqDTO dto);
+	FriendRegisterResDTO registerFriend(String userId, FriendRegisterReqDTO dto);
 	void registerFriendsFromAddress(String userId, FriendRegisterFromAddressReqDTO dto);
 	FriendsListResDTO getFriendsList(String userId);
 	FriendInfoDTO getFriendInfo(String userId, String friendId);

@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FriendRegisterResDTO {
-	private String friendUUID;
+public class FriendRegisterFromAddressResDTO {
+	private int code;
 }
