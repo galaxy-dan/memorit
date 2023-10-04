@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { containerCss, iconCss } from './inputCSS';
+import { containerCss, iconCss, inputCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
 import { addMemoryType, showMenuType } from '@/model/memory';
 import { addMemoryState, errorState, showMenuState } from '@/store/memory';
@@ -69,7 +69,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <input
             type="text"
-            className={`w-full text-lg ${
+            className={`${inputCss} ${
               memory.typeSelected ? 'text-black' : 'text-gray-400'
             }`}
             placeholder={placeholder}
@@ -105,7 +105,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
             <div className="w-8/12 max-h-52 overflow-scroll rounded-xl bg-white absolute top-12 right-1 z-30 shadow-[0_0_2px_2px_rgba(0,0,0,0.1)]">
               {typeList?.typeList.map((item, index) => (
                 <motion.p
-                  className={`text-lg px-5 ${
+                  className={`${inputCss} px-5 ${
                     index === 0 && 'pt-5 rounded-t-xl'
                   } py-3 truncate`}
                   key={index}
@@ -127,7 +127,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
               ))}
               {memory.type !== '' && !typeList?.typeList.includes(memory.type) && (
                 <motion.p
-                  className="text-lg px-5 pt-3 pb-5 truncate rounded-b-xl"
+                  className={`${inputCss} px-5 pt-3 pb-5 truncate rounded-b-xl`}
                   onClick={() => {
                     setMemory((prev) => ({
                       ...prev,

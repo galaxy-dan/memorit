@@ -6,6 +6,6 @@ type Props={
 }
 export default function AlertMessage({children}:Props) {
   return (
-    <div className={`text-xl text-red-500 `+containerMX}>{children}</div>
+    <div className={`text-lg text-red-500 `+containerMX}>{children}</div>
   )
 }

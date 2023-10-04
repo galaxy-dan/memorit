@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { containerCss, iconCss } from './inputCSS';
+import { containerCss, iconCss, inputCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
 import { addMemoryState, errorState } from '@/store/memory';
 import { addMemoryType } from '@/model/memory';
@@ -27,7 +27,7 @@ export default function CategoryInput({ placeholder, icon, className }: Props) {
           <div className={`${iconCss(false, false)}`}>{icon}</div>
           <input
             type="text"
-            className="w-full text-lg"
+            className={inputCss}
             placeholder={placeholder}
             value={memory.category}
             readOnly={true}
