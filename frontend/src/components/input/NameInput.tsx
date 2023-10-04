@@ -46,7 +46,8 @@ export default function NameInput({ type, placeholder, icon }: Props) {
 
   const addFriendAsync = async (name: string, category: string | null) => {
     // 여기서 추가한 친구 ID 받기
-    await addFriend(name, category);
+    const friendId = await addFriend(name, category);
+    setMemory((prev) => ({ ...prev, friendID: friendId, category: '미지정' }));
     queryClient.invalidateQueries({ queryKey: ['friend'] });
   };
 
@@ -74,10 +75,11 @@ export default function NameInput({ type, placeholder, icon }: Props) {
             value={nameInput}
             onChange={(e) => {
               setNameInput(e.target.value);
+              setMemory((prev) => ({ ...prev, category: '미지정' }));
               setError((prev) => ({ ...prev, name: '' }));
             }}
             onKeyDown={() => {
-              if(memory.nameSelected){
+              if (memory.nameSelected) {
                 setMemory((prev) => ({
                   ...prev,
                   nameSelected: false,
