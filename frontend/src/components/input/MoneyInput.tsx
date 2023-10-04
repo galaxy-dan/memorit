@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import { containerCss, iconCss } from './inputCSS';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
-import { inputValid } from '@/app/add/page';
+import { inputValid } from '@/service/input';
 
 type Props = {
   placeholder?: string;
