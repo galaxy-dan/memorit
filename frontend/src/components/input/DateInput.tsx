@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { containerCss, iconCss } from './inputCSS';
+import { containerCss, iconCss, inputCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
 import { addMemoryState, showModalState } from '@/store/memory';
 import { addMemoryType, showModalType } from '@/model/memory';
@@ -46,7 +46,7 @@ export default function DateInput({ placeholder, icon, className }: Props) {
           <div className={`${iconCss(isTouched, false)}`}>{icon}</div>
           <input
             type="text"
-            className="w-full text-lg"
+            className={inputCss}
             placeholder={placeholder}
             value={dateToStrKR(date)}
             readOnly={true}
@@ -72,14 +72,17 @@ export default function DateInput({ placeholder, icon, className }: Props) {
                 value={date}
                 onChange={(newValue) => {
                   setDate(newValue || dayjs());
-                  setMemory((prev) => ({...prev, date:dateToStr(newValue||dayjs())}));
+                  setMemory((prev) => ({
+                    ...prev,
+                    date: dateToStr(newValue || dayjs()),
+                  }));
                 }}
                 views={['year', 'month', 'day']}
               ></DateCalendar>
             </LocalizationProvider>
             <MdCancel
               className={`absolute -top-2 -right-2 text-4xl ${
-                isCancelButtonTouched && ' text-slate-200'
+                isCancelButtonTouched && ' text-slate-300'
               } bg-white rounded-full p-0`}
               onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 setShowModal((prev) => ({ ...prev, showDateMenu: false }));

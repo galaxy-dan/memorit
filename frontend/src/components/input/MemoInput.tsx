@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef, useState } from 'react';
-import { containerCss, iconCss } from './inputCSS';
+import { containerCss, iconCss, inputCss } from './inputCSS';
 import { useRecoilState } from 'recoil';
 import { addMemoryType } from '@/model/memory';
 import { addMemoryState, errorState } from '@/store/memory';
@@ -30,7 +30,7 @@ export default function MemoInput({ placeholder, icon }: Props) {
         <div className={containerCss + ' flex items-start border relative'}>
           <div className={iconCss(isFocused, isTouched)}>{icon}</div>
           <textarea
-            className="w-full text-lg resize-none"
+            className={inputCss+" resize-none"}
             placeholder={placeholder}
             value={memory.memo}
             rows={2}
