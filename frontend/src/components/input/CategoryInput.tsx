@@ -18,7 +18,7 @@ export default function CategoryInput({ placeholder, icon, className }: Props) {
 
   return (
     <div>
-      <div className="border">
+      <div className="border border-white">
         <div
           className={
             containerCss + ' flex items-center border relative ' + className
