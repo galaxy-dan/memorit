@@ -60,7 +60,7 @@ export default function PictureInput({}: Props) {
   };
 
   return (
-    <div className={`${containerMX} mt-2 bg-white border rounded-xl `}>
+    <div className={`${containerMX} mt-2 bg-white border-2 rounded-xl `}>
       <div className="relative">
         <div
           className={`px-3 pb-2 border border-white rounded-xl bg-white ${
@@ -111,7 +111,7 @@ export default function PictureInput({}: Props) {
           </div>
         </div>
         <div
-          className={`px-3 py-2 border border-white rounded-xl bg-white mt-[0.65rem] ${transitionCssSlower} ${
+          className={`px-3 py-2 border-2 border-white rounded-xl bg-white mt-[0.65rem] ${transitionCssSlower} ${
             !isOpen ? ' grid-rows-[0fr] ' : ' grid-rows-[1fr] '
           } grid transition-[grid-template-rows] relative w-full z-0 mx-0`}
         >
