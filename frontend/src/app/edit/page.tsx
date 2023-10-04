@@ -41,6 +41,9 @@ import {
 import { inputValid } from '@/service/input';
 import useCustomBack from '@/service/useCustomBack';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import TypeInputNoEdit from '@/components/input/TypeInputEdit';
+import NameInputEdit from '@/components/input/NameInputEdit';
+import NameCateInputNoEdit from '@/components/input/NameInputEdit';
 
 const Line = () => {
   return <hr className="border-[0.01rem] border-neutral-300 my-1" />;
@@ -79,6 +82,7 @@ export default function AddMemoryPage() {
         imageName:
           categoryData.image !== null ? categoryData.image.split('/')[3] : '',
         image: categoryData.image,
+        friendID: categoryData?.friendId,
       }));
     }
   }, [categoryData, setMemory, article.articleId]);
@@ -254,7 +258,7 @@ export default function AddMemoryPage() {
             onClickFunction={setSendFalse}
           />
         </SelectButtonGroup>
-        <TypeInput
+        <TypeInputNoEdit
           type={'type '}
           icon={<BiCategory />}
           placeholder="*경조사 타입"
@@ -272,8 +276,7 @@ export default function AddMemoryPage() {
           className="w-full"
         />
         <Line />
-        <NameInput type={'name'} icon={<BsPerson />} placeholder="*이름" />
-        <CategoryInput icon={<BsPeople />} placeholder="카테고리" />
+        <NameCateInputNoEdit icon1={<BsPerson />} icon2={<BsPeople />} />
         <Line />
         <DateInput icon={<BsCalendarDate />} />
         <MemoInput icon={<CgNotes />} placeholder="메모" />
