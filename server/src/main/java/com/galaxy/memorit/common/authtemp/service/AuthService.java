@@ -1,7 +1,7 @@
 package com.galaxy.memorit.common.authtemp.service;
 
 import com.galaxy.memorit.common.api.ApiResponse;
-import com.galaxy.memorit.common.authtemp.config.AppProperties;
+import com.galaxy.memorit.common.config.security.AppProperties;
 import com.galaxy.memorit.common.authtemp.entity.RefreshToken;
 import com.galaxy.memorit.common.authtemp.exception.InvalidTokenException;
 import com.galaxy.memorit.common.authtemp.exception.NotExpiredTokenException;

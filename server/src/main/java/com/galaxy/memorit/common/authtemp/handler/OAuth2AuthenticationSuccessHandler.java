@@ -1,6 +1,6 @@
 package com.galaxy.memorit.common.authtemp.handler;
 
-import com.galaxy.memorit.common.authtemp.config.AppProperties;
+import com.galaxy.memorit.common.config.security.AppProperties;
 import com.galaxy.memorit.common.authtemp.entity.Provider;
 import com.galaxy.memorit.common.authtemp.entity.RefreshToken;
 import com.galaxy.memorit.common.authtemp.entity.Role;
