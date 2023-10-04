@@ -16,9 +16,9 @@ const cssLeft = 'border-r rounded-l-3xl ';
 const cssMiddle = 'border-r ';
 const cssRight = 'rounded-r-3xl ';
 
-const cssSelected = 'px-2 bg-red-200';
+const cssSelected = 'px-2 bg-slate-300';
 const cssNotSelected = 'px-4 bg-white ';
-const cssTouched = 'px-4 bg-red-100 ' + innerShadow;
+const cssTouched = 'px-4 bg-slate-100 ' + innerShadow;
 
 const cssTransition = 'transition ease-in-out duration-[250ms] ';
 

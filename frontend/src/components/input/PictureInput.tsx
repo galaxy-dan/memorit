@@ -60,10 +60,10 @@ export default function PictureInput({}: Props) {
   };
 
   return (
-    <div className={`${containerMX} pb-4 bg-neutral-200 border`}>
+    <div className={`${containerMX} mt-2 bg-white border rounded-xl `}>
       <div className="relative">
         <div
-          className={`px-3 py-2 border border-white rounded-xl bg-white ${
+          className={`px-3 pb-2 border border-white rounded-xl bg-white ${
             isTouched ? ' bg-gray-100 ' : ' bg-white '
           } z-10 absolute w-full  }`}
         >
@@ -111,7 +111,7 @@ export default function PictureInput({}: Props) {
           </div>
         </div>
         <div
-          className={`px-3 py-2 border border-white rounded-xl bg-white mt-[0.65rem] mb-10 ${transitionCssSlower} ${
+          className={`px-3 py-2 border border-white rounded-xl bg-white mt-[0.65rem] ${transitionCssSlower} ${
             !isOpen ? ' grid-rows-[0fr] ' : ' grid-rows-[1fr] '
           } grid transition-[grid-template-rows] relative w-full z-0 mx-0`}
         >
@@ -128,8 +128,8 @@ export default function PictureInput({}: Props) {
                 <button
                   className={`w-full h-36 px-4 my-4 ${
                     isButtonTouched
-                      ? 'bg-gray-300 shadow-inner ' + innerShadow
-                      : 'bg-gray-200 '
+                      ? 'bg-slate-300 shadow-inner ' + innerShadow
+                      : 'bg-slate-200 '
                   } rounded-xl text-center ${transitionCss} `}
                   onClick={handleClick}
                   onTouchStart={() => {
@@ -154,7 +154,7 @@ export default function PictureInput({}: Props) {
                   ></Image>
                   <MdCancel
                     className={`absolute top-3 right-5 text-4xl ${
-                      isCancelButtonTouched && ' text-red-200'
+                      isCancelButtonTouched && ' text-slate-200'
                     } bg-white rounded-full p-0`}
                     onClick={handleCancle}
                     onTouchStart={() => {
