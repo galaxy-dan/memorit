@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FriendRegisterResDTO {
-	private String friendUUID;
+	private int code;
 }
