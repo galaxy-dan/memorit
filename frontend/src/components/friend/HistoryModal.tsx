@@ -55,7 +55,7 @@ export default function HistoryModal({
   return (
     <>
       {isModal && (
-        <div className="fixed bottom-[10vh] bg-orange-400 w-screen max-w-md z-30 rounded-t-xl px-7">
+        <div className="fixed bottom-[10vh] bg-slate-100 w-screen max-w-md z-30 rounded-t-xl px-7">
           <div className="flex items-center justify-between my-6">
             <div
               className="flex items-center"
