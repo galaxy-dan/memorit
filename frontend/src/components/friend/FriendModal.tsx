@@ -18,8 +18,8 @@ import { useEffect } from 'react';
 type Props = {
   isModal: boolean;
   setIsModal: Function;
-  isUpdate: boolean;
-  friendData: friend | undefined;
+  isUpdate?: boolean;
+  friendData?: friend | undefined;
 };
 
 const schema = yup
