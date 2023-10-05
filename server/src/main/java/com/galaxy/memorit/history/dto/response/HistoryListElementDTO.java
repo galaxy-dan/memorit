@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class HistoryListElementDTO {
 	private String articleId;
 	private String friendId;
+	private String friendName;
 	private LocalDate date;
 	private String type;
 	private Integer amount;

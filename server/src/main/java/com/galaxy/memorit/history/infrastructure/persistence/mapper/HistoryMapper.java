@@ -12,10 +12,11 @@ import com.galaxy.memorit.history.infrastructure.persistence.entity.HistoryEntit
 @Component
 @Mapper(componentModel = "spring")
 public interface HistoryMapper extends UUIDConverter {
-	default HistoryResDTO entityToResDTO(HistoryEntity entity){
+	default HistoryResDTO entityToResDTO(HistoryEntity entity, String friendName){
 		return HistoryResDTO.builder()
 			.articleId(String.valueOf(entity.getId()))
 			.friendId(UUIDToHexString(entity.getFriendId()))
+			.friendName(friendName)
 			.date(entity.getDate())
 			.type(entity.getType())
 			.amount(entity.getAmount())
@@ -26,10 +27,11 @@ public interface HistoryMapper extends UUIDConverter {
 			.build();
 	}
 
-	default HistoryListElementDTO entityToListElementDTO(HistoryEntity entity){
+	default HistoryListElementDTO entityToListElementDTO(HistoryEntity entity, String friendName){
 		return HistoryListElementDTO.builder()
 			.articleId(String.valueOf(entity.getId()))
 			.friendId(UUIDToHexString(entity.getFriendId()))
+			.friendName(friendName)
 			.date(entity.getDate())
 			.type(entity.getType())
 			.amount(entity.getAmount())

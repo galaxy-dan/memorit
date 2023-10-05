@@ -93,8 +93,10 @@ public class HistoryServiceImpl implements HistoryService {
 		if(!historyEntity.getUserId().equals(userUUID)){
 			throw new AccessRefusedException();
 		}
+		FriendEntity friendEntity = friendRepository.findById(historyEntity.getFriendId()).orElseThrow(NoSuchFriendException::new);
 
-		return historyMapper.entityToResDTO(historyEntity);
+
+		return historyMapper.entityToResDTO(historyEntity, friendEntity.getName());
 	}
 
 	@Transactional(readOnly = true)
