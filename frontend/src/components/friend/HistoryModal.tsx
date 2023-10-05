@@ -4,7 +4,7 @@ import { MdClear } from 'react-icons/md';
 import WriteIcon from 'public/icons/write.svg';
 import DeleteIcon from 'public/icons/delete.svg';
 import Image from 'next/image';
-import ExampleImage from 'public/images/example.jpg';
+import ExampleImage from 'public/images/example.png';
 import { get } from '@/service/api/http';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { history, historyDetail } from '@/model/history';
@@ -51,7 +51,7 @@ export default function HistoryModal({
                 alt={'write'}
                 width={'18'}
                 onClick={() => {
-                  setEditArticleNo({articleId:articleId});
+                  setEditArticleNo({ articleId: articleId });
                   router.push(`/edit`);
                 }}
               />

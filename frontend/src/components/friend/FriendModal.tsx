@@ -5,7 +5,7 @@ import { MdClear } from 'react-icons/md';
 import WriteIcon from 'public/icons/write.svg';
 import DeleteIcon from 'public/icons/delete.svg';
 import Image from 'next/image';
-import ExampleImage from 'public/images/example.jpg';
+import ExampleImage from 'public/images/example.png';
 import { BsPeople } from 'react-icons/bs';
 import FriendNameInput from './FriendNameInput';
 import FriendRelationInput from './FriendRelationInput';

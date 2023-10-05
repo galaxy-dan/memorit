@@ -98,7 +98,7 @@ export default function History({
                           } rounded-xl text-sm font-bold p-3`}
                         >
                           <p>{el.type}</p>
-                          <p>{`${el.amount}원`}</p>
+                          <p>{el.amount ? `${el.amount}원` : el.item}</p>
                         </div>
                         <p className="text-xs font-medium ml-3 mt-">
                           {el.date}

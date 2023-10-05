@@ -13,7 +13,7 @@ import NavyHeart from 'public/icons/navy-heart.svg';
 import PurpleHeart from 'public/icons/purple-heart.svg';
 
 import { useState } from 'react';
-import ExampleImage from 'public/example.jpg';
+import ExampleImage from 'public/example.png';
 import {
   UseQueryResult,
   useMutation,
