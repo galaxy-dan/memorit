@@ -200,7 +200,7 @@ export default function AddMemoryPage() {
         {/* 상단 탭 부분 */}
         <div className="flex justify-between items-center w-full py-5 px-4">
           <Button onClick={() => onCancle} icon={<IoMdClose />} />
-          <p className="text-[1.65rem] font-semibold">기억 더하기</p>
+          <p className="text-[1.65rem] font-semibold">기억 수정하기</p>
           <Button text="저장" onClick={() => onSubmit} />
         </div>
 

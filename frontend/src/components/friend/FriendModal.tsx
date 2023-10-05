@@ -110,7 +110,7 @@ export default function FriendModal({
                 </button>
               </div>
             </div>
-            <p className="text-2xl font-bold text-center pb-6">친구 추가</p>
+            <p className="text-2xl font-bold text-center pb-6">{isUpdate?"정보 수정":"친구 추가"}</p>
 
             {/* <input type='text' {...register("name")}/> */}
             <FriendNameInput props={{ ...register('name') }} />
