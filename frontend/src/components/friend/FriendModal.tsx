@@ -10,12 +10,16 @@ import { BsPeople } from 'react-icons/bs';
 import FriendNameInput from './FriendNameInput';
 import FriendRelationInput from './FriendRelationInput';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { post } from '@/service/api/http';
+import { patch, post } from '@/service/api/http';
 import { BiSolidSave } from 'react-icons/bi';
+import { friend } from '@/model/friend';
+import { useEffect } from 'react';
 
 type Props = {
   isModal: boolean;
   setIsModal: Function;
+  isUpdate: boolean;
+  friendData: friend | undefined;
 };
 
 const schema = yup
@@ -30,7 +34,24 @@ type Inputs = {
   category: string;
 };
 
-export default function FriendModal({ isModal, setIsModal }: Props) {
+const initFriendData = {
+  userId: '',
+  friendId: '',
+  name: '',
+  category: null,
+  receivedCount: 0,
+  sentCount: 0,
+  receivedMoney: 0,
+  sentMoney: 0,
+  recentDate: '',
+};
+
+export default function FriendModal({
+  isModal,
+  setIsModal,
+  isUpdate = false,
+  friendData = initFriendData,
+}: Props) {
   const queryClient = useQueryClient();
 
   const {
@@ -46,7 +67,9 @@ export default function FriendModal({ isModal, setIsModal }: Props) {
 
   const mutation = useMutation({
     mutationFn: (body: Inputs) => {
-      return post(`/friend`, body);
+      return isUpdate
+        ? patch(`/friend/${friendData.friendId}`, body)
+        : post(`/friend`, body);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['friend'] });
@@ -56,18 +79,28 @@ export default function FriendModal({ isModal, setIsModal }: Props) {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     mutation.mutate(data);
-    reset();
+    reset({
+      name: friendData.name,
+      category: friendData.category ?? '없음',
+    });
   };
+
+  useEffect(() => {
+    reset({
+      name: friendData.name,
+      category: friendData.category ?? '없음',
+    });
+  }, [friendData.category, friendData.name, reset]);
 
   return (
     <>
       {isModal && (
-        <div className="fixed bottom-[45vh] bg-gray-100 w-screen max-w-md z-30 rounded-xl px-7">
+        <div className="fixed bottom-[35vh] bg-gray-100 w-screen max-w-md z-30 rounded-xl px-7 pb-10">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-center justify-between my-6">
               <div
                 className="flex items-center"
-                onClick={() => setIsModal((prev: boolean) => !prev)}
+                onClick={() => setIsModal(false)}
               >
                 <MdClear size="30" />
               </div>
@@ -81,7 +114,13 @@ export default function FriendModal({ isModal, setIsModal }: Props) {
 
             {/* <input type='text' {...register("name")}/> */}
             <FriendNameInput props={{ ...register('name') }} />
-            <FriendRelationInput icon={<BsPeople />} placeholder="관계" setValue={setValue} props={{...register("category")}} />
+            <FriendRelationInput
+              icon={<BsPeople />}
+              placeholder="관계"
+              setValue={setValue}
+              props={{ ...register('category') }}
+              watch={watch}
+            />
           </form>
         </div>
       )}

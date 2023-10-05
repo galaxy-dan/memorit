@@ -25,12 +25,9 @@ export default function History({
   const getHistoryList = async (query = {}, page = 1) => {
     const res: any = await get('/history/all', query);
 
-    if (friendId == null && setTotalCount && setTotalPeople) {
-      setTotalCount(res.list.length);
-      const set = new Set();
-      res.list.map((el: any) => set.add(el.friendId));
-
-      setTotalPeople(set.size);
+    if (setTotalCount && setTotalPeople) {
+      setTotalCount(res.numOfHistories ?? 0);
+      setTotalPeople(res.numOfFriends ?? 0);
     }
 
     return {
@@ -69,60 +66,68 @@ export default function History({
 
   return (
     <>
-      <div className="bg-slate-200 grow rounded-t-xl p-6 snap-start">
+      <div className="bg-slate-200 grow rounded-t-xl p-6">
         <div className="flex justify-between pb-2">
           <div className="relative">
             <p className="text-lg font-bold">히스토리</p>
             <div className="absolute w-[66px] h-2 bg-blue-400 opacity-70 bottom-[0.15rem] " />
           </div>
-          <p>받은 기억</p>
         </div>
-
-        <div>
-          {historyData?.pages.map((group, i) => (
-            <div key={i}>
-              {group?.data?.map((el: history, index: number) => (
-                <div
-                  key={el.articleId}
-                  onClick={() => {
-                    setArticleId(el.articleId);
-                    setIsModal((prev) => !prev);
-                  }}
-                  className={`flex flex-col ${
-                    el.given ? 'items-start' : 'items-end'
-                  } my-1`}
-                >
-                  <div
-                    className={`flex flex-col border-2 shadow-md w-64 ${
-                      el.given ? 'bg-white' : 'bg-yellow-300'
-                    } rounded-xl text-sm font-bold p-3`}
-                  >
-                    <p>{el.type}</p>
-                    <p>{`${el.amount}원`}</p>
+        <>
+          {historyData?.pages[0]?.data?.length == 0 ? (
+            <div>히스토리가 없습니다!</div>
+          ) : (
+            <>
+              <div>
+                {historyData?.pages.map((group, i) => (
+                  <div key={i}>
+                    {group?.data?.map((el: history, index: number) => (
+                      <div
+                        key={el.articleId}
+                        onClick={() => {
+                          setArticleId(el.articleId);
+                          setIsModal((prev) => !prev);
+                        }}
+                        className={`flex flex-col ${
+                          el.given ? 'items-start' : 'items-end'
+                        } my-1`}
+                      >
+                        <div
+                          className={`flex flex-col border-2 shadow-md w-64 ${
+                            el.given ? 'bg-white' : 'bg-yellow-300'
+                          } rounded-xl text-sm font-bold p-3`}
+                        >
+                          <p>{el.type}</p>
+                          <p>{`${el.amount}원`}</p>
+                        </div>
+                        <p className="text-xs font-medium ml-3 mt-">
+                          {el.date}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <p className="text-xs font-medium ml-3 mt-">{el.date}</p>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-center">
-          <button
-            ref={ref}
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            {/* {isFetchingNextPage
+                ))}
+              </div>
+              <div className="flex justify-center">
+                <button
+                  ref={ref}
+                  onClick={() => fetchNextPage()}
+                  disabled={!hasNextPage || isFetchingNextPage}
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                >
+                  {/* {isFetchingNextPage
             ? 'Loading more...'
             : hasNextPage
             ? 'Load Newer'
             : 'Nothing more to load'} */}
-          </button>
-        </div>
-        <div className="flex justify-center text-sm font-semibold leading-6 text-gray-900">
-          {/* {isFetching && !isFetchingNextPage ? 'Background Updating...' : null} */}
-        </div>
+                </button>
+              </div>
+              <div className="flex justify-center text-sm font-semibold leading-6 text-gray-900">
+                {/* {isFetching && !isFetchingNextPage ? 'Background Updating...' : null} */}
+              </div>
+            </>
+          )}
+        </>
       </div>
       <HistoryModal
         isModal={isModal}

@@ -114,98 +114,100 @@ export default function FriendPage() {
 
   return (
     <>
-      <div className="flex flex-col h-[90vh] px-4">
-        <p className="text-3xl font-bold text-center my-16">친구 목록</p>
-        <div className="flex justify-end py-6 gap-2">
-          <Search setKeyword={setKeyword} />
-          <div onClick={() => setIsModal((prev) => !prev)}>
-            <HiOutlineUserAdd size={25} />
-          </div>
-        </div>
-        <div className="w-full overflow-auto scrollbar-hide">
-          <div className="flex gap-3">
-            <div
-              key={'all'}
-              className={`${
-                !selectedCategory ? 'bg-red-300' : 'bg-red-50'
-              } px-6 py-2 rounded-xl shadow-sm whitespace-nowrap`}
-              onClick={() => setSelectedCategory(null)}
-            >
-              전체
+      <div className="h-[90vh] overflow-scroll scrollbar-hide">
+        <div className="flex flex-col px-4 mb-[5vh]">
+          <p className="text-3xl font-bold text-center my-16">친구 목록</p>
+          <div className="flex justify-end py-6 gap-2">
+            <Search setKeyword={setKeyword} />
+            <div onClick={() => setIsModal((prev) => !prev)}>
+              <HiOutlineUserAdd size={25} />
             </div>
-
-            {categoryData?.categoryList?.map((el, index) => (
+          </div>
+          <div className="w-full overflow-auto scrollbar-hide">
+            <div className="flex gap-3">
               <div
-                key={el}
+                key={'all'}
                 className={`${
-                  selectedCategory === el ? 'bg-red-300' : 'bg-red-50'
+                  !selectedCategory ? 'bg-red-300' : 'bg-red-50'
                 } px-6 py-2 rounded-xl shadow-sm whitespace-nowrap`}
-                onClick={() => setSelectedCategory(el)}
+                onClick={() => setSelectedCategory(null)}
               >
-                {el}
+                전체
               </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="flex justify-end py-5">
-          <div
-            className="flex items-center gap-2"
-            onClick={() =>
-              setSelectedSortIndex((prev) =>
-                prev + 1 >= sortList.length ? 0 : prev + 1,
-              )
-            }
-          >
-            <MdFilterList size="20" />
-            <p className="font-medium text-sm">
-              {sortList[selectedSortIndex].title}
-            </p>
-          </div>
-        </div>
-
-        <div>
-          {friendData?.pages.map((group, i) => (
-            <div key={i} className="grid grid-cols-3">
-              {group?.data?.map((el: friend, index: number) => (
+              {categoryData?.categoryList?.map((el, index) => (
                 <div
-                  key={index}
-                  className="border-2 border-green-500 rounded-lg px-2 m-2 shadow-md cursor-pointer"
-                  onClick={() => router.push(`/friend/${el.friendId}`)}
+                  key={el}
+                  className={`${
+                    selectedCategory === el ? 'bg-red-300' : 'bg-red-50'
+                  } px-6 py-2 rounded-xl shadow-sm whitespace-nowrap`}
+                  onClick={() => setSelectedCategory(el)}
                 >
-                  <div className="flex justify-end items-center gap-1">
-                    <Image src={RedHeart} alt={'red'} width={'15'} />
-                    <p className="font-bold">
-                      {el.receivedCount + el.sentCount}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">
-                      {el.name}
-                    </p>
-                    <p className="text-gray-400">{el.category ?? '없음'}</p>
-                  </div>
+                  {el}
                 </div>
               ))}
             </div>
-          ))}
-        </div>
-        <div className="flex justify-center">
-          <button
-            ref={ref}
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            {/* {isFetchingNextPage
+          </div>
+
+          <div className="flex justify-end py-5">
+            <div
+              className="flex items-center gap-2"
+              onClick={() =>
+                setSelectedSortIndex((prev) =>
+                  prev + 1 >= sortList.length ? 0 : prev + 1,
+                )
+              }
+            >
+              <MdFilterList size="20" />
+              <p className="font-medium text-sm">
+                {sortList[selectedSortIndex].title}
+              </p>
+            </div>
+          </div>
+
+          <div>
+            {friendData?.pages.map((group, i) => (
+              <div key={i} className="grid grid-cols-3">
+                {group?.data?.map((el: friend, index: number) => (
+                  <div
+                    key={index}
+                    className="border-2 border-green-500 rounded-lg px-2 m-2 shadow-md cursor-pointer"
+                    onClick={() => router.push(`/friend/${el.friendId}`)}
+                  >
+                    <div className="flex justify-end items-center gap-1">
+                      <Image src={RedHeart} alt={'red'} width={'15'} />
+                      <p className="font-bold">
+                        {el.receivedCount + el.sentCount}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">
+                        {el.name}
+                      </p>
+                      <p className="text-gray-400">{el.category ?? '없음'}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <button
+              ref={ref}
+              onClick={() => fetchNextPage()}
+              disabled={!hasNextPage || isFetchingNextPage}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              {/* {isFetchingNextPage
             ? 'Loading more...'
             : hasNextPage
             ? 'Load Newer'
             : 'Nothing more to load'} */}
-          </button>
-        </div>
-        <div className="flex justify-center text-sm font-semibold leading-6 text-gray-900">
-          {/* {isFetching && !isFetchingNextPage ? 'Background Updating...' : null} */}
+            </button>
+          </div>
+          <div className="flex justify-center text-sm font-semibold leading-6 text-gray-900">
+            {/* {isFetching && !isFetchingNextPage ? 'Background Updating...' : null} */}
+          </div>
         </div>
       </div>
       <FriendModal isModal={isModal} setIsModal={setIsModal} />
