@@ -25,6 +25,7 @@ import HistoryModal from '@/components/friend/HistoryModal';
 import History from '@/components/friend/History';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { friend } from '@/model/friend';
+import FriendModal from '@/components/friend/FriendModal';
 
 const getIcon = (heart: string, alt: string) => {
   return <Image src={heart} alt={alt} width={'73'} />;
@@ -80,9 +81,11 @@ const getGradeExp = (send = 0, receive = 0) => {
 };
 
 export default function FriendDetailPage() {
-  const pathNames = usePathname();
+  const [isModal, setIsModal] = useState<boolean>(false);
+
   const router = useRouter();
   const queryClient = useQueryClient();
+  const pathNames = usePathname();
 
   const { data: friendData }: UseQueryResult<friend> = useQuery({
     queryKey: ['friend', pathNames.split('/')[2]],
@@ -102,63 +105,79 @@ export default function FriendDetailPage() {
 
   const gradeIndex = getGrade(friendData?.sentCount, friendData?.receivedCount);
 
+
   return (
-    <div className="flex flex-col grow h-[90vh]">
-      <div className="sticky top-0 flex items-center justify-between pt-6 pr-6 bg-white z-10">
-        <div className="flex items-center">
-          <div onClick={() => router.push('/friend')}>
-            <MdOutlineChevronLeft size="40" />
+    <>
+      <div className="flex flex-col grow h-[90vh]">
+        <div className="sticky top-0 flex items-center justify-between pt-6 pr-6 bg-white z-10">
+          <div className="flex items-center">
+            <div onClick={() => router.push('/friend')}>
+              <MdOutlineChevronLeft size="40" />
+            </div>
+            <p className="text-2xl font-bold">{friendData?.name}</p>
           </div>
-          <p className="text-2xl font-bold">{friendData?.name}</p>
+          <div className="flex items-center gap-2">
+            <Image
+              src={WriteIcon}
+              alt={'write'}
+              width={'18'}
+              onClick={() => setIsModal(true)}
+            />
+            <Image
+              src={DeleteIcon}
+              alt={'delete'}
+              width={'24'}
+              onClick={() => mutation.mutate()}
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Image src={WriteIcon} alt={'write'} width={'18'} />
-          <Image
-            src={DeleteIcon}
-            alt={'delete'}
-            width={'24'}
-            onClick={() => mutation.mutate()}
-          />
+        <div className="flex justify-evenly pt-9">
+          {gradeList[gradeIndex].icon}
+          <div className="flex flex-col justify-center items-center">
+            <p className="text-lg font-bold">
+              {friendData?.category ?? '없음'}
+            </p>
+            <p className="text-sm">관계</p>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <p className="text-lg font-bold">
+              {(friendData?.sentCount ?? 0) + (friendData?.receivedCount ?? 0)}
+            </p>
+            <p className="text-sm">나눈 기억</p>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <p className="text-lg font-bold">
+              {(friendData?.sentMoney ?? 0) + (friendData?.receivedMoney ?? 0)}
+            </p>
+            <p className="text-sm">기억의 크기</p>
+          </div>
         </div>
+        <div className="my-5">
+          <div className="flex flex-col border-2 border-gray-300 mx-5 px-6 py-5 rounded-xl gap-2">
+            <p className="text-3xl font-bold">{gradeList[gradeIndex].title}</p>
+            <p className="text-sm font-bold">{gradeList[gradeIndex].detail}</p>
+            <meter
+              className="w-full"
+              min="0"
+              max="100"
+              low={20}
+              high={65}
+              optimum={15}
+              value={getGradeExp(
+                friendData?.sentCount,
+                friendData?.receivedCount,
+              )}
+            />
+          </div>
+        </div>
+        <History friendId={pathNames.split('/')[2]} />
       </div>
-      <div className="flex justify-evenly pt-9">
-        {gradeList[gradeIndex].icon}
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-lg font-bold">{friendData?.category ?? '없음'}</p>
-          <p className="text-sm">관계</p>
-        </div>
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-lg font-bold">
-            {(friendData?.sentCount ?? 0) + (friendData?.receivedCount ?? 0)}
-          </p>
-          <p className="text-sm">나눈 기억</p>
-        </div>
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-lg font-bold">
-            {(friendData?.sentMoney ?? 0) + (friendData?.receivedMoney ?? 0)}
-          </p>
-          <p className="text-sm">기억의 크기</p>
-        </div>
-      </div>
-      <div className="my-5">
-        <div className="flex flex-col border-2 border-gray-300 mx-5 px-6 py-5 rounded-xl gap-2">
-          <p className="text-3xl font-bold">{gradeList[gradeIndex].title}</p>
-          <p className="text-sm font-bold">{gradeList[gradeIndex].detail}</p>
-          <meter
-            className="w-full"
-            min="0"
-            max="100"
-            low={20}
-            high={65}
-            optimum={15}
-            value={getGradeExp(
-              friendData?.sentCount,
-              friendData?.receivedCount,
-            )}
-          />
-        </div>
-      </div>
-      <History friendId={pathNames.split('/')[2]} />
-    </div>
+      <FriendModal
+        isModal={isModal}
+        setIsModal={setIsModal}
+        isUpdate={true}
+        friendData={friendData}
+      />
+    </>
   );
 }

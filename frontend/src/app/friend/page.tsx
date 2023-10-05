@@ -123,7 +123,7 @@ export default function FriendPage() {
               <HiOutlineUserAdd size={25} />
             </div>
           </div>
-          <div className="w-full scrollbar-hide">
+          <div className="w-full overflow-auto scrollbar-hide">
             <div className="flex gap-3">
               <div
                 key={'all'}

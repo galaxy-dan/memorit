@@ -73,52 +73,61 @@ export default function History({
             <div className="absolute w-[66px] h-2 bg-blue-400 opacity-70 bottom-[0.15rem] " />
           </div>
         </div>
-
-        <div>
-          {historyData?.pages.map((group, i) => (
-            <div key={i}>
-              {group?.data?.map((el: history, index: number) => (
-                <div
-                  key={el.articleId}
-                  onClick={() => {
-                    setArticleId(el.articleId);
-                    setIsModal((prev) => !prev);
-                  }}
-                  className={`flex flex-col ${
-                    el.given ? 'items-start' : 'items-end'
-                  } my-1`}
-                >
-                  <div
-                    className={`flex flex-col border-2 shadow-md w-64 ${
-                      el.given ? 'bg-white' : 'bg-yellow-300'
-                    } rounded-xl text-sm font-bold p-3`}
-                  >
-                    <p>{el.type}</p>
-                    <p>{`${el.amount}원`}</p>
+        <>
+          {historyData?.pages[0]?.data?.length == 0 ? (
+            <div>히스토리가 없습니다!</div>
+          ) : (
+            <>
+              <div>
+                {historyData?.pages.map((group, i) => (
+                  <div key={i}>
+                    {group?.data?.map((el: history, index: number) => (
+                      <div
+                        key={el.articleId}
+                        onClick={() => {
+                          setArticleId(el.articleId);
+                          setIsModal((prev) => !prev);
+                        }}
+                        className={`flex flex-col ${
+                          el.given ? 'items-start' : 'items-end'
+                        } my-1`}
+                      >
+                        <div
+                          className={`flex flex-col border-2 shadow-md w-64 ${
+                            el.given ? 'bg-white' : 'bg-yellow-300'
+                          } rounded-xl text-sm font-bold p-3`}
+                        >
+                          <p>{el.type}</p>
+                          <p>{`${el.amount}원`}</p>
+                        </div>
+                        <p className="text-xs font-medium ml-3 mt-">
+                          {el.date}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <p className="text-xs font-medium ml-3 mt-">{el.date}</p>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-center">
-          <button
-            ref={ref}
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            {/* {isFetchingNextPage
+                ))}
+              </div>
+              <div className="flex justify-center">
+                <button
+                  ref={ref}
+                  onClick={() => fetchNextPage()}
+                  disabled={!hasNextPage || isFetchingNextPage}
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                >
+                  {/* {isFetchingNextPage
             ? 'Loading more...'
             : hasNextPage
             ? 'Load Newer'
             : 'Nothing more to load'} */}
-          </button>
-        </div>
-        <div className="flex justify-center text-sm font-semibold leading-6 text-gray-900">
-          {/* {isFetching && !isFetchingNextPage ? 'Background Updating...' : null} */}
-        </div>
+                </button>
+              </div>
+              <div className="flex justify-center text-sm font-semibold leading-6 text-gray-900">
+                {/* {isFetching && !isFetchingNextPage ? 'Background Updating...' : null} */}
+              </div>
+            </>
+          )}
+        </>
       </div>
       <HistoryModal
         isModal={isModal}
