@@ -1,5 +1,5 @@
 import { addMemoryType, memory, postArticle } from '@/model/memory';
-import { get, getConfig, getUrl, post, put } from './http';
+import { get, getConfig, getUrl, post, put, del } from './http';
 import axios from 'axios';
 import { historyDetail } from '@/model/history';
 
@@ -47,3 +47,10 @@ export const getMemory = async (articleId: number) => {
   const res = await get(`/history/detail/${articleId}`);
   return res;
 };
+
+
+export const deleteMemory = async (articleId: number) => {
+  const res = await del(`/history/detail/${articleId}`);
+  return res;
+};
+

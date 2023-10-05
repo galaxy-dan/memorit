@@ -29,7 +29,7 @@ export default function History({
       setTotalCount(res.numOfHistories ?? 0);
       setTotalPeople(res.numOfFriends ?? 0);
     }
-
+    
     return {
       data: res.list,
       nextPage: page + 1 < res.totalPages ? page + 1 : null,
@@ -133,6 +133,7 @@ export default function History({
         isModal={isModal}
         setIsModal={setIsModal}
         articleId={articleId}
+        friendId={friendId||''}
       />
     </>
   );

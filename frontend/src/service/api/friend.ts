@@ -19,8 +19,6 @@ export const addFriend = async (name: string, category: string | null) => {
 };
 
 export const getFriendByID = async (id: string) => {
-  console.log("id: "+ id);
   const res = await get(`/friend/${id}`);
-  console.log(res);
   return res;
 };

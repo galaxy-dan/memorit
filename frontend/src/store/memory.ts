@@ -58,7 +58,7 @@ export const errorState = atom<errorType>({
 });
 
 export const editState = atom<editType>({
-  key: 'error',
+  key: 'edit',
   default: {
     articleId: 0,
   },
