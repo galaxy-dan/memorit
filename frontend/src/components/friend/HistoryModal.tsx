@@ -41,6 +41,7 @@ export default function HistoryModal({
   });
 
   const setEditArticleNo = useSetRecoilState<editType>(editState);
+
   const router = useRouter();
   const queryClient = useQueryClient();
 

@@ -123,7 +123,8 @@ export default function AddMemoryPage() {
         else {
           await editMemory(article.articleId, memory, memory.image);
         }
-        queryClient.invalidateQueries({queryKey:['history',article.articleId]});
+        queryClient.invalidateQueries({ queryKey: ['historyList', memory.friendID] });
+        queryClient.invalidateQueries({ queryKey: ['friend'] });
         router.push('/');
         resetError();
         resetMemory();
