@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.galaxy.memorit.common.exception.AccessRefusedException;
+import com.galaxy.memorit.common.exception.NoSuchFriendException;
+import com.galaxy.memorit.friend.Infrastructure.persistence.entity.FriendEntity;
+import com.galaxy.memorit.friend.Infrastructure.persistence.repository.FriendRepository;
 import com.galaxy.memorit.history.dto.request.HistoryListReqDTO;
 import com.galaxy.memorit.history.dto.response.HistoryListElementDTO;
 import com.galaxy.memorit.history.dto.response.HistoryListResDTO;
@@ -24,6 +28,7 @@ import static com.galaxy.memorit.history.infrastructure.persistence.entity.QHist
 public class HistoryDynamicQueryRepositoryImpl implements HistoryDynamicQueryRepository{
 	private final JPAQueryFactory jpaQueryFactory;
 	private final HistoryMapper historyMapper;
+	private final FriendRepository friendRepository;
 
 	@Override
 	public HistoryListResDTO getHistoriesByDTO(UUID userId, HistoryListReqDTO dto, UUID friendId) {
@@ -64,7 +69,12 @@ public class HistoryDynamicQueryRepositoryImpl implements HistoryDynamicQueryRep
 				totalPages = (totalCounts + dataSize - 1) / dataSize;
 
 				result = query.fetch().stream()
-					.map(historyMapper::entityToListElementDTO)
+					.map(entity -> {
+						FriendEntity friendEntity = friendRepository.findById(entity.getFriendId()).orElseThrow(
+							NoSuchFriendException::new);
+
+						return historyMapper.entityToListElementDTO(entity, friendEntity.getName());
+					})
 					.collect(Collectors.toList());
 
 				numOfHistories = totalCounts;
