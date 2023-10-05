@@ -24,6 +24,7 @@ import com.galaxy.memorit.friend.dto.response.FriendInfoDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRankResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendRegisterResDTO;
 import com.galaxy.memorit.friend.dto.response.FriendsListResDTO;
+import com.galaxy.memorit.history.infrastructure.persistence.repository.HistoryRepository;
 import com.galaxy.memorit.user.domain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class FriendServiceImpl implements FriendService {
 	private final FriendRepository friendRepository;
 	private final FriendMapper friendMapper;
 	private final UserRepository userRepository;
+	private final HistoryRepository historyRepository;
 	@Transactional
 	@Override
 	public FriendRegisterResDTO registerFriend(String userId, FriendRegisterReqDTO dto) {
@@ -122,12 +124,14 @@ public class FriendServiceImpl implements FriendService {
 		UUID userUUID = friendMapper.stringToUUID(userId);
 		//userRepository.findById(userUUID).orElseThrow(NoSuchUserException::new);
 
-		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendMapper.stringToUUID(friendId), userUUID);
+		UUID friendUUID = friendMapper.stringToUUID(friendId);
+		FriendEntity entity = friendRepository.findByFriendIdAndUserId(friendUUID, userUUID);
 		if(entity == null){
 			throw new NoSuchFriendException();
 		}
 
 		friendRepository.delete(entity);
+		historyRepository.deleteAllByFriendId(friendUUID);
 	}
 
 	@Transactional
@@ -141,6 +145,7 @@ public class FriendServiceImpl implements FriendService {
 				.map(friendMapper::stringToUUID)
 				.collect(Collectors.toList());
 		friendRepository.deleteAllByFriendsList(friendMapper.stringToUUID(userId), uuidList);
+		historyRepository.deleteAllByFriendIds(uuidList);
 	}
 
 	@Transactional(readOnly = true)
