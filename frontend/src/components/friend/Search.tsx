@@ -32,6 +32,7 @@ const Input = styled(motion.input)`
   font-size: 16px;
   background-color: transparent;
   border: 1px solid black;
+  width: 220px;
 `;
 
 const Svg = styled(motion.svg)`
