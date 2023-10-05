@@ -40,7 +40,7 @@ import {
 } from 'next/navigation';
 import { inputValid } from '@/service/input';
 import useCustomBack from '@/service/useCustomBack';
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import { UseQueryResult, useQuery, useQueryClient } from '@tanstack/react-query';
 import TypeInputNoEdit from '@/components/input/TypeInputEdit';
 import NameInputEdit from '@/components/input/NameInputEdit';
 import NameCateInputNoEdit from '@/components/input/NameInputEdit';
@@ -59,9 +59,10 @@ export default function AddMemoryPage() {
   const resetError = useResetRecoilState(errorState);
 
   const router = useRouter();
-
+  const queryClient = useQueryClient();
+  
   const { data: categoryData }: UseQueryResult<memory> = useQuery({
-    queryKey: ['memory', article.articleId],
+    queryKey: ['history', article.articleId],
     queryFn: () => getMemory(article.articleId),
   });
 
@@ -122,6 +123,7 @@ export default function AddMemoryPage() {
         else {
           await editMemory(article.articleId, memory, memory.image);
         }
+        queryClient.invalidateQueries({queryKey:['history',article.articleId]});
         resetError();
         resetMemory();
         router.push('/');

@@ -6,13 +6,14 @@ import DeleteIcon from 'public/icons/delete.svg';
 import Image from 'next/image';
 import ExampleImage from 'public/images/example.png';
 import { get } from '@/service/api/http';
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import { UseQueryResult, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { history, historyDetail } from '@/model/history';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editType } from '@/model/memory';
 import { editState } from '@/store/memory';
+import { deleteMemory } from '@/service/api/memory';
 
 type Props = {
   isModal: boolean;
@@ -31,8 +32,19 @@ export default function HistoryModal({
     refetchInterval: 5000,
     enabled: !!articleId,
   });
+
+  
   const setEditArticleNo = useSetRecoilState<editType>(editState);
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+
+  const cancel = useMutation(()=>deleteMemory(articleId), {
+    onSuccess: () => { 
+      setIsModal(false);
+      queryClient.invalidateQueries({queryKey:['history',articleId]});
+    }
+  });
 
   return (
     <>
@@ -55,7 +67,7 @@ export default function HistoryModal({
                   router.push(`/edit`);
                 }}
               />
-              <Image src={DeleteIcon} alt={'delete'} width={'24'} />
+              <Image src={DeleteIcon} alt={'delete'} width={'24'} onClick={()=>cancel}/>
             </div>
           </div>
           <p className="text-xl font-bold">{historyData?.type}</p>
