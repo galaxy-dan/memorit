@@ -31,10 +31,10 @@ export default function HistoryModal({
   isModal,
   setIsModal,
   articleId,
-  friendId
+  friendId,
 }: Props) {
   const { data: historyData }: UseQueryResult<historyDetail> = useQuery({
-    queryKey: ['historyList', articleId, friendId ],
+    queryKey: ['historyList', articleId, friendId],
     queryFn: () => get(`/history/detail/${articleId}`),
     refetchInterval: 5000,
     enabled: !!articleId,
@@ -81,8 +81,17 @@ export default function HistoryModal({
               />
             </div>
           </div>
-          <p className="text-xl font-bold">{historyData?.type}</p>
-          <p className="text-sm font-medium my-6">{`${historyData?.amount}원`}</p>
+          <div className="flex justify-between">
+            <p className="text-xl font-bold">{historyData?.type}</p>
+            <p className="text-xl font-bold text-gray-400">
+              {historyData?.friendName}
+            </p>
+          </div>
+          <p className="text-sm font-medium my-6">
+            {historyData?.amount
+              ? `${historyData?.amount}원`
+              : historyData?.item}
+          </p>
           <div className="relative aspect-video rounded-2xl overflow-hidden">
             <Image
               src={historyData?.image ?? ExampleImage}

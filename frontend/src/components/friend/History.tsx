@@ -29,7 +29,7 @@ export default function History({
       setTotalCount(res.numOfHistories ?? 0);
       setTotalPeople(res.numOfFriends ?? 0);
     }
-    
+
     return {
       data: res.list,
       nextPage: page + 1 < res.totalPages ? page + 1 : null,
@@ -93,12 +93,17 @@ export default function History({
                         } my-1`}
                       >
                         <div
-                          className={`flex flex-col border-2 shadow-md w-64 ${
+                          className={`flex border-2 shadow-md w-64 ${
                             el.given ? 'bg-white' : 'bg-yellow-300'
-                          } rounded-xl text-sm font-bold p-3`}
+                          } rounded-xl text-sm font-bold p-3 justify-between items-center`}
                         >
-                          <p>{el.type}</p>
-                          <p>{el.amount ? `${el.amount}원` : el.item}</p>
+                          <div>
+                            <p>{el.type}</p>
+                            <p>{el.amount ? `${el.amount}원` : el.item}</p>
+                          </div>
+                          <p className="text-gray-400">
+                            {friendId ? '' : el.friendName}
+                          </p>
                         </div>
                         <p className="text-xs font-medium ml-3 mt-">
                           {el.date}
@@ -133,7 +138,7 @@ export default function History({
         isModal={isModal}
         setIsModal={setIsModal}
         articleId={articleId}
-        friendId={friendId||''}
+        friendId={friendId || ''}
       />
     </>
   );

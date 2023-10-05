@@ -7,6 +7,7 @@ export type history = {
   item: string;
   given: boolean;
   errorMsg: string;
+  friendName: string;
 };
 
 export type historyDetail = history & { detail: string; image: string };
