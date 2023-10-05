@@ -25,23 +25,13 @@ export default function NameCateInputNoEdit({ icon1, icon2 }: Props) {
       <div className="border border-white">
         <div className={containerCss + ' flex items-center border relative'}>
           <div className={`${iconCss(false, false)}`}>{icon1}</div>
-          <input
-            type="text"
-            className={`${inputCss} w-full`}
-            value={friend?.name}
-            readOnly={true}
-          />
+          <p className={`${inputCss} w-full`}>{friend?.name}</p>
         </div>
       </div>
       <div className="border border-white">
         <div className={containerCss + ' flex items-center border relative'}>
           <div className={`${iconCss(false, false)}`}>{icon2}</div>
-          <input
-            type="text"
-            className={`${inputCss} w-full`}
-            value={friend?.category||'미지정'}
-            readOnly={true}
-          />
+          <p className={`${inputCss} w-full`}>{friend?.category || '미지정'}</p>
         </div>
       </div>
     </div>
