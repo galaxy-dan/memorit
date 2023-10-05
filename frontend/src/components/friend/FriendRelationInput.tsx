@@ -7,10 +7,11 @@ import { motion } from 'framer-motion';
 import { Category } from '@/app/friend/page';
 import {
   UseQueryResult,
+  useMutation,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { get } from 'react-hook-form';
+import { get, post } from '@/service/api/http';
 
 type Props = {
   placeholder?: string;
@@ -18,6 +19,7 @@ type Props = {
   className?: string;
   setValue: Function;
   props: any;
+  watch: Function;
 };
 
 export default function FriendRelationInput({
@@ -25,20 +27,28 @@ export default function FriendRelationInput({
   icon,
   className,
   setValue,
-  props
+  props,
+  watch,
 }: Props) {
   const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const queryClient = useQueryClient();
-  const categoryData: Category | undefined = queryClient.getQueryData([
-    'category',
-  ]);
-  // const { data: categoryDat }: UseQueryResult<Category> = useQuery({
-  //   queryKey: ['category'],
-  //   queryFn: () => get('/category'),
-  //   refetchInterval: 5000,
-  // });
-  // const categoryDat:any = [];
+  // const categoryData: Category | undefined = queryClient.getQueryData([
+  //   'category',
+  // ]);
+  const { data: categoryData }: UseQueryResult<Category> = useQuery({
+    queryKey: ['category'],
+    queryFn: () => get('/category'),
+  });
+
+  const mutation = useMutation({
+    mutationFn: (body: { categoryName: string }) => {
+      return post(`/category`, body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['category'] });
+    },
+  });
 
   return (
     <div className="border relative">
@@ -78,24 +88,21 @@ export default function FriendRelationInput({
               {el}
             </motion.p>
           ))}
-          {memory.name !== '' && (
-            <motion.p
-              className="text-lg px-5 pt-3 pb-5 truncate rounded-b-xl"
-              onClick={() => {
-                // setMemory((prev) => ({
-                //   ...prev,
-                //   nameSelected: true,
-                // }));
-                // setNameInput(memory.name);
-                // addFriendAsync(memory.name, null);
-              }}
-              whileTap={{
-                backgroundColor: '#D0D0D0',
-              }}
-            >
-              추가 : &nbsp;&quot;{memory.name}&quot;
-            </motion.p>
-          )}
+          {!categoryData?.categoryList?.includes(watch('category')) &&
+            watch('category') !== '' && (
+              <motion.p
+                className="text-lg px-5 pt-3 pb-5 truncate rounded-b-xl"
+                onClick={() => {
+                  // addFriendAsync(memory.name, null);
+                  mutation.mutate({ categoryName: watch('category') });
+                }}
+                whileTap={{
+                  backgroundColor: '#D0D0D0',
+                }}
+              >
+                추가 : &nbsp;&quot;{watch('category')}&quot;
+              </motion.p>
+            )}
         </div>
       )}
     </div>
