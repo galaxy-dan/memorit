@@ -64,7 +64,7 @@ spring:
         max-active: 10 # pool에 할당될 수 있는 커넥션 최대수
         max-idle: 10 # pool의 'idle' 커넥션 최대수
         min-idle: 2
-    host: redis
+    host: localhost
     port: 6379
     password: ${REDIS_PASSWORD}
 
@@ -88,7 +88,7 @@ spring:
         max-active: 10 # pool에 할당될 수 있는 커넥션 최대수
         max-idle: 10 # pool의 'idle' 커넥션 최대수
         min-idle: 2
-    host: redis
+    host: localhost
     port: 6379
     password: ${REDIS_PASSWORD}
 
