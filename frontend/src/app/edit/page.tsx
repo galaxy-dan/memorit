@@ -40,7 +40,7 @@ import {
 } from 'next/navigation';
 import { inputValid } from '@/service/input';
 import useCustomBack from '@/service/useCustomBack';
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import { UseQueryResult, useQuery, useQueryClient } from '@tanstack/react-query';
 import TypeInputNoEdit from '@/components/input/TypeInputEdit';
 import NameInputEdit from '@/components/input/NameInputEdit';
 import NameCateInputNoEdit from '@/components/input/NameInputEdit';
@@ -59,9 +59,10 @@ export default function AddMemoryPage() {
   const resetError = useResetRecoilState(errorState);
 
   const router = useRouter();
-
+  const queryClient = useQueryClient();
+  
   const { data: categoryData }: UseQueryResult<memory> = useQuery({
-    queryKey: ['memory', article.articleId],
+    queryKey: ['history', article.articleId],
     queryFn: () => getMemory(article.articleId),
   });
 
@@ -112,7 +113,7 @@ export default function AddMemoryPage() {
           const url = await getS3URL(memory.imageName);
           // 이후에 이미지를 S3 서버에 전송, 실패하면 백엔드에 실패 및 url 삭제 요청
           const imgUrl = url.split('?')[0];
-          const id = await editMemory(article.articleId, memory, imgUrl);
+          await editMemory(article.articleId, memory, imgUrl);
           // 업로드 실패 시
           if (!(await uploadImage(url, memory.imageFile))) {
             await editMemory(article.articleId, memory, null);
@@ -122,9 +123,10 @@ export default function AddMemoryPage() {
         else {
           await editMemory(article.articleId, memory, memory.image);
         }
+        queryClient.invalidateQueries({queryKey:['history',article.articleId]});
+        router.push('/');
         resetError();
         resetMemory();
-        router.push('/');
       } catch {
       } finally {
         setIsSubmitting(false);
@@ -139,32 +141,10 @@ export default function AddMemoryPage() {
   function CheckError() {
     let result = true;
     // 각 함수를 1회씩 무조건 실행해야 함
-    result = CheckType() && result;
     result = CheckMoney() && result;
     result = CheckPresent() && result;
-    result = CheckName() && result;
     result = CheckMemo() && result;
     return result;
-  }
-
-  function CheckType() {
-    // 타입 : 필수, 1자 이상 10자 이하
-    if (memory.type.length > inputValid.type.maxLength) {
-      setError((prev) => ({
-        ...prev,
-        type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.`,
-      }));
-      return false;
-    } else if (
-      !memory.typeSelected ||
-      memory.type.length < inputValid.type.minLength
-    ) {
-      setError((prev) => ({ ...prev, type: '타입을 선택해주세요' }));
-      return false;
-    } else {
-      setError((prev) => ({ ...prev, type: '' }));
-      return true;
-    }
   }
 
   function CheckMoney() {
@@ -195,26 +175,6 @@ export default function AddMemoryPage() {
     }
     setError((prev) => ({ ...prev, present: '' }));
     return true;
-  }
-
-  function CheckName() {
-    // 이름 : 필수, 1자 이상, 20자 이하
-    if (memory.name.length > inputValid.name.maxLength) {
-      setError((prev) => ({
-        ...prev,
-        name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.`,
-      }));
-      return false;
-    } else if (
-      !memory.nameSelected ||
-      memory.name.length < inputValid.name.minLength
-    ) {
-      setError((prev) => ({ ...prev, name: '친구를 선택해주세요' }));
-      return false;
-    } else {
-      setError((prev) => ({ ...prev, name: '' }));
-      return true;
-    }
   }
 
   function CheckMemo() {
