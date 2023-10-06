@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Memorit</string>
+    <string name="app_name_kor">메모릿</string>
+    <string name="app_getBirth">getBirth</string>
+    <string name="app_main">main</string>
+    <string name="app_search">search</string>
+    <string name="app_friend">friend</string>
+    <string name="app_login">login</string>
+    <string name="app_live">live</string>
+
+
+    <string name="first_greeting_line1">소중한 사람들과</string>
+    <string name="first_greeting_line2">주고받은 마음을 기록해보세요</string>
+
+
+    <string name="getbirth_title">생일을 알려주세요</string>
+    <string name="getbirth_subtitle">가입 시 한 번, 생일을 입력받아요</string>
+    <string name="getbirth_continue">계속하기</string>
+
+
+    <string name="main_follower">팔로워</string>
+    <string name="main_following">팔로잉</string>
+    <string name="main_follow">팔로우</string>
+    <string name="main_share">공유</string>
+</resources>
