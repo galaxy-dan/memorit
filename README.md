@@ -1,4 +1,5 @@
-![rn_image_picker_lib_temp_731c92e4-41dc-43a8-9f57-6fe8271a9e14](/uploads/8582746dbf070425445368452bebec7f/rn_image_picker_lib_temp_731c92e4-41dc-43a8-9f57-6fe8271a9e14.jpg)
+![main](https://github.com/galaxy-dan/memorit/assets/85854928/1d12064d-98c8-4bc0-b284-e3aa4c15720c)
+
 
 
 ## 기획 의도
@@ -92,6 +93,6 @@
 
 
 ## 프로젝트 구조
-![화면_캡처_2023-10-06_103200](/uploads/674f72c68889c8467630756c77b86977/화면_캡처_2023-10-06_103200.png)
+![structure](https://github.com/galaxy-dan/memorit/assets/85854928/ef769a55-146b-4c57-b087-e2241fec8deb)
 
 
