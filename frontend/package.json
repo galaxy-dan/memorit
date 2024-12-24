@@ -3,17 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev | npx tsx watch ./src/mocks/node.js",
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "msw": "npx tsx watch ./src/mocks/node.js"
+  },
+  "msw": {
+    "workerDirectory": "/src/mocks"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.1.1",
+    "@mswjs/http-middleware": "^0.10.2",
     "@mui/material": "^5.14.2",
     "@mui/x-data-grid": "^6.10.1",
     "@mui/x-date-pickers": "^6.14.0",
@@ -31,16 +36,17 @@
     "aws-sdk": "^2.1463.0",
     "axios": "^1.4.0",
     "browser-image-compression": "^2.0.2",
+    "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
     "event-source-polyfill": "^1.0.31",
     "framer-motion": "^10.15.0",
-    "next": "^13.5.4",
+    "next": "^15.1.2",
     "next-auth": "^4.22.3",
     "nodemailer": "^6.9.4",
-    "postcss": "8.4.27",
+    "postcss": "^8.4.49",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-aws-s3": "^1.5.0",
@@ -61,6 +67,7 @@
     "swr": "^2.2.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "3.3.3",
+    "tsx": "^4.19.2",
     "typescript": "5.1.6",
     "yup": "^1.2.0"
   },
@@ -75,6 +82,7 @@
     "@storybook/testing-library": "^0.2.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-storybook": "^0.6.13",
+    "msw": "^2.7.0",
     "prettier": "^3.0.0",
     "storybook": "^7.4.0"
   }

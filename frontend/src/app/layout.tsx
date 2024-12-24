@@ -1,7 +1,7 @@
 import QueryProvider from '@/context/QueryProvider';
 import './globals.css';
-import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import type { Metadata } from 'next';
 import RecoilProvider from '@/context/RecoilProvider';
 import Footer from '@/components/Footer';
 

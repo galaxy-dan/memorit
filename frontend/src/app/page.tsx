@@ -26,7 +26,11 @@ export default function Home() {
           <FaAnglesDown size="25" />
         </div>
       </div>
-      <History friendId={null} setTotalCount={setTotalCount} setTotalPeople={setTotalPeople} />
+      <History
+        friendId={null}
+        setTotalCount={setTotalCount}
+        setTotalPeople={setTotalPeople}
+      />
     </div>
   );
 }
