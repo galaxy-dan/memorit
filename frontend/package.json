@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev | npx tsx watch ./src/mocks/node.js",
+    "dev": "npx tsx watch ./src/mocks/node.js | next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
