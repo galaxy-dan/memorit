@@ -45,7 +45,8 @@ export default function HistoryModal({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const cancel = useMutation(() => deleteMemory(articleId), {
+  const cancel = useMutation({
+    mutationFn: () => deleteMemory(articleId),
     onSuccess: () => {
       setIsModal(false);
       queryClient.invalidateQueries({ queryKey: ['historyList', friendId] });

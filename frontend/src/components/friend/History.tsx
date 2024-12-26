@@ -55,6 +55,7 @@ export default function History({
         },
         pageParam,
       ),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
@@ -120,15 +121,17 @@ export default function History({
                   disabled={!hasNextPage || isFetchingNextPage}
                   className="text-sm font-semibold leading-6 text-gray-900"
                 >
-                  {/* {isFetchingNextPage
-            ? 'Loading more...'
-            : hasNextPage
-            ? 'Load Newer'
-            : 'Nothing more to load'} */}
+                  {isFetchingNextPage
+                    ? 'Loading more...'
+                    : hasNextPage
+                    ? 'Load Newer'
+                    : 'Nothing more to load'}
                 </button>
               </div>
               <div className="flex justify-center text-sm font-semibold leading-6 text-gray-900">
-                {/* {isFetching && !isFetchingNextPage ? 'Background Updating...' : null} */}
+                {isFetching && !isFetchingNextPage
+                  ? 'Background Updating...'
+                  : null}
               </div>
             </>
           )}
