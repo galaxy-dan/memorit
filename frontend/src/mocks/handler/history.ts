@@ -1,3 +1,4 @@
+import { getRandomItem } from '@/service/utils';
 import { http, HttpResponse } from 'msw';
 
 const uuid = '99d7f4dd55244c54a523032169193f40';
@@ -37,11 +38,11 @@ export const history = [
 
     const histories = Array.from({ length: 100 }, (_, index) => ({
       articleId: `history-${index + 1}`,
-      given: true,
-      type: '타입',
-      amount: 1000,
+      given: getRandomItem([true, false]),
+      type: getRandomItem(['결혼식', '장례식', '돌잔치', '생일', '기타']),
+      amount: getRandomItem([10000, 20000, 30000, 40000, 50000]),
       date: '2021-10-10',
-      friendName: `Content ${index + 1}`,
+      friendName: getRandomItem(['John Doe', 'Jane Doe', 'Alice', 'Bob']),
     }));
 
     const paginatedHistories = histories.slice(startIndex, endIndex);
