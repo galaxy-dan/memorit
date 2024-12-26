@@ -41,7 +41,12 @@ export const history = [
       given: getRandomItem([true, false]),
       type: getRandomItem(['결혼식', '장례식', '돌잔치', '생일', '기타']),
       amount: getRandomItem([10000, 20000, 30000, 40000, 50000]),
-      date: '2021-10-10',
+      date: getRandomItem([
+        '2021-01-01',
+        '2021-02-01',
+        '2021-03-01',
+        '2021-04-01',
+      ]),
       friendName: getRandomItem(['John Doe', 'Jane Doe', 'Alice', 'Bob']),
     }));
 
