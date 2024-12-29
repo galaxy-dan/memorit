@@ -1,5 +1,6 @@
 import { getRandomItem } from '@/service/utils';
 import { http, HttpResponse } from 'msw';
+import { db } from '../db';
 
 const uuid = '99d7f4dd55244c54a523032169193f40';
 
@@ -36,30 +37,23 @@ export const history = [
     const startIndex = (pageNumber - 1) * pageSize;
     const endIndex = startIndex + pageSize;
 
-    const histories = Array.from({ length: 100 }, (_, index) => ({
-      articleId: `history-${index + 1}`,
-      given: getRandomItem([true, false]),
-      type: getRandomItem(['결혼식', '장례식', '돌잔치', '생일', '기타']),
-      amount: getRandomItem([10000, 20000, 30000, 40000, 50000]),
-      date: getRandomItem([
-        '2021-01-01',
-        '2021-02-01',
-        '2021-03-01',
-        '2021-04-01',
-      ]),
-      friendName: getRandomItem(['John Doe', 'Jane Doe', 'Alice', 'Bob']),
-    }));
+    const allHistories = db.history.findMany({
+      take: pageSize,
+      skip: startIndex,
+    });
 
-    const paginatedHistories = histories.slice(startIndex, endIndex);
+    const totalHistories = db.history.getAll().length;
+    const uniqueFriends = new Set(db.history.getAll().map((h) => h.friendId))
+      .size;
 
     return HttpResponse.json(
       {
-        list: paginatedHistories,
-        totalPages: histories.length,
+        list: allHistories,
+        totalPages: Math.ceil(totalHistories / pageSize),
         pageNumber,
         pageSize,
-        numOfHistories: histories.length,
-        numOfFriends: 10,
+        numOfHistories: totalHistories,
+        numOfFriends: uniqueFriends,
       },
       { status: 200 },
     );
