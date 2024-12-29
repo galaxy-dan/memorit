@@ -92,6 +92,7 @@ export default function FriendPage() {
       selectedCategory,
       sortList[selectedSortIndex].sort,
     ],
+    initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
       getFriendList(
         {
@@ -177,7 +178,7 @@ export default function FriendPage() {
                     <div className="flex justify-end items-center gap-1">
                       <Image src={RedHeart} alt={'red'} width={'15'} />
                       <p className="font-bold">
-                        {el.receivedCount + el.sentCount}
+                        {(el.receivedCount ?? 0) + (el.sentCount ?? 0)}
                       </p>
                     </div>
                     <div>
