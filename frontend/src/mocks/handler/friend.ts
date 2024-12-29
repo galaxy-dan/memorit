@@ -23,38 +23,11 @@ export const friend = [
   http.get('/friend', (req) => {
     return HttpResponse.json(
       {
-        friends: [
+        list: [
           { id: 'friend-1', name: 'John Doe', rank: 1 },
           { id: 'friend-2', name: 'Jane Doe', rank: 2 },
         ],
       },
-      { status: 200 },
-    );
-  }),
-
-  // Get friend info
-  http.get('/friend/:friendId', (req) => {
-    const { friendId } = req.params;
-    return HttpResponse.json(
-      { id: friendId, name: 'John Doe', rank: 1 },
-      { status: 200 },
-    );
-  }),
-
-  // Update friend info
-  http.patch('/friend/:friendId', (req) => {
-    const { friendId } = req.params;
-    return HttpResponse.json(
-      { message: `Friend ${friendId} updated successfully` },
-      { status: 200 },
-    );
-  }),
-
-  // Delete friend by ID
-  http.delete('/friend/:friendId', (req) => {
-    const { friendId } = req.params;
-    return HttpResponse.json(
-      { message: `Friend ${friendId} deleted successfully` },
       { status: 200 },
     );
   }),
@@ -84,11 +57,38 @@ export const friend = [
   http.get('/friend/search', (req) => {
     return HttpResponse.json(
       {
-        results: [
+        list: [
           { id: 'friend-3', name: 'Alice', rank: 3 },
           { id: 'friend-4', name: 'Bob', rank: 4 },
         ],
       },
+      { status: 200 },
+    );
+  }),
+
+  // Get friend info
+  http.get('/friend/:friendId', (req) => {
+    const { friendId } = req.params;
+    return HttpResponse.json(
+      { id: friendId, name: 'John Doe', rank: 1 },
+      { status: 200 },
+    );
+  }),
+
+  // Update friend info
+  http.patch('/friend/:friendId', (req) => {
+    const { friendId } = req.params;
+    return HttpResponse.json(
+      { message: `Friend ${friendId} updated successfully` },
+      { status: 200 },
+    );
+  }),
+
+  // Delete friend by ID
+  http.delete('/friend/:friendId', (req) => {
+    const { friendId } = req.params;
+    return HttpResponse.json(
+      { message: `Friend ${friendId} deleted successfully` },
       { status: 200 },
     );
   }),
