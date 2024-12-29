@@ -1,9 +1,7 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { containerCss, iconCss, inputCss } from './inputCSS';
-import { useRecoilState } from 'recoil';
-import { addMemoryType, showMenuType } from '@/model/memory';
-import { addMemoryState } from '@/store/memory';
-
+import { addMemoryType } from '@/model/memory';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   type?: string;
@@ -12,7 +10,7 @@ type Props = {
 };
 
 export default function TypeInputNoEdit({ icon }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory } = useMemoryStore();
 
   return (
     <div>

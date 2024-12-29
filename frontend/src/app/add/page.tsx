@@ -16,42 +16,35 @@ import { BiCategory } from 'react-icons/bi';
 import { MdOutlineAttachMoney } from 'react-icons/md';
 import { AiOutlineGift } from 'react-icons/ai';
 import { CgNotes } from 'react-icons/cg';
-import { addMemoryType } from '@/model/memory';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { addMemoryState, errorState, showMenuState } from '@/store/memory';
 import DateInput from '@/components/input/DateInput';
-
 import Button from '@/components/input/Button';
 
 import { getS3URL, uploadImage } from '@/service/image';
 import { useState } from 'react';
-import { errorType } from '@/model/error';
 import { addMemory, editMemory } from '@/service/api/memory';
 import { useRouter } from 'next/navigation';
 import { inputValid } from '@/service/input';
 import useCustomBack from '@/service/useCustomBack';
+import { useMemoryStore } from '@/store/memory';
 
 const Line = () => {
   return <hr className="border-[0.01rem] border-neutral-300 my-1" />;
 };
 
 export default function AddMemoryPage() {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory, resetMemory } = useMemoryStore();
+  const { error, setError, resetError } = useMemoryStore();
+  const { showMenu, resetShowMenu } = useMemoryStore();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [error, setError] = useRecoilState<errorType>(errorState);
-
-  const resetShowMenu = useResetRecoilState(showMenuState);
-  const resetMemory = useResetRecoilState(addMemoryState);
-  const resetError = useResetRecoilState(errorState);
 
   const router = useRouter();
 
   function setSendTrue() {
-    setMemory((prev) => ({ ...prev, isSend: true }));
+    setMemory({ ...memory, isSend: true });
   }
 
   function setSendFalse() {
-    setMemory((prev) => ({ ...prev, isSend: false }));
+    setMemory({ ...memory, isSend: false });
   }
 
   useCustomBack(() => {
@@ -109,19 +102,16 @@ export default function AddMemoryPage() {
   function CheckType() {
     // 타입 : 필수, 1자 이상 10자 이하
     if (memory.type.length > inputValid.type.maxLength) {
-      setError((prev) => ({
-        ...prev,
-        type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.`,
-      }));
+      setError({ ...error, type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.` });
       return false;
     } else if (
       !memory.typeSelected ||
       memory.type.length < inputValid.type.minLength
     ) {
-      setError((prev) => ({ ...prev, type: '타입을 선택해주세요' }));
+      setError({ ...error, type: '타입을 선택해주세요' });
       return false;
     } else {
-      setError((prev) => ({ ...prev, type: '' }));
+      setError({ ...error, type: '' });
       return true;
     }
   }
@@ -130,11 +120,11 @@ export default function AddMemoryPage() {
     // 금액 : 반필수, 100000000원 이하, 1원 이상
     if (memory.isMoney) {
       if (!memory.money || memory.money < inputValid.money.minSize) {
-        setError((prev) => ({ ...prev, money: '금액을 입력해주세요' }));
+        setError({ ...error, money: '금액을 입력해주세요' });
         return false;
       }
     }
-    setError((prev) => ({ ...prev, money: '' }));
+    setError({ ...error, money: '' });
     return true;
   }
 
@@ -142,36 +132,30 @@ export default function AddMemoryPage() {
     // 선물 : 반필수, 20자 이하, 1자 이상
     if (!memory.isMoney) {
       if (memory.present.length > inputValid.present.maxLength) {
-        setError((prev) => ({
-          ...prev,
-          present: `최대 글자 수는 ${inputValid.present.maxLength}자 입니다.`,
-        }));
+        setError({ ...error, present: `최대 글자 수는 ${inputValid.present.maxLength}자 입니다.` });
         return false;
       } else if (memory.present.length < inputValid.present.minLength) {
-        setError((prev) => ({ ...prev, present: '선물을 입력해주세요' }));
+        setError({ ...error, present: '선물을 입력해주세요' });
         return false;
       }
     }
-    setError((prev) => ({ ...prev, present: '' }));
+    setError({ ...error, present: '' });
     return true;
   }
 
   function CheckName() {
     // 이름 : 필수, 1자 이상, 20자 이하
     if (memory.name.length > inputValid.name.maxLength) {
-      setError((prev) => ({
-        ...prev,
-        name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.`,
-      }));
+      setError({ ...error, name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.` });
       return false;
     } else if (
       !memory.nameSelected ||
       memory.name.length < inputValid.name.minLength
     ) {
-      setError((prev) => ({ ...prev, name: '친구를 선택해주세요' }));
+      setError({ ...error, name: '친구를 선택해주세요' });
       return false;
     } else {
-      setError((prev) => ({ ...prev, name: '' }));
+      setError({ ...error, name: '' });
       return true;
     }
   }
@@ -179,13 +163,10 @@ export default function AddMemoryPage() {
   function CheckMemo() {
     // 메모 : 20자 이하
     if (memory.memo.length > inputValid.memo.maxLength) {
-      setError((prev) => ({
-        ...prev,
-        memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.`,
-      }));
+      setError({ ...error, memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.` });
       return false;
     } else {
-      setError((prev) => ({ ...prev, memo: '' }));
+      setError({ ...error, memo: '' });
       return true;
     }
   }

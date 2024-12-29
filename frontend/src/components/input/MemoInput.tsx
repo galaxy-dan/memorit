@@ -1,10 +1,9 @@
 import React, { ReactNode, useRef, useState } from 'react';
 import { containerCss, iconCss, inputCss } from './inputCSS';
-import { useRecoilState } from 'recoil';
 import { addMemoryType } from '@/model/memory';
-import { addMemoryState, errorState } from '@/store/memory';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   placeholder?: string;
@@ -12,11 +11,11 @@ type Props = {
 };
 
 export default function MemoInput({ placeholder, icon }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory } = useMemoryStore();
+  const { error, setError } = useMemoryStore();
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const ref = useRef<HTMLTextAreaElement>(null);
-  const [error, setError] = useRecoilState<errorType>(errorState);
 
   const handleResizeHeight = () => {
     if (ref && ref.current) {
@@ -34,11 +33,10 @@ export default function MemoInput({ placeholder, icon }: Props) {
             placeholder={placeholder}
             value={memory.memo}
             rows={2}
-            
             ref={ref}
             onChange={(e) => {
-              setMemory((prev) => ({ ...prev, memo: e.target.value }));
-              setError((prev) => ({ ...prev, memo: '' }));
+              setMemory({ ...memory, memo: e.target.value });
+              setError({ ...error, memo: '' });
               handleResizeHeight();
             }}
             onFocus={() => {

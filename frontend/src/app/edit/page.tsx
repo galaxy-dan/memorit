@@ -17,15 +17,7 @@ import { MdOutlineAttachMoney } from 'react-icons/md';
 import { AiOutlineGift } from 'react-icons/ai';
 import { CgNotes } from 'react-icons/cg';
 import { addMemoryType, editType, memory } from '@/model/memory';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import {
-  addMemoryState,
-  editState,
-  errorState,
-  showMenuState,
-} from '@/store/memory';
 import DateInput from '@/components/input/DateInput';
-
 import Button from '@/components/input/Button';
 
 import { getS3URL, uploadImage } from '@/service/image';
@@ -44,35 +36,31 @@ import { UseQueryResult, useQuery, useQueryClient } from '@tanstack/react-query'
 import TypeInputNoEdit from '@/components/input/TypeInputEdit';
 import NameInputEdit from '@/components/input/NameInputEdit';
 import NameCateInputNoEdit from '@/components/input/NameInputEdit';
+import { useMemoryStore } from '@/store/memory';
 
 const Line = () => {
   return <hr className="border-[0.01rem] border-neutral-300 my-1" />;
 };
 
 export default function AddMemoryPage() {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory, resetMemory, error, setError, resetError, resetShowMenu, edit } = useMemoryStore();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [error, setError] = useRecoilState<errorType>(errorState);
-  const article = useRecoilValue<editType>(editState);
-  const resetShowMenu = useResetRecoilState(showMenuState);
-  const resetMemory = useResetRecoilState(addMemoryState);
-  const resetError = useResetRecoilState(errorState);
 
   const router = useRouter();
   const queryClient = useQueryClient();
   
   const { data: categoryData }: UseQueryResult<memory> = useQuery({
-    queryKey: ['history', article.articleId],
-    queryFn: () => getMemory(article.articleId),
+    queryKey: ['history', edit.articleId],
+    queryFn: () => getMemory(edit.articleId),
   });
 
   useEffect(() => {
-    if (article.articleId === 0) {
+    if (edit.articleId === 0) {
       history.back();
     }
     if (categoryData) {
-      setMemory((prev) => ({
-        ...prev,
+      setMemory({
+        ...memory,
         type: categoryData?.type,
         money: categoryData?.amount || 0,
         present: categoryData?.item || '',
@@ -84,16 +72,16 @@ export default function AddMemoryPage() {
           categoryData.image !== null ? categoryData.image.split('/')[3] : '',
         image: categoryData.image,
         friendID: categoryData?.friendId,
-      }));
+      });
     }
-  }, [categoryData, setMemory, article.articleId]);
+  }, [categoryData, setMemory, edit.articleId]);
 
   function setSendTrue() {
-    setMemory((prev) => ({ ...prev, isSend: true }));
+    setMemory({ ...memory, isSend: true });
   }
 
   function setSendFalse() {
-    setMemory((prev) => ({ ...prev, isSend: false }));
+    setMemory({ ...memory, isSend: false });
   }
 
   useCustomBack(() => {
@@ -113,17 +101,17 @@ export default function AddMemoryPage() {
           const url = await getS3URL(memory.imageName);
           // 이후에 이미지를 S3 서버에 전송, 실패하면 백엔드에 실패 및 url 삭제 요청
           const imgUrl = url.split('?')[0];
-          await editMemory(article.articleId, memory, imgUrl);
+          await editMemory(edit.articleId, memory, imgUrl);
           // 업로드 실패 시
           if (!(await uploadImage(url, memory.imageFile))) {
-            await editMemory(article.articleId, memory, null);
+            await editMemory(edit.articleId, memory, null);
           }
         }
         // 이미지 없을 때
         else {
-          await editMemory(article.articleId, memory, memory.image);
+          await editMemory(edit.articleId, memory, memory.image);
         }
-        queryClient.invalidateQueries({ queryKey: ['historyList', article.articleId, memory.friendID] });
+        queryClient.invalidateQueries({ queryKey: ['historyList', edit.articleId, memory.friendID] });
         queryClient.invalidateQueries({ queryKey: ['historyList', memory.friendID] });
         queryClient.invalidateQueries({ queryKey: ['friend'] });
         router.push('/');
@@ -153,11 +141,11 @@ export default function AddMemoryPage() {
     // 금액 : 반필수, 100000000원 이하, 1원 이상
     if (memory.isMoney) {
       if (!memory.money || memory.money < inputValid.money.minSize) {
-        setError((prev) => ({ ...prev, money: '금액을 입력해주세요' }));
+        setError({ ...error, money: '금액을 입력해주세요' });
         return false;
       }
     }
-    setError((prev) => ({ ...prev, money: '' }));
+    setError({ ...error, money: '' });
     return true;
   }
 
@@ -165,30 +153,30 @@ export default function AddMemoryPage() {
     // 선물 : 반필수, 20자 이하, 1자 이상
     if (!memory.isMoney) {
       if (memory.present.length > inputValid.present.maxLength) {
-        setError((prev) => ({
-          ...prev,
+        setError({
+          ...error,
           present: `최대 글자 수는 ${inputValid.present.maxLength}자 입니다.`,
-        }));
+        });
         return false;
       } else if (memory.present.length < inputValid.present.minLength) {
-        setError((prev) => ({ ...prev, present: '선물을 입력해주세요' }));
+        setError({ ...error, present: '선물을 입력해주세요' });
         return false;
       }
     }
-    setError((prev) => ({ ...prev, present: '' }));
+    setError({ ...error, present: '' });
     return true;
   }
 
   function CheckMemo() {
     // 메모 : 20자 이하
     if (memory.memo.length > inputValid.memo.maxLength) {
-      setError((prev) => ({
-        ...prev,
+      setError({
+        ...error,
         memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.`,
-      }));
+      });
       return false;
     } else {
-      setError((prev) => ({ ...prev, memo: '' }));
+      setError({ ...error, memo: '' });
       return true;
     }
   }

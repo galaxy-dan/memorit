@@ -1,10 +1,9 @@
 import { addMemoryType } from '@/model/memory';
-import { addMemoryState, errorState } from '@/store/memory';
 import { ReactNode, useState } from 'react';
-import { useRecoilState } from 'recoil';
 import { containerCss, iconCss, inputCss } from './inputCSS';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   placeholder?: string;
@@ -13,7 +12,8 @@ type Props = {
 };
 
 export default function PresentInput({ placeholder, icon, className }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory } = useMemoryStore();
+  const { error, setError } = useMemoryStore();
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
@@ -21,31 +21,28 @@ export default function PresentInput({ placeholder, icon, className }: Props) {
     // 선물 : 반필수, 20자 이하, 1자 이상
     if (!memory.isMoney) {
       if (memory.present.length > 20) {
-        setError((prev) => ({
-          ...prev,
-          present: '최대 글자 수는 20자 입니다.',
-        }));
+        setError({ ...error, present: '최대 글자 수는 20자 입니다.' });
         return false;
       } else if (memory.present && memory.present.length === 0) {
-        setError((prev) => ({ ...prev, present: '선물을 입력해주세요' }));
+        setError({ ...error, present: '선물을 입력해주세요' });
         return false;
       }
     }
-    setError((prev) => ({ ...prev, present: '', money: '' }));
+    setError({ ...error, present: '', money: '' });
     return true;
   }
 
-  const [error, setError] = useRecoilState<errorType>(errorState);
   const onChange = () => {
     CheckPresent();
   };
+
   return (
     <div>
       <div
         className="flex w-full pl-2 items-center relative"
         onClick={() => {
-          setMemory((prev) => ({ ...prev, isMoney: false }));
-          setError((prev) => ({ ...prev, money: '' }));
+          setMemory({ ...memory, isMoney: false });
+          setError({ ...error, money: '' });
         }}
         onChange={onChange}
       >
@@ -69,8 +66,8 @@ export default function PresentInput({ placeholder, icon, className }: Props) {
             value={memory.present}
             readOnly={memory.isMoney}
             onChange={(e) => {
-              setMemory((prev) => ({ ...prev, present: e.target.value }));
-              setError((prev) => ({ ...prev, present: '', money: '' }));
+              setMemory({ ...memory, present: e.target.value });
+              setError({ ...error, present: '', money: '' });
             }}
             onFocus={() => {
               setIsFocused(true);

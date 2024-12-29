@@ -14,8 +14,7 @@ import {
   transitionCssSlower,
 } from './inputCSS';
 import { addMemoryType } from '@/model/memory';
-import { useRecoilState } from 'recoil';
-import { addMemoryState } from '@/store/memory';
+import { useMemoryStore } from '@/store/memory';
 import imageCompression from 'browser-image-compression';
 type Props = {};
 
@@ -25,7 +24,7 @@ export default function PictureInput({}: Props) {
   const [isButtonTouched, setIsButtonTouched] = useState<boolean>(false);
   const [isCancelButtonTouched, setIsCancelButtonTouched] =
     useState<boolean>(false);
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory } = useMemoryStore();
   const [imageSrc, setImageSrc] = useState<string>('');
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -38,21 +37,21 @@ export default function PictureInput({}: Props) {
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
 
     if (targetFiles[0]) {
-      setMemory((prev) => ({
-        ...prev,
+      setMemory({
+        ...memory,
         imageName: targetFiles[0].name,
         imageFile: e.target.files[0],
-      }));
+      });
     }
     setImageSrc(URL.createObjectURL(targetFiles[0]));
   };
 
   const handleCancle = () => {
-    setMemory((prev) => ({
-      ...prev,
+    setMemory({
+      ...memory,
       imageName: '',
       imageFile: null,
-    }));
+    });
     setImageSrc('');
     if (fileRef && fileRef.current) {
       fileRef.current.value = '';

@@ -1,11 +1,10 @@
 import { addMemoryType } from '@/model/memory';
-import { addMemoryState, errorState } from '@/store/memory';
 import { ReactNode, useState } from 'react';
-import { useRecoilState } from 'recoil';
 import { containerCss, iconCss, inputCss } from './inputCSS';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
 import { inputValid } from '@/service/input';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   placeholder?: string;
@@ -14,19 +13,18 @@ type Props = {
 };
 
 export default function MoneyInput({ placeholder, icon, className }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory } = useMemoryStore();
+  const { error, setError } = useMemoryStore();
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
-
-  const [error, setError] = useRecoilState<errorType>(errorState);
 
   return (
     <div>
       <div
         className="flex w-full pl-2 items-center relative"
         onClick={() => {
-          setMemory((prev) => ({ ...prev, isMoney: true }));
-          setError((prev) => ({ ...prev, present: '' }));
+          setMemory({ ...memory, isMoney: true });
+          setError({ ...error, present: '' });
         }}
       >
         <input
@@ -59,8 +57,8 @@ export default function MoneyInput({ placeholder, icon, className }: Props) {
               if (num > inputValid.money.maxSize) {
                 num = inputValid.money.maxSize;
               }
-              setMemory((prev) => ({ ...prev, money: num }));
-              setError((prev) => ({ ...prev, present: '', money: '' }));
+              setMemory({ ...memory, money: num });
+              setError({ ...error, present: '', money: '' });
             }}
             onFocus={() => {
               setIsFocused(true);

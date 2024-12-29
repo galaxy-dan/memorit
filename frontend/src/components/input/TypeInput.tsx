@@ -1,8 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { containerCss, iconCss, inputCss } from './inputCSS';
-import { useRecoilState } from 'recoil';
 import { addMemoryType, showMenuType } from '@/model/memory';
-import { addMemoryState, errorState, showMenuState } from '@/store/memory';
 import { motion } from 'framer-motion';
 import {
   UseQueryResult,
@@ -13,6 +11,7 @@ import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
 import { getTypeListByName } from '@/service/api/type';
 import { addType } from '@/service/api/type';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   type?: string;
@@ -28,10 +27,10 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory } = useMemoryStore();
+  const { error, setError } = useMemoryStore();
+  const { showMenu, setShowMenu } = useMemoryStore();
   const [typeInput, setTypeInput] = useState<string>('');
-  const [showMenu, setShowMenu] = useRecoilState<showMenuType>(showMenuState);
-  const [error, setError] = useRecoilState<errorType>(errorState);
 
   const { data: typeList }: UseQueryResult<TypeList> = useQuery({
     queryKey: ['type', memory.type],
@@ -41,11 +40,10 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
   const queryClient = useQueryClient();
 
   function doShowMenu() {
-    setShowMenu((prev) => ({
-      ...prev,
+    setShowMenu({
       showTypeMenu: true,
       showNameMenu: false,
-    }));
+    });
   }
 
   const addTypeAsync = async (type: string) => {
@@ -55,10 +53,7 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      return setMemory((prev) => ({
-        ...prev,
-        type: typeInput,
-      }));
+      setMemory({ ...memory, type: typeInput });
     }, 180);
     return () => clearTimeout(debounce);
   }, [typeInput, setMemory]);
@@ -77,13 +72,10 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
             value={typeInput}
             onChange={(e) => {
               setTypeInput(e.target.value);
-              setError((prev) => ({ ...prev, type: '' }));
+              setError({ ...error, type: '' });
             }}
             onKeyDown={() => {
-              setMemory((prev) => ({
-                ...prev,
-                typeSelected: false,
-              }));
+              setMemory({ ...memory, typeSelected: false });
             }}
             onFocus={() => {
               setIsFocused(true);
@@ -112,12 +104,8 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                   key={index}
                   onClick={() => {
                     setTypeInput(item);
-                    setMemory((prev) => ({
-                      ...prev,
-                      type: item,
-                      typeSelected: true,
-                    }));
-                    setError((prev) => ({ ...prev, type: '' }));
+                    setMemory({ ...memory, type: item, typeSelected: true });
+                    setError({ ...error, type: '' });
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',
@@ -131,13 +119,10 @@ export default function TypeInput({ type, placeholder, icon }: Props) {
                   <motion.p
                     className={`${inputCss} px-5 pt-3 pb-5 truncate rounded-b-xl`}
                     onClick={() => {
-                      setMemory((prev) => ({
-                        ...prev,
-                        typeSelected: true,
-                      }));
+                      setMemory({ ...memory, typeSelected: true });
                       setTypeInput(memory.type);
                       addTypeAsync(memory.type);
-                      setError((prev) => ({ ...prev, type: '' }));
+                      setError({ ...error, type: '' });
                     }}
                     whileTap={{
                       backgroundColor: '#D0D0D0',

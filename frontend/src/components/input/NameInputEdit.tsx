@@ -1,11 +1,10 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { containerCss, iconCss, inputCss } from './inputCSS';
-import { useRecoilState } from 'recoil';
-import { addMemoryType, showMenuType } from '@/model/memory';
-import { addMemoryState } from '@/store/memory';
+import { addMemoryType } from '@/model/memory';
 import { friend } from '@/model/friend';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { getFriendByID } from '@/service/api/friend';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   icon1?: ReactNode;
@@ -13,7 +12,7 @@ type Props = {
 };
 
 export default function NameCateInputNoEdit({ icon1, icon2 }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory } = useMemoryStore();
 
   const { data: friend }: UseQueryResult<friend> = useQuery({
     queryKey: ['friendDetail', memory.friendID],

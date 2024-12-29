@@ -15,9 +15,8 @@ import {
 import { history, historyDetail } from '@/model/history';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editType } from '@/model/memory';
-import { editState } from '@/store/memory';
+import { useMemoryStore } from '@/store/memory';
 import { deleteMemory } from '@/service/api/memory';
 
 type Props = {
@@ -40,7 +39,7 @@ export default function HistoryModal({
     enabled: !!articleId,
   });
 
-  const setEditArticleNo = useSetRecoilState<editType>(editState);
+  const setEdit = useMemoryStore((state) => state.setEdit);
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -71,7 +70,7 @@ export default function HistoryModal({
                 alt={'write'}
                 width={'18'}
                 onClick={() => {
-                  setEditArticleNo({ articleId: articleId });
+                  setEdit({ articleId: articleId });
                   router.push(`/edit`);
                 }}
               />

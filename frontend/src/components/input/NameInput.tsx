@@ -1,8 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { containerCss, iconCss, inputCss } from './inputCSS';
-import { useRecoilState } from 'recoil';
 import { addMemoryType, showMenuType } from '@/model/memory';
-import { addMemoryState, errorState, showMenuState } from '@/store/memory';
 import { motion } from 'framer-motion';
 import {
   UseQueryResult,
@@ -13,6 +11,7 @@ import { friendList } from '@/model/friend';
 import { addFriend, getFriendListByName } from '@/service/api/friend';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   type: string;
@@ -25,9 +24,9 @@ export default function NameInput({ type, placeholder, icon }: Props) {
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [nameInput, setNameInput] = useState<string>('');
 
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
-  const [showMenu, setShowMenu] = useRecoilState<showMenuType>(showMenuState);
-  const [error, setError] = useRecoilState<errorType>(errorState);
+  const { memory, setMemory } = useMemoryStore();
+  const { showMenu, setShowMenu } = useMemoryStore();
+  const { error, setError } = useMemoryStore();
 
   const { data: friendList }: UseQueryResult<friendList> = useQuery({
     queryKey: ['friend', memory.name],
@@ -37,26 +36,22 @@ export default function NameInput({ type, placeholder, icon }: Props) {
   const queryClient = useQueryClient();
 
   function doShowMenu() {
-    setShowMenu((prev) => ({
-      ...prev,
+    setShowMenu({
       showNameMenu: true,
       showTypeMenu: false,
-    }));
+    });
   }
 
   const addFriendAsync = async (name: string, category: string | null) => {
     // 여기서 추가한 친구 ID 받기
     const friendId = await addFriend(name, category);
-    setMemory((prev) => ({ ...prev, friendID: friendId, category: '미지정' }));
+    setMemory({ ...memory, friendID: friendId, category: '미지정' });
     queryClient.invalidateQueries({ queryKey: ['friend'] });
   };
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      return setMemory((prev) => ({
-        ...prev,
-        name: nameInput,
-      }));
+      setMemory({ ...memory, name: nameInput });
     }, 180);
     return () => clearTimeout(debounce);
   }, [nameInput, setMemory]);
@@ -75,15 +70,15 @@ export default function NameInput({ type, placeholder, icon }: Props) {
             value={nameInput}
             onChange={(e) => {
               setNameInput(e.target.value);
-              setMemory((prev) => ({ ...prev, category: '미지정' }));
-              setError((prev) => ({ ...prev, name: '' }));
+              setMemory({ ...memory, category: '미지정' });
+              setError({ ...error, name: '' });
             }}
             onKeyDown={() => {
               if (memory.nameSelected) {
-                setMemory((prev) => ({
-                  ...prev,
+                setMemory({
+                  ...memory,
                   nameSelected: false,
-                }));
+                });
               }
             }}
             onFocus={() => {
@@ -113,15 +108,15 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                   key={index}
                   onClick={() => {
                     setNameInput(item.name);
-                    setMemory((prev) => ({
-                      ...prev,
+                    setMemory({
+                      ...memory,
                       name: item.name,
                       nameSelected: true,
                       category:
                         item.category === null ? '미지정' : item.category,
                       friendID: item.friendId,
-                    }));
-                    setError((prev) => ({ ...prev, name: '' }));
+                    });
+                    setError({ ...error, name: '' });
                   }}
                   whileTap={{
                     backgroundColor: '#D0D0D0',
@@ -134,13 +129,13 @@ export default function NameInput({ type, placeholder, icon }: Props) {
                 <motion.p
                   className={`${inputCss} px-5 pt-3 pb-5 truncate rounded-b-xl`}
                   onClick={() => {
-                    setMemory((prev) => ({
-                      ...prev,
+                    setMemory({
+                      ...memory,
                       nameSelected: true,
-                    }));
+                    });
                     setNameInput(memory.name);
                     addFriendAsync(memory.name, null);
-                    setError((prev) => ({ ...prev, name: '' }));
+                    setError({ ...error, name: '' });
                     // 여기서 받은 ID로 설정하기
                   }}
                   whileTap={{

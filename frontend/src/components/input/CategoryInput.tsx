@@ -1,10 +1,9 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { containerCss, iconCss, inputCss } from './inputCSS';
-import { useRecoilState } from 'recoil';
-import { addMemoryState, errorState } from '@/store/memory';
 import { addMemoryType } from '@/model/memory';
 import { errorType } from '@/model/error';
 import AlertMessage from './AlertMessage';
+import { useMemoryStore } from '@/store/memory';
 
 type Props = {
   placeholder?: string;
@@ -13,8 +12,8 @@ type Props = {
 };
 
 export default function CategoryInput({ placeholder, icon, className }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
-  const [error, setError] = useRecoilState<errorType>(errorState);
+  const { memory } = useMemoryStore();
+  const { error } = useMemoryStore();
 
   return (
     <div>
