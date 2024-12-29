@@ -19,6 +19,26 @@ export const db = factory({
     image: String,
     given: Boolean,
   },
+  category: {
+    id: primaryKey(String),
+    userId: String,
+    categoryName: String,
+  },
+  historyType: {
+    typeId: primaryKey(String),
+    userId: String,
+    typeName: String,
+  },
+  user: {
+    userId: primaryKey(String),
+    nickname: String,
+    provider: String,
+    receivedCount: Number,
+    sentCount: Number,
+    receivedMoney: Number,
+    sentMoney: Number,
+    withdrawal: Boolean,
+  },
 });
 
 // Seed initial data
