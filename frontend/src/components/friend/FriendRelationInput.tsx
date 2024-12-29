@@ -1,7 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import { containerCss, iconCss } from '../input/inputCSS';
-import { useRecoilState } from 'recoil';
-import { addMemoryState, showMenuState } from '@/store/memory';
+import { useMemoryStore } from '@/store/memory'; // Zustand store import
 import { addMemoryType, showMenuType } from '@/model/memory';
 import { motion } from 'framer-motion';
 import { Category } from '@/app/friend/page';
@@ -30,12 +29,10 @@ export default function FriendRelationInput({
   props,
   watch,
 }: Props) {
-  const [memory, setMemory] = useRecoilState<addMemoryType>(addMemoryState);
+  const { memory, setMemory } = useMemoryStore();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const queryClient = useQueryClient();
-  // const categoryData: Category | undefined = queryClient.getQueryData([
-  //   'category',
-  // ]);
+
   const { data: categoryData }: UseQueryResult<Category> = useQuery({
     queryKey: ['category'],
     queryFn: () => get('/category'),
@@ -71,13 +68,6 @@ export default function FriendRelationInput({
               } py-3 truncate`}
               key={index}
               onClick={() => {
-                // setMemory((prev) => ({
-                //   ...prev,
-                //   name: item.name,
-                //   nameSelected: true,
-                //   relation: item.category === null ? '미지정' : item.category,
-                // }));
-                // setNameInput(item.name);
                 setValue('category', el);
                 setShowMenu(false);
               }}
@@ -93,7 +83,6 @@ export default function FriendRelationInput({
               <motion.p
                 className="text-lg px-5 pt-3 pb-5 truncate rounded-b-xl"
                 onClick={() => {
-                  // addFriendAsync(memory.name, null);
                   mutation.mutate({ categoryName: watch('category') });
                 }}
                 whileTap={{
