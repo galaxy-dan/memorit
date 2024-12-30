@@ -1,32 +1,39 @@
 import { http, HttpResponse } from 'msw';
 import { db } from '../db';
 
-const uuid = '99d7f4dd55244c54a523032169193f40';
-
 export const category = [
-    // Register category
-    http.post('/category', async () => {
-        return HttpResponse.json(
-            {
-                message: 'Category registered successfully'
-            },
-            { status: 201 }
-        );
-    }),
+  /**
+   * @description 카테고리를 등록하는 핸들러
+   */
+  http.post('/category', async ({ request }) => {
+    const body = await request.json() as { categoryName: string };
 
-    // Search categories
-    http.get('/category', () => {
-        const categoryList = db.category.findMany({
-            where: {
-                userId: { equals: uuid }
-            }
-        });
+    // 카테고리 등록
+    const newCategory = db.category.create({
+      categoryName: body.categoryName,
+    });
 
-        return HttpResponse.json(
-            {
-                categoryList: categoryList
-            },
-            { status: 200 }
-        );
-    })
+    return HttpResponse.json(
+      {
+        message: '카테고리가 성공적으로 등록되었습니다',
+        categoryId: newCategory.categoryName,
+      },
+      { status: 201 },
+    );
+  }),
+
+  /**
+   * @description 카테고리를 검색하는 핸들러
+   */
+  http.get('/category', () => {
+    // 모든 카테고리 가져오기
+    const categoryList = db.category.getAll().map((el) => el.categoryName);
+
+    return HttpResponse.json(
+      {
+        categoryList: categoryList,
+      },
+      { status: 200 },
+    );
+  }),
 ];
