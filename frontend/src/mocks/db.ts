@@ -44,7 +44,7 @@ Array.from({ length: 50 }, (_, index) => {
   const names = ['John Doe', 'Jane Doe', 'Alice', 'Bob', 'Charlie'];
   const categories = ['가족', '친구', '직장동료', '이웃', '기타'];
   db.friend.create({
-    id: `friend-${index + 1}`,
+    id: crypto.randomUUID(),
     name: names[index % names.length],
     rank: (index % 5) + 1,
     category: categories[index % categories.length],
@@ -54,7 +54,7 @@ Array.from({ length: 50 }, (_, index) => {
 // Create multiple history entries
 Array.from({ length: 100 }, (_, index) => {
   db.history.create({
-    articleId: `history-${index + 1}`,
+    articleId: crypto.randomUUID(),
     type: ['결혼식', '장례식', '돌잔치', '생일', '기타'][index % 5],
     amount: [10000, 20000, 30000, 40000, 50000][index % 5],
     item: '',
@@ -79,7 +79,7 @@ Array.from({ length: 3 }, (_, index) => {
 Array.from({ length: 5 }, (_, index) => {
   const types = ['결혼식', '장례식', '돌잔치', '생일', '기타'];
   db.historyType.create({
-    typeId: `type-${index + 1}`,
+    typeId: crypto.randomUUID(),
     userId: '99d7f4dd55244a523032169193f40',
     typeName: types[index],
   });
