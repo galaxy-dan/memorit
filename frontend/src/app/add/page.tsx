@@ -1,31 +1,30 @@
 'use client';
 
+import Button from '@/components/input/Button';
+import CategoryInput from '@/components/input/CategoryInput';
+import DateInput from '@/components/input/DateInput';
+import MemoInput from '@/components/input/MemoInput';
+import MoneyInput from '@/components/input/MoneyInput';
+import NameInput from '@/components/input/NameInput';
+import PictureInput from '@/components/input/PictureInput';
+import PresentInput from '@/components/input/PresentInput';
 import SelectButton from '@/components/input/SelectButton';
 import SelectButtonGroup from '@/components/input/SelectButtonGroup';
 import TypeInput from '@/components/input/TypeInput';
-import MoneyInput from '@/components/input/MoneyInput';
-import PresentInput from '@/components/input/PresentInput';
-import NameInput from '@/components/input/NameInput';
-import CategoryInput from '@/components/input/CategoryInput';
-import MemoInput from '@/components/input/MemoInput';
-import PictureInput from '@/components/input/PictureInput';
-
-import { IoMdClose } from 'react-icons/io';
-import { BsCalendarDate, BsPeople, BsPerson } from 'react-icons/bs';
-import { BiCategory } from 'react-icons/bi';
-import { MdOutlineAttachMoney } from 'react-icons/md';
-import { AiOutlineGift } from 'react-icons/ai';
-import { CgNotes } from 'react-icons/cg';
-import DateInput from '@/components/input/DateInput';
-import Button from '@/components/input/Button';
-
-import { getS3URL, uploadImage } from '@/service/image';
-import { useState } from 'react';
 import { addMemory, editMemory } from '@/service/api/memory';
-import { useRouter } from 'next/navigation';
+import { getS3URL, uploadImage } from '@/service/image';
 import { inputValid } from '@/service/input';
 import useCustomBack from '@/service/useCustomBack';
 import { useMemoryStore } from '@/store/memory';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { AiOutlineGift } from 'react-icons/ai';
+import { BiCategory } from 'react-icons/bi';
+import { BsCalendarDate, BsPeople, BsPerson } from 'react-icons/bs';
+import { CgNotes } from 'react-icons/cg';
+import { IoMdClose } from 'react-icons/io';
+import { MdOutlineAttachMoney } from 'react-icons/md';
 
 const Line = () => {
   return <hr className="border-[0.01rem] border-neutral-300 my-1" />;
@@ -36,6 +35,7 @@ export default function AddMemoryPage() {
   const { error, setError, resetError } = useMemoryStore();
   const { showMenu, resetShowMenu } = useMemoryStore();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const router = useRouter();
 
@@ -74,6 +74,8 @@ export default function AddMemoryPage() {
         else {
           await addMemory(memory, null);
         }
+        await queryClient.invalidateQueries({ queryKey: ['historyList'] });
+        await queryClient.invalidateQueries({ queryKey: ['friend'] });
         resetError();
         resetMemory();
         router.push('/');
@@ -102,7 +104,10 @@ export default function AddMemoryPage() {
   function CheckType() {
     // 타입 : 필수, 1자 이상 10자 이하
     if (memory.type.length > inputValid.type.maxLength) {
-      setError({ ...error, type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.` });
+      setError({
+        ...error,
+        type: `최대 글자 수는 ${inputValid.type.maxLength}자 입니다.`,
+      });
       return false;
     } else if (
       !memory.typeSelected ||
@@ -132,7 +137,10 @@ export default function AddMemoryPage() {
     // 선물 : 반필수, 20자 이하, 1자 이상
     if (!memory.isMoney) {
       if (memory.present.length > inputValid.present.maxLength) {
-        setError({ ...error, present: `최대 글자 수는 ${inputValid.present.maxLength}자 입니다.` });
+        setError({
+          ...error,
+          present: `최대 글자 수는 ${inputValid.present.maxLength}자 입니다.`,
+        });
         return false;
       } else if (memory.present.length < inputValid.present.minLength) {
         setError({ ...error, present: '선물을 입력해주세요' });
@@ -146,7 +154,10 @@ export default function AddMemoryPage() {
   function CheckName() {
     // 이름 : 필수, 1자 이상, 20자 이하
     if (memory.name.length > inputValid.name.maxLength) {
-      setError({ ...error, name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.` });
+      setError({
+        ...error,
+        name: `최대 글자 수는 ${inputValid.name.maxLength}자 입니다.`,
+      });
       return false;
     } else if (
       !memory.nameSelected ||
@@ -163,7 +174,10 @@ export default function AddMemoryPage() {
   function CheckMemo() {
     // 메모 : 20자 이하
     if (memory.memo.length > inputValid.memo.maxLength) {
-      setError({ ...error, memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.` });
+      setError({
+        ...error,
+        memo: `최대 글자 수는 ${inputValid.memo.maxLength}자 입니다.`,
+      });
       return false;
     } else {
       setError({ ...error, memo: '' });

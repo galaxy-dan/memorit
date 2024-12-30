@@ -1,54 +1,55 @@
 'use client';
 
+import Button from '@/components/input/Button';
+import DateInput from '@/components/input/DateInput';
+import MemoInput from '@/components/input/MemoInput';
+import MoneyInput from '@/components/input/MoneyInput';
+import { default as NameCateInputNoEdit } from '@/components/input/NameInputEdit';
+import PictureInput from '@/components/input/PictureInput';
+import PresentInput from '@/components/input/PresentInput';
 import SelectButton from '@/components/input/SelectButton';
 import SelectButtonGroup from '@/components/input/SelectButtonGroup';
-import TypeInput from '@/components/input/TypeInput';
-import MoneyInput from '@/components/input/MoneyInput';
-import PresentInput from '@/components/input/PresentInput';
-import NameInput from '@/components/input/NameInput';
-import CategoryInput from '@/components/input/CategoryInput';
-import MemoInput from '@/components/input/MemoInput';
-import PictureInput from '@/components/input/PictureInput';
-
-import { IoMdClose } from 'react-icons/io';
-import { BsCalendarDate, BsPeople, BsPerson } from 'react-icons/bs';
-import { BiCategory } from 'react-icons/bi';
-import { MdOutlineAttachMoney } from 'react-icons/md';
-import { AiOutlineGift } from 'react-icons/ai';
-import { CgNotes } from 'react-icons/cg';
-import { addMemoryType, editType, memory } from '@/model/memory';
-import DateInput from '@/components/input/DateInput';
-import Button from '@/components/input/Button';
-
+import TypeInputNoEdit from '@/components/input/TypeInputEdit';
+import { memory } from '@/model/memory';
+import { editMemory, getMemory } from '@/service/api/memory';
 import { getS3URL, uploadImage } from '@/service/image';
-import { useEffect, useState } from 'react';
-import { errorType } from '@/model/error';
-import { addMemory, editMemory, getMemory } from '@/service/api/memory';
-import {
-  useRouter,
-  usePathname,
-  useParams,
-  useSearchParams,
-} from 'next/navigation';
 import { inputValid } from '@/service/input';
 import useCustomBack from '@/service/useCustomBack';
-import { UseQueryResult, useQuery, useQueryClient } from '@tanstack/react-query';
-import TypeInputNoEdit from '@/components/input/TypeInputEdit';
-import NameInputEdit from '@/components/input/NameInputEdit';
-import NameCateInputNoEdit from '@/components/input/NameInputEdit';
 import { useMemoryStore } from '@/store/memory';
+import {
+  UseQueryResult,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { AiOutlineGift } from 'react-icons/ai';
+import { BiCategory } from 'react-icons/bi';
+import { BsCalendarDate, BsPeople, BsPerson } from 'react-icons/bs';
+import { CgNotes } from 'react-icons/cg';
+import { IoMdClose } from 'react-icons/io';
+import { MdOutlineAttachMoney } from 'react-icons/md';
 
 const Line = () => {
   return <hr className="border-[0.01rem] border-neutral-300 my-1" />;
 };
 
 export default function AddMemoryPage() {
-  const { memory, setMemory, resetMemory, error, setError, resetError, resetShowMenu, edit } = useMemoryStore();
+  const {
+    memory,
+    setMemory,
+    resetMemory,
+    error,
+    setError,
+    resetError,
+    resetShowMenu,
+    edit,
+  } = useMemoryStore();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
-  
+
   const { data: categoryData }: UseQueryResult<memory> = useQuery({
     queryKey: ['history', edit.articleId],
     queryFn: () => getMemory(edit.articleId),
@@ -111,9 +112,8 @@ export default function AddMemoryPage() {
         else {
           await editMemory(edit.articleId, memory, memory.image);
         }
-        queryClient.invalidateQueries({ queryKey: ['historyList', edit.articleId, memory.friendID] });
-        queryClient.invalidateQueries({ queryKey: ['historyList', memory.friendID] });
-        queryClient.invalidateQueries({ queryKey: ['friend'] });
+        await queryClient.invalidateQueries({ queryKey: ['historyList'] });
+        await queryClient.invalidateQueries({ queryKey: ['friend'] });
         router.push('/');
         resetError();
         resetMemory();
