@@ -22,7 +22,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AiOutlineGift } from 'react-icons/ai';
 import { BiCategory } from 'react-icons/bi';
 import { BsCalendarDate, BsPeople, BsPerson } from 'react-icons/bs';
@@ -56,9 +56,9 @@ export default function AddMemoryPage() {
   });
 
   useEffect(() => {
-    if (edit.articleId === 0) {
-      history.back();
-    }
+    // if (edit.articleId === 0) {
+    //   history.back();
+    // }
     if (categoryData) {
       setMemory({
         ...memory,
@@ -85,11 +85,13 @@ export default function AddMemoryPage() {
     setMemory({ ...memory, isSend: false });
   }
 
-  useCustomBack(() => {
-    history.back();
-    resetError();
-    resetMemory();
-  });
+  useCustomBack(
+    useCallback(() => {
+      history.back();
+      resetError();
+      resetMemory();
+    }, []),
+  );
 
   const onSubmit = async () => {
     if (!isSubmitting && CheckError()) {
@@ -114,9 +116,9 @@ export default function AddMemoryPage() {
         }
         await queryClient.invalidateQueries({ queryKey: ['historyList'] });
         await queryClient.invalidateQueries({ queryKey: ['friend'] });
-        router.push('/');
         resetError();
         resetMemory();
+        router.push('/');
       } catch {
       } finally {
         setIsSubmitting(false);
@@ -124,7 +126,7 @@ export default function AddMemoryPage() {
     }
   };
 
-  function onCancle() {
+  function onCancel() {
     history.back();
   }
 
@@ -189,9 +191,9 @@ export default function AddMemoryPage() {
       >
         {/* 상단 탭 부분 */}
         <div className="flex justify-between items-center w-full py-5 px-4">
-          <Button onClick={() => onCancle} icon={<IoMdClose />} />
+          <Button onClick={() => onCancel()} icon={<IoMdClose />} />
           <p className="text-[1.65rem] font-semibold">기억 수정하기</p>
-          <Button text="저장" onClick={() => onSubmit} />
+          <Button text="저장" onClick={() => onSubmit()} />
         </div>
 
         <SelectButtonGroup>
