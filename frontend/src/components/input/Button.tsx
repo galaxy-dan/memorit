@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import React, { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 
 type Props = {
-  onClick: Function;
+  onClick: MouseEventHandler<HTMLButtonElement>;
   text?: string;
   icon?: ReactNode;
 };
@@ -24,7 +24,7 @@ export default function Button({ onClick, text, icon }: Props) {
           restDelta: 0.001,
         },
       }}
-      onClick={onClick()}
+      onClick={onClick}
     >
       <div className="text-3xl px-1">{icon}</div>
       <div className="text-xl font-semibold text-blue-500">{text}</div>
