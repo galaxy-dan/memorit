@@ -20,9 +20,7 @@ export const db = factory({
     given: Boolean,
   },
   category: {
-    id: primaryKey(String),
-    userId: String,
-    categoryName: String,
+    categoryName: primaryKey(String),
   },
   historyType: {
     typeId: primaryKey(String),
@@ -42,18 +40,15 @@ export const db = factory({
 });
 
 // Seed initial data
-db.friend.create({
-  id: 'friend-1',
-  name: 'John Doe',
-  rank: 1,
-  category: '가족',
-});
-
-db.friend.create({
-  id: 'friend-2',
-  name: 'Jane Doe',
-  rank: 2,
-  category: '친구',
+Array.from({ length: 50 }, (_, index) => {
+  const names = ['John Doe', 'Jane Doe', 'Alice', 'Bob', 'Charlie'];
+  const categories = ['가족', '친구', '직장동료', '이웃', '기타'];
+  db.friend.create({
+    id: `friend-${index + 1}`,
+    name: names[index % names.length],
+    rank: (index % 5) + 1,
+    category: categories[index % categories.length],
+  });
 });
 
 // Create multiple history entries
@@ -70,4 +65,34 @@ Array.from({ length: 100 }, (_, index) => {
     image: '',
     given: index % 2 === 0,
   });
+});
+
+// Create multiple category entries
+Array.from({ length: 3 }, (_, index) => {
+  const categories = ['가족', '친구', '직장동료'];
+  db.category.create({
+    categoryName: categories[index],
+  });
+});
+
+// Create multiple history type entries
+Array.from({ length: 5 }, (_, index) => {
+  const types = ['결혼식', '장례식', '돌잔치', '생일', '기타'];
+  db.historyType.create({
+    typeId: `type-${index + 1}`,
+    userId: '99d7f4dd55244a523032169193f40',
+    typeName: types[index],
+  });
+});
+
+// Create user data
+db.user.create({
+  userId: '99d7f4dd55244c54a523032169193f40',
+  nickname: '테스트 사용자',
+  provider: 'kakao',
+  receivedCount: 0,
+  sentCount: 0,
+  receivedMoney: 0,
+  sentMoney: 0,
+  withdrawal: false,
 });
