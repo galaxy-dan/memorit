@@ -1,4 +1,4 @@
-import { factory, primaryKey } from '@mswjs/data';
+import { factory, primaryKey, nullable } from '@mswjs/data';
 
 export const db = factory({
   friend: {
@@ -10,8 +10,8 @@ export const db = factory({
   history: {
     articleId: primaryKey(String),
     type: String,
-    amount: Number,
-    item: String,
+    amount: nullable(Number),
+    item: nullable(String),
     friendName: String,
     friendId: String,
     date: String,
