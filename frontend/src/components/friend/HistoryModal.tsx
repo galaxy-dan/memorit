@@ -95,7 +95,7 @@ export default function HistoryModal({
           </p>
           <div className="relative aspect-video rounded-2xl overflow-hidden">
             <Image
-              src={historyData?.image ?? ExampleImage}
+              src={historyData?.image || ExampleImage}
               alt="example"
               className="object-cover"
               fill
