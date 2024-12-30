@@ -1,32 +1,37 @@
 import { http, HttpResponse } from 'msw';
+import { db } from '../db';
 
 const uuid = '99d7f4dd55244c54a523032169193f40';
 
 export const historyType = [
-    // Register history type
-    http.post('/type', async ({ request }) => {
-        return HttpResponse.json(
-            {
-                message: 'History type registered successfully',
-            },
-            { status: 201 }
-        );
-    }),
+  // Register history type
+  http.post('/type', async ({ request }) => {
+    const body = (await request.json()) as { typeName: string };
 
-    // Search history types
-    http.get('/type/search', ({ request }) => {
-        // Mock response with sample history types
-        return HttpResponse.json(
-            {
-                typeList: [
-                    'Birthday',
-                    'Wedding',
-                    'Anniversary',
-                    'Holiday',
-                    'Other'
-                ]
-            },
-            { status: 200 }
-        );
-    }),
+    const newHistoryType = db.historyType.create({
+      typeId: crypto.randomUUID(),
+      userId: uuid,
+      typeName: body.typeName,
+    });
+
+    return HttpResponse.json(
+      {
+        message: 'History type registered successfully',
+        typeId: newHistoryType.typeId,
+      },
+      { status: 201 },
+    );
+  }),
+
+  // Search history types
+  http.get('/type/search', () => {
+    const typeList = db.historyType.getAll().map((el) => el.typeName);
+
+    return HttpResponse.json(
+      {
+        typeList: typeList,
+      },
+      { status: 200 },
+    );
+  }),
 ];
