@@ -78,6 +78,7 @@ export const history = [
   http.put('/history/detail/:articleId', async ({ params, request }) => {
     const articleId = String(params.articleId);
     const body = await request.json() as Partial<{
+      articleId: string;
       type: string;
       amount: number;
       item: string;
