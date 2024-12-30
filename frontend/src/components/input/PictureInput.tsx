@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import { useMemoryStore } from '@/store/memory';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
+import ExampleImage from 'public/images/example.png';
+import { useRef, useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import { BsImage } from 'react-icons/bs';
-import { RiImageAddFill } from 'react-icons/ri';
 import { MdCancel } from 'react-icons/md';
-import { motion } from 'framer-motion';
+import { RiImageAddFill } from 'react-icons/ri';
 import {
   containerMX,
   iconCss,
@@ -13,9 +15,7 @@ import {
   transitionCss,
   transitionCssSlower,
 } from './inputCSS';
-import { addMemoryType } from '@/model/memory';
-import { useMemoryStore } from '@/store/memory';
-import imageCompression from 'browser-image-compression';
+
 type Props = {};
 
 export default function PictureInput({}: Props) {
@@ -115,55 +115,55 @@ export default function PictureInput({}: Props) {
           } grid transition-[grid-template-rows] relative w-full z-0 mx-0`}
         >
           <div className="overflow-hidden row-span-1 pt-7">
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleChange}
-              />
-              {memory.imageName === '' ? (
-                <button
-                  className={`w-full h-36 px-4 my-4 ${
-                    isButtonTouched
-                      ? 'bg-slate-300 shadow-inner ' + innerShadow
-                      : 'bg-slate-200 '
-                  } rounded-xl text-center ${transitionCss} `}
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleChange}
+            />
+            {memory.imageName === '' ? (
+              <button
+                className={`w-full h-36 px-4 my-4 ${
+                  isButtonTouched
+                    ? 'bg-slate-300 shadow-inner ' + innerShadow
+                    : 'bg-slate-200 '
+                } rounded-xl text-center ${transitionCss} `}
+                onClick={handleClick}
+                onTouchStart={() => {
+                  setIsButtonTouched(true);
+                }}
+                onTouchEnd={() => {
+                  setIsButtonTouched(false);
+                }}
+              >
+                <RiImageAddFill className="mx-auto text-4xl" />
+                <p>이미지추가</p>
+              </button>
+            ) : (
+              <div className="px-2 my-4 relative ">
+                <Image
+                  className={`mx-auto max-h-72 rounded-2xl shadow-sm`}
+                  alt="이미지 선택"
+                  src={imageSrc || memory.image || ExampleImage}
+                  width={400}
+                  height={200}
                   onClick={handleClick}
+                />
+                <MdCancel
+                  className={`absolute top-3 right-5 text-4xl ${
+                    isCancelButtonTouched && ' text-slate-200'
+                  } bg-white rounded-full p-0`}
+                  onClick={handleCancle}
                   onTouchStart={() => {
-                    setIsButtonTouched(true);
+                    setIsCancelButtonTouched(true);
                   }}
                   onTouchEnd={() => {
-                    setIsButtonTouched(false);
+                    setIsCancelButtonTouched(false);
                   }}
-                >
-                  <RiImageAddFill className="mx-auto text-4xl" />
-                  <p>이미지추가</p>
-                </button>
-              ) : (
-                <div className="px-2 my-4 relative ">
-                  <Image
-                    className={`mx-auto max-h-72 rounded-2xl shadow-sm`}
-                    alt="이미지 선택"
-                    src={imageSrc || memory.image}
-                    width={400}
-                    height={200}
-                    onClick={handleClick}
-                  ></Image>
-                  <MdCancel
-                    className={`absolute top-3 right-5 text-4xl ${
-                      isCancelButtonTouched && ' text-slate-200'
-                    } bg-white rounded-full p-0`}
-                    onClick={handleCancle}
-                    onTouchStart={() => {
-                      setIsCancelButtonTouched(true);
-                    }}
-                    onTouchEnd={() => {
-                      setIsCancelButtonTouched(false);
-                    }}
-                  />
-                </div>
-              )}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
