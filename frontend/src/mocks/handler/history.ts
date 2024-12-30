@@ -1,41 +1,56 @@
-import { getRandomItem } from '@/service/utils';
 import { http, HttpResponse } from 'msw';
 import { db } from '../db';
 
-const uuid = '99d7f4dd55244c54a523032169193f40';
 
 export const history = [
   // Create history
-  http.post('/history', (req) => {
+  http.post('/history', async ({ request }) => {
+    const body = await request.json() as {
+      type: string;
+      amount: number;
+      item: string;
+      friendName: string;
+      friendId: string;
+      date: string;
+      detail: string;
+      image: string;
+      given: boolean;
+    };
+
+    const newHistory = db.history.create({
+      articleId: crypto.randomUUID(),
+      ...body
+    });
+
     return HttpResponse.json(
       {
-        message: 'History created successfully',
-        historyId: 'sample-history-id',
+        message: '히스토리가 성공적으로 생성되었습니다',
+        historyId: newHistory.articleId,
       },
       { status: 201 },
     );
   }),
 
   // Get history detail
-  http.get('/history/detail/:articleId', (req) => {
-    const { articleId } = req.params;
-    return HttpResponse.json(
-      {
-        id: articleId,
-        title: 'Sample History',
-        content: 'This is a sample history content.',
-      },
-      { status: 200 },
-    );
+  http.get('/history/detail/:articleId', ({ params }) => {
+    const articleId = String(params.articleId);
+    const history = db.history.findFirst({
+      where: { articleId: { equals: articleId } }
+    });
+
+    if (!history) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    return HttpResponse.json(history, { status: 200 });
   }),
 
-  // Get total history
+  // Get total history with pagination
   http.get('/history/all', ({ request }) => {
     const url = new URL(request.url);
     const pageNumber = parseInt(url.searchParams.get('pageNumber') || '1', 10);
     const pageSize = 10;
     const startIndex = (pageNumber - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
 
     const allHistories = db.history.findMany({
       take: pageSize,
@@ -60,19 +75,45 @@ export const history = [
   }),
 
   // Update history
-  http.put('/history/detail/:articleId', (req) => {
-    const { articleId } = req.params;
+  http.put('/history/detail/:articleId', async ({ params, request }) => {
+    const articleId = String(params.articleId);
+    const body = await request.json() as Partial<{
+      type: string;
+      amount: number;
+      item: string;
+      friendName: string;
+      friendId: string;
+      date: string;
+      detail: string;
+      image: string;
+      given: boolean;
+    }>;
+
+    const updatedHistory = db.history.update({
+      where: { articleId: { equals: articleId } },
+      data: body
+    });
+
+    if (!updatedHistory) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
     return HttpResponse.json(
-      { message: `History ${articleId} updated successfully` },
+      { message: '히스토리가 성공적으로 수정되었습니다' },
       { status: 200 },
     );
   }),
 
   // Delete history
-  http.delete('/history/detail/:articleId', (req) => {
-    const { articleId } = req.params;
+  http.delete('/history/detail/:articleId', ({ params }) => {
+    const articleId = String(params.articleId);
+    
+    db.history.delete({
+      where: { articleId: { equals: articleId } }
+    });
+
     return HttpResponse.json(
-      { message: `History ${articleId} deleted successfully` },
+      { message: '히스토리가 성공적으로 삭제되었습니다' },
       { status: 200 },
     );
   }),
