@@ -35,6 +35,7 @@
     "autoprefixer": "10.4.20",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.9",
+    "babel-plugin-react-compiler": "^19.0.0-beta-55955c9-20241229",
     "browser-image-compression": "^2.0.2",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",

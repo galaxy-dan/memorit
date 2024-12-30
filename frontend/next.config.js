@@ -7,6 +7,9 @@ const nextConfig = {
   images: {
     domains: ['mermorit.s3.ap-northeast-2.amazonaws.com'],
   },
+  experimental: {
+    reactCompiler: true,
+  },
 };
 
 module.exports = nextConfig;
