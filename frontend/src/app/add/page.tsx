@@ -18,7 +18,7 @@ import useCustomBack from '@/service/useCustomBack';
 import { useMemoryStore } from '@/store/memory';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { AiOutlineGift } from 'react-icons/ai';
 import { BiCategory } from 'react-icons/bi';
 import { BsCalendarDate, BsPeople, BsPerson } from 'react-icons/bs';
@@ -47,11 +47,13 @@ export default function AddMemoryPage() {
     setMemory({ ...memory, isSend: false });
   }
 
-  useCustomBack(() => {
-    history.back();
-    resetError();
-    resetMemory();
-  });
+  useCustomBack(
+    useCallback(() => {
+      history.back();
+      resetError();
+      resetMemory();
+    }, []),
+  );
 
   const onSubmit = async () => {
     if (!isSubmitting && CheckError()) {
